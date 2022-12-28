@@ -27,8 +27,6 @@ export async function verifyIsAuthenticated(request: Request) {
 
   if (!uidUser) throw Error('No session');
 
-  // console.log('verifyIsAuthenticated valor lido do let ', uidUser);
-
   const userRecord = await getAuth().getUser(uidUser);
 
   if (!userRecord) {

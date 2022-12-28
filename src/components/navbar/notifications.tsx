@@ -1,7 +1,7 @@
-import { DropdownMenu } from "../commons/dropdown-menu";
-import { Icon } from "../commons/icon";
-import { NotificationBadge } from "../commons/notification-badge";
-import tailStyled from "tailwind-styled-components";
+import tailStyled from 'tailwind-styled-components';
+import { DropdownMenu } from '../commons/dropdown-menu';
+import { Icon } from '../commons/icon';
+import { NotificationBadge } from '../commons/notification-badge';
 
 const NotificationsStyled = tailStyled.div`
   flex
@@ -11,7 +11,7 @@ const NotificationsStyled = tailStyled.div`
   w-10
 `;
 
-export const Notifications = () => {
+export function Notifications() {
   const Button = (
     <NotificationsStyled>
       <Icon icon="notifications" />
@@ -23,11 +23,11 @@ export const Notifications = () => {
     <DropdownMenu
       button={Button}
       options={[
-        { label: "opt1", to: "" },
-        { label: "opt2", to: "" },
-        "divider",
-        { label: "opt3", to: "" },
+        { label: 'opt1', to: '' },
+        { label: 'opt2', to: '' },
+        'divider',
+        { label: 'opt3', to: '' },
       ]}
     />
   );
-};
+}

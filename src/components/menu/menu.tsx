@@ -1,4 +1,4 @@
-import tailStyled from "tailwind-styled-components";
+import tailStyled from 'tailwind-styled-components';
 
 export const Aside = tailStyled.aside<{ $expanded: boolean }>`
     w-60
@@ -9,7 +9,7 @@ export const Aside = tailStyled.aside<{ $expanded: boolean }>`
     h-screen
     bg-gray-800
     transition-all
-    ${({ $expanded }) => ($expanded ? "left-0" : "lg:left-0")}
+    ${({ $expanded }) => ($expanded ? 'left-0' : 'lg:left-0')}
 `;
 
 export const MenuHeader = tailStyled.div`

@@ -1,11 +1,11 @@
-import { Menu } from "@headlessui/react";
-import tailStyled from "tailwind-styled-components";
-import { Dropdown } from "./dropdown";
-import { v4 as uuid } from "uuid";
-import { Divider } from "./divider";
+import { Menu } from '@headlessui/react';
+import tailStyled from 'tailwind-styled-components';
+import { v4 as uuid } from 'uuid';
+import { Dropdown } from './dropdown';
+import { Divider } from './divider';
 
 const MenuItem = tailStyled.div<{ $active: boolean }>`
-  ${({ $active }) => ($active ? "bg-gray-100" : "")}
+  ${({ $active }) => ($active ? 'bg-gray-100' : '')}
   group
   flex
   w-full
@@ -22,16 +22,15 @@ export type DropdownMenuType = {
   to: string;
 };
 
-const isDivider = (opt: DropdownMenuType | "divider"): opt is "divider" =>
-  typeof opt === "string";
+const isDivider = (opt: DropdownMenuType | 'divider'): opt is 'divider' => typeof opt === 'string';
 
-export const DropdownMenu = ({
+export function DropdownMenu({
   options,
   button,
 }: {
   button: React.ReactNode;
-  options: Array<DropdownMenuType | "divider">;
-}) => {
+  options: Array<DropdownMenuType | 'divider'>;
+}) {
   return (
     <Dropdown button={button}>
       {options.map((opt) => {
@@ -51,4 +50,4 @@ export const DropdownMenu = ({
       })}
     </Dropdown>
   );
-};
+}

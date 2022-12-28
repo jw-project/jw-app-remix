@@ -1,6 +1,6 @@
-import { Transition } from "@headlessui/react";
-import { Fragment } from "react";
-import tailStyled from "tailwind-styled-components";
+import { Transition } from '@headlessui/react';
+import { Fragment } from 'react';
+import tailStyled from 'tailwind-styled-components';
 
 const BackdropStyled = tailStyled.div`
   fixed
@@ -8,13 +8,13 @@ const BackdropStyled = tailStyled.div`
   bg-black/30
 `;
 
-export const Backdrop = ({
+export function Backdrop({
   onClick,
   visible,
 }: {
   visible: boolean;
   onClick: () => void;
-}) => {
+}) {
   return (
     <Transition
       as={Fragment}
@@ -29,4 +29,4 @@ export const Backdrop = ({
       <BackdropStyled onClick={onClick} />
     </Transition>
   );
-};
+}

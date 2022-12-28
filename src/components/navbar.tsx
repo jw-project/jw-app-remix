@@ -1,16 +1,16 @@
-import { useAtomValue } from "jotai";
-import { showMenuAtom } from "~/atoms/global-atoms";
-import { Avatar } from "./navbar/avatar";
-import { MobileAsideButton } from "./navbar/mobile-aside-button";
+import { useAtomValue } from 'jotai';
+import { showMenuAtom } from '~/atoms/global-atoms';
+import { Avatar } from './navbar/avatar';
+import { MobileAsideButton } from './navbar/mobile-aside-button';
 import {
   NavbarBase,
   NavbarStart,
   NavbarItem,
   NavbarEnd,
-} from "./navbar/navbar";
-import { Notifications } from "./navbar/notifications";
+} from './navbar/navbar';
+import { Notifications } from './navbar/notifications';
 
-export const Navbar = () => {
+export function Navbar() {
   const showMenu = useAtomValue(showMenuAtom);
 
   return (
@@ -22,7 +22,7 @@ export const Navbar = () => {
       </NavbarStart>
 
       <NavbarEnd>
-        <NavbarItem $withDivider={true}>
+        <NavbarItem $withDivider>
           <Notifications />
         </NavbarItem>
 
@@ -32,4 +32,4 @@ export const Navbar = () => {
       </NavbarEnd>
     </NavbarBase>
   );
-};
+}

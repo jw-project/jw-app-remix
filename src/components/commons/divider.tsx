@@ -1,4 +1,4 @@
-import tailStyled from "tailwind-styled-components";
+import tailStyled from 'tailwind-styled-components';
 
 export const Divider = tailStyled.div`
   w-full

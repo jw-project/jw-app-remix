@@ -1,4 +1,4 @@
-import type { IconOpts } from "../commons/icon";
+import type { IconOpts } from '../commons/icon';
 
 export type MenuListType = {
   label: string;

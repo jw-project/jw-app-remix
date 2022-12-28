@@ -1,6 +1,6 @@
-import { Menu, Transition } from "@headlessui/react";
-import React, { Fragment } from "react";
-import tailStyled from "tailwind-styled-components";
+import { Menu, Transition } from '@headlessui/react';
+import React, { Fragment } from 'react';
+import tailStyled from 'tailwind-styled-components';
 
 const MenuItems = tailStyled(Menu.Items)`
   absolute
@@ -16,12 +16,12 @@ const MenuItems = tailStyled(Menu.Items)`
   ring-opacity-5
 `;
 
-export const Dropdown = ({
+export function Dropdown({
   button,
   children,
 }: React.PropsWithChildren & {
   button: React.ReactNode;
-}) => {
+}) {
   return (
     <div className="fixed">
       <Menu>
@@ -42,4 +42,4 @@ export const Dropdown = ({
       </Menu>
     </div>
   );
-};
+}

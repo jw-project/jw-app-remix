@@ -1,8 +1,8 @@
-import { Fragment } from "react";
-import { MenuLabel } from "./menu";
-import type { MenuType, MenuListType } from "./types";
-import tailStyled from "tailwind-styled-components";
-import { Icon } from "../commons/icon";
+import { Fragment } from 'react';
+import tailStyled from 'tailwind-styled-components';
+import { MenuLabel } from './menu';
+import type { MenuType, MenuListType } from './types';
+import { Icon } from '../commons/icon';
 
 export const IconMenuStyled = tailStyled.span`
     w-12
@@ -22,7 +22,7 @@ export const LinkLabelMenuStyled = tailStyled.span`
     flex-grow
 `;
 
-const MenuLink = ({ list }: { list: MenuListType[] }) => {
+function MenuLink({ list }: { list: MenuListType[] }) {
   return (
     <ul>
       {list.map(({ icon, label }) => (
@@ -37,9 +37,9 @@ const MenuLink = ({ list }: { list: MenuListType[] }) => {
       ))}
     </ul>
   );
-};
+}
 
-export const MenuBody = ({ menu }: { menu: MenuType[] }) => {
+export function MenuBody({ menu }: { menu: MenuType[] }) {
   return (
     <>
       {menu.map(({ label, list }) => (
@@ -50,4 +50,4 @@ export const MenuBody = ({ menu }: { menu: MenuType[] }) => {
       ))}
     </>
   );
-};
+}

@@ -1,5 +1,5 @@
-import React from "react";
-import tailStyled from "tailwind-styled-components";
+import React from 'react';
+import tailStyled from 'tailwind-styled-components';
 
 export const NotificationBadgeStyled = tailStyled.div`
   inline-flex
@@ -16,8 +16,8 @@ export const NotificationBadgeStyled = tailStyled.div`
   rounded-full
 `;
 
-export const NotificationBadge = ({ children }: React.PropsWithChildren) => {
-  if (!children) return <></>;
+export function NotificationBadge({ children }: React.PropsWithChildren) {
+  if (!children) return null;
 
   return <NotificationBadgeStyled>{children}</NotificationBadgeStyled>;
-};
+}

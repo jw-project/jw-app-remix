@@ -1,6 +1,5 @@
-import { useState } from "react";
-import tailStyled from "tailwind-styled-components";
-import { Dropdown } from "../commons/dropdown";
+import tailStyled from 'tailwind-styled-components';
+import { Dropdown } from '../commons/dropdown';
 
 const AvatarStyled = tailStyled.div`
     inline-flex
@@ -21,7 +20,7 @@ const LettersStyled = tailStyled.div`
     dark:text-gray-300
 `;
 
-export const Avatar = ({ name }: { name: string }) => {
+export function Avatar({ name }: { name: string }) {
   const Button = (
     <AvatarStyled>
       <LettersStyled>{name}</LettersStyled>
@@ -29,4 +28,4 @@ export const Avatar = ({ name }: { name: string }) => {
   );
 
   return <Dropdown button={Button}>usuário</Dropdown>;
-};
+}

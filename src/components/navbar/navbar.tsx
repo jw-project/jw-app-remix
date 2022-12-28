@@ -1,4 +1,4 @@
-import tailStyled from "tailwind-styled-components";
+import tailStyled from 'tailwind-styled-components';
 
 export const NavbarBase = tailStyled.nav<{ $expanded: boolean }>`
     top-0
@@ -24,7 +24,7 @@ export const NavbarStart = tailStyled.div`
 `;
 
 export const NavbarItem = tailStyled.div<{ $withDivider?: boolean }>`
-    ${({ $withDivider }) => ($withDivider ? "border-r border-gray-100" : "")}
+    ${({ $withDivider }) => ($withDivider ? 'border-r border-gray-100' : '')}
     items-center
     py-2
     px-3
