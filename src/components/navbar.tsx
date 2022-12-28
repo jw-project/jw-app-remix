@@ -1,0 +1,35 @@
+import { useAtomValue } from "jotai";
+import { showMenuAtom } from "~/atoms/global-atoms";
+import { Avatar } from "./navbar/avatar";
+import { MobileAsideButton } from "./navbar/mobile-aside-button";
+import {
+  NavbarBase,
+  NavbarStart,
+  NavbarItem,
+  NavbarEnd,
+} from "./navbar/navbar";
+import { Notifications } from "./navbar/notifications";
+
+export const Navbar = () => {
+  const showMenu = useAtomValue(showMenuAtom);
+
+  return (
+    <NavbarBase id="navbar-main" $expanded={showMenu}>
+      <NavbarStart>
+        <NavbarItem>
+          <MobileAsideButton />
+        </NavbarItem>
+      </NavbarStart>
+
+      <NavbarEnd>
+        <NavbarItem $withDivider={true}>
+          <Notifications />
+        </NavbarItem>
+
+        <NavbarItem>
+          <Avatar name="AB" />
+        </NavbarItem>
+      </NavbarEnd>
+    </NavbarBase>
+  );
+};
