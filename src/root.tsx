@@ -37,8 +37,13 @@ export const links: LinksFunction = () => [
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
+  const isLoginPath = url.pathname === '/login';
 
   firebaseAdminConnection();
+
+  if (isLoginPath) {
+    return { isLoginPath };
+  }
 
   try {
     await verifyIsAuthenticated(request);
@@ -49,7 +54,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const rootLoaderReturn: RootLoaderReturn = {
     menu: await getMenu(),
-    isLoginPath: url.pathname === '/login',
+    isLoginPath,
   };
 
   return rootLoaderReturn;

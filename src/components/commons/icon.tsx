@@ -4672,7 +4672,7 @@ export function Icon({
   icon,
   className = 'material-symbols-outlined',
 }: {
-  className: ClassNameOpts;
+  className?: ClassNameOpts;
   icon: IconOpts;
 }) {
   return <span className={className}>{icon}</span>;

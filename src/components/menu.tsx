@@ -7,7 +7,7 @@ import { Aside, MenuHeader } from './menu/menu';
 import { MenuBody } from './menu/menu-body';
 
 export function Menu() {
-  const { menu } = useLoaderData<RootLoaderReturn>();
+  const { menu } = useLoaderData<RootLoaderReturn>() || { menu: [] };
   const [showMenu, setShowMenu] = useAtom(showMenuAtom);
 
   return (

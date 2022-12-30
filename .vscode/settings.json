@@ -4,5 +4,10 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "eslint.debug": true
+  "eslint.debug": true,
+  "tailwindCSS.experimental.classRegex": [
+    "tailStyled`([^`]*)", // tw`...`
+    "tailStyled\\.[^`]+`([^`]*)`", // tw.xxx<xxx>`...`
+    "tailStyled\\(.*?\\).*?`([^`]*)" // tw(Component)<xxx>`...`
+]
 }

@@ -9,7 +9,10 @@ import {
 } from 'firebase/auth';
 import { useEffect } from 'react';
 import {
-  LoadingSubtitle, LoadingTitle, Overlay, Spinner,
+  LoadingSubtitle,
+  LoadingTitle,
+  Overlay,
+  Spinner,
 } from '~/components/login/login';
 import { firebaseClientConnection } from '~/services/firebase-connection.client';
 import { sessionLogin } from '~/services/firebase-connection.server';
@@ -68,7 +71,7 @@ export default function Login() {
   useEffect(() => {
     firebaseClientConnection(firebaseConfig);
     checkUser();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const redirectToLogin = () => {

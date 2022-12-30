@@ -17,6 +17,7 @@ module.exports = {
     "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "no-console": ["error", { allow: ["info", "error"] }],
     "padded-blocks": ["error", "never"],
+    "react/require-default-props": "off",
     "@typescript-eslint/type-annotation-spacing": [
       "error",
       {

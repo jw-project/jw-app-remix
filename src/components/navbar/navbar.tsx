@@ -9,7 +9,7 @@ export const NavbarBase = tailStyled.nav<{ $expanded: boolean }>`
     bg-white
     h-14
     border-b
-    border-gray-100
+    border-gray-200
     z-1
     w-screen transition-all
     lg:pl-60

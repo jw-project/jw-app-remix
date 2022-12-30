@@ -9,15 +9,13 @@ const AvatarStyled = tailStyled.div`
     items-center
     w-10
     h-10
-    bg-gray-100
     rounded-full
-    dark:bg-gray-600
+    bg-gray-600
 `;
 
 const LettersStyled = tailStyled.div`
     font-medium
-    text-gray-600
-    dark:text-gray-300
+    text-gray-300
 `;
 
 export function Avatar({ name }: { name: string }) {
