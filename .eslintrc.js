@@ -18,6 +18,7 @@ module.exports = {
     "no-console": ["error", { allow: ["info", "error"] }],
     "padded-blocks": ["error", "never"],
     "react/require-default-props": "off",
+    "react/jsx-props-no-spreading": ["off"],
     "@typescript-eslint/type-annotation-spacing": [
       "error",
       {

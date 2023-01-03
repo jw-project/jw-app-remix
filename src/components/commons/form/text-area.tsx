@@ -2,22 +2,20 @@ import { useField } from 'remix-validated-form';
 import tailStyled from 'tailwind-styled-components';
 import { ErrorLabel, inputsStyleBase, Label } from './style-base';
 
-type InputType = {
+type TextAreaType = {
   label: string;
   name: string;
-  error?: boolean;
-} & React.DetailedHTMLProps<
-React.InputHTMLAttributes<HTMLInputElement>,
-HTMLInputElement
->;
+  disabled?: boolean;
+  placeholder?: string;
+};
 
-export const InputStyled = tailStyled.input<{ $error?: boolean }>`
-  ${({ $error }) => inputsStyleBase($error)}
+export const InputStyled = tailStyled.textarea<{ $error?: boolean }>`
+    ${({ $error }) => inputsStyleBase($error)}
 `;
 
-export function Input({
-  label, name, ...props
-}: InputType) {
+export function TextArea({
+  label, name, disabled, placeholder,
+}: TextAreaType) {
   const { error, getInputProps } = useField(name);
 
   return (
@@ -26,7 +24,10 @@ export function Input({
       <InputStyled
         {...getInputProps({ id: name })}
         $error={Boolean(error)}
-        {...props}
+        id={name}
+        name={name}
+        placeholder={placeholder}
+        disabled={disabled}
       />
       {error && <ErrorLabel>{error}</ErrorLabel>}
     </>

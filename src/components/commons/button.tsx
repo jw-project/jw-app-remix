@@ -9,11 +9,13 @@ export const Button = tailStyled.button`
     py-2
     text-center
     whitespace-nowrap rounded
-    hover:border-gray-500
+    enabled:hover:border-gray-500
     focus:outline-none
     bg-blue-500
     border-blue-500
     text-white
-    hover:bg-blue-600
-    active:bg-blue-700
+    enabled:hover:bg-blue-600
+    enabled:active:bg-blue-700
+    disabled:opacity-50
+    disabled:cursor-not-allowed
 `;

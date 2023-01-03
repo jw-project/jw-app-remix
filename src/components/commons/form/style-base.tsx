@@ -16,7 +16,7 @@ export const ErrorLabel = tailStyled.p`
   italic
 `;
 
-export const inputsStyleBase = `
+export const inputsStyleBase = (error?: boolean) => `
   disabled:bg-gray-200
   disabled:cursor-not-allowed
   w-full
@@ -27,4 +27,5 @@ export const inputsStyleBase = `
   py-3
   px-4
   mb-3
+  ${error ? 'border-red-500' : ''}
 `;

@@ -1,4 +1,8 @@
-import type { LinksFunction, LoaderFunction, MetaFunction } from '@remix-run/node';
+import type {
+  LinksFunction,
+  LoaderFunction,
+  MetaFunction,
+} from '@remix-run/node';
 import { redirect } from '@remix-run/node';
 import {
   Links,
@@ -10,11 +14,17 @@ import {
   useLoaderData,
 } from '@remix-run/react';
 import { Provider } from 'jotai';
+import React from 'react';
+import { Toaster } from 'react-hot-toast';
+import { ClientOnly } from 'remix-utils';
 import { BodyMargin } from './components/body-margin';
 import { Menu } from './components/menu';
 import { Navbar } from './components/navbar';
 import { getMenu } from './services/api/menu.server';
-import { firebaseAdminConnection, verifyIsAuthenticated } from './services/firebase-connection.server';
+import {
+  firebaseAdminConnection,
+  verifyIsAuthenticated,
+} from './services/firebase-connection.server';
 import styles from './tailwind.css';
 import type { RootLoaderReturn } from './types/types';
 
@@ -31,7 +41,7 @@ export const links: LinksFunction = () => [
   },
   {
     rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined',
+    href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded',
   },
 ];
 
@@ -71,8 +81,11 @@ export default function App() {
       </head>
       <body>
         <Provider>
-          {isLoginPath ? <Outlet /> : (
+          {isLoginPath ? (
+            <Outlet />
+          ) : (
             <>
+              <ClientOnly>{() => <Toaster />}</ClientOnly>
               <Navbar />
               <Menu />
               <BodyMargin>

@@ -4670,10 +4670,12 @@ export type IconOpts =
 
 export function Icon({
   icon,
-  className = 'material-symbols-outlined',
+  className = 'material-symbols-rounded',
+  size,
 }: {
   className?: ClassNameOpts;
   icon: IconOpts;
+  size?: 'icon-small'
 }) {
-  return <span className={className}>{icon}</span>;
+  return <span className={`${size} ${className}`}>{icon}</span>;
 }
