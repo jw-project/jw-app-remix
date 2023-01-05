@@ -1,34 +1,33 @@
-import { useField } from 'remix-validated-form';
+import React from 'react';
+import { useField } from 'remix-forms';
 import tailStyled from 'tailwind-styled-components';
-import { ErrorLabel, inputsStyleBase, Label } from './style-base';
+import { inputsStyleBase } from './style-base';
 
-type InputType = {
-  label: string;
-  name: string;
-  error?: boolean;
-} & React.DetailedHTMLProps<
-React.InputHTMLAttributes<HTMLInputElement>,
-HTMLInputElement
->;
-
-export const InputStyled = tailStyled.input<{ $error?: boolean }>`
+const InputStyled = tailStyled.input<{ $error?: boolean }>`
   ${({ $error }) => inputsStyleBase($error)}
 `;
 
-export function Input({
-  label, name, ...props
-}: InputType) {
-  const { error, getInputProps } = useField(name);
+function CustomInput(
+  {
+    ...props
+  }: React.DetailedHTMLProps<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  HTMLInputElement
+  >,
+  ref: React.ForwardedRef<HTMLInputElement>,
+): JSX.Element {
+  const { errors } = useField();
 
   return (
-    <>
-      <Label htmlFor={name}>{label}</Label>
-      <InputStyled
-        {...getInputProps({ id: name })}
-        $error={Boolean(error)}
-        {...props}
-      />
-      {error && <ErrorLabel>{error}</ErrorLabel>}
-    </>
+    <InputStyled
+      ref={ref}
+      $error={Boolean(errors)}
+      {...props}
+    />
   );
 }
+
+export const Input = React.forwardRef<
+HTMLInputElement,
+JSX.IntrinsicElements['input']
+>(CustomInput);

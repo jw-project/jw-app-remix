@@ -19,9 +19,9 @@ const MenuItems = tailStyled(Menu.Items)`
 export function Dropdown({
   button,
   children,
-}: React.PropsWithChildren & {
+}: React.PropsWithChildren<{
   button: React.ReactNode;
-}) {
+}>) {
   return (
     <div className="fixed">
       <Menu>

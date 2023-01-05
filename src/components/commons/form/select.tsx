@@ -1,21 +1,13 @@
-import { useField } from 'remix-validated-form';
+import React from 'react';
+import { useField } from 'remix-forms';
 import tailStyled from 'tailwind-styled-components';
 import { Icon } from '../icon';
-import { ErrorLabel, inputsStyleBase, Label } from './style-base';
+import { inputsStyleBase } from './style-base';
 
 export type SelectOptionsType = {
-  label: string;
+  name: string;
   value: string;
 };
-
-type SelectType = {
-  label: string;
-  name: string;
-  options: SelectOptionsType[];
-} & React.DetailedHTMLProps<
-React.SelectHTMLAttributes<HTMLSelectElement>,
-HTMLSelectElement
->;
 
 const SelectStyled = tailStyled.select<{ $error?: boolean }>`
   ${({ $error }) => inputsStyleBase($error)}
@@ -33,33 +25,32 @@ const SelectorStyled = tailStyled.div`
   px-2
 `;
 
-export function Select({
-  label, name, options, ...props
-}: SelectType) {
-  const { error, getInputProps } = useField(name);
+function CustomSelect(
+  {
+    ...props
+  }: React.DetailedHTMLProps<
+  React.SelectHTMLAttributes<HTMLSelectElement>,
+  HTMLSelectElement
+  >,
+  ref: React.ForwardedRef<HTMLSelectElement>,
+): JSX.Element {
+  const { errors } = useField();
 
   return (
-    <>
-      <Label htmlFor={name}>{label}</Label>
-      <div className="relative">
-        <SelectStyled
-          {...getInputProps({ id: name })}
-          $error={Boolean(error)}
-          id={name}
-          name={name}
-          {...props}
-        >
-          {options.map(({ label: labelOpt, value }) => (
-            <option key={value} value={value}>
-              {labelOpt}
-            </option>
-          ))}
-        </SelectStyled>
-        <SelectorStyled>
-          <Icon icon="expand_more" />
-        </SelectorStyled>
-      </div>
-      {error && <ErrorLabel>{error}</ErrorLabel>}
-    </>
+    <div className="relative">
+      <SelectStyled
+        ref={ref}
+        $error={Boolean(errors)}
+        {...props}
+      />
+      <SelectorStyled>
+        <Icon icon="expand_more" />
+      </SelectorStyled>
+    </div>
   );
 }
+
+export const Select = React.forwardRef<
+HTMLSelectElement,
+JSX.IntrinsicElements['select']
+>(CustomSelect);

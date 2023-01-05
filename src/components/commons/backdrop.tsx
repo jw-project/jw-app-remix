@@ -6,6 +6,7 @@ const BackdropStyled = tailStyled.div`
   fixed
   inset-0
   bg-black/30
+  z-10
 `;
 
 export function Backdrop({

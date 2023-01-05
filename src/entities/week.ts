@@ -11,11 +11,11 @@ export enum Week {
 }
 
 export const weekOptions: SelectOptionsType[] = [
-  { label: 'Segunda', value: Week.MONDAY },
-  { label: 'Terça', value: Week.TUESDAY },
-  { label: 'Quarta', value: Week.WEDNESDAY },
-  { label: 'Quinta', value: Week.THURSDAY },
-  { label: 'Sexta', value: Week.FRIDAY },
-  { label: 'Sábado', value: Week.SATURDAY },
-  { label: 'Domingo', value: Week.SUNDAY },
+  { name: 'Segunda', value: Week.MONDAY },
+  { name: 'Terça', value: Week.TUESDAY },
+  { name: 'Quarta', value: Week.WEDNESDAY },
+  { name: 'Quinta', value: Week.THURSDAY },
+  { name: 'Sexta', value: Week.FRIDAY },
+  { name: 'Sábado', value: Week.SATURDAY },
+  { name: 'Domingo', value: Week.SUNDAY },
 ];

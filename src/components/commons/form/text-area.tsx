@@ -1,35 +1,33 @@
-import { useField } from 'remix-validated-form';
+import React from 'react';
+import { useField } from 'remix-forms';
 import tailStyled from 'tailwind-styled-components';
-import { ErrorLabel, inputsStyleBase, Label } from './style-base';
+import { inputsStyleBase } from './style-base';
 
-type TextAreaType = {
-  label: string;
-  name: string;
-  disabled?: boolean;
-  placeholder?: string;
-};
-
-export const InputStyled = tailStyled.textarea<{ $error?: boolean }>`
+const TextAreaStyled = tailStyled.textarea<{ $error?: boolean }>`
     ${({ $error }) => inputsStyleBase($error)}
 `;
 
-export function TextArea({
-  label, name, disabled, placeholder,
-}: TextAreaType) {
-  const { error, getInputProps } = useField(name);
+function CustomTextArea(
+  {
+    ...props
+  }: React.DetailedHTMLProps<
+  React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+  HTMLTextAreaElement
+  >,
+  ref: React.ForwardedRef<HTMLTextAreaElement>,
+): JSX.Element {
+  const { errors } = useField();
 
   return (
-    <>
-      <Label htmlFor={name}>{label}</Label>
-      <InputStyled
-        {...getInputProps({ id: name })}
-        $error={Boolean(error)}
-        id={name}
-        name={name}
-        placeholder={placeholder}
-        disabled={disabled}
-      />
-      {error && <ErrorLabel>{error}</ErrorLabel>}
-    </>
+    <TextAreaStyled
+      ref={ref}
+      $error={Boolean(errors)}
+      {...props}
+    />
   );
 }
+
+export const TextArea = React.forwardRef<
+HTMLTextAreaElement,
+JSX.IntrinsicElements['textarea']
+>(CustomTextArea);

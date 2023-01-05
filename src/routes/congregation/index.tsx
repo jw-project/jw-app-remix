@@ -1,103 +1,115 @@
-import type { ActionFunction, LoaderFunction } from '@remix-run/node';
-import { withZod } from '@remix-validated-form/with-zod';
+import type {
+  ActionFunction,
+  LoaderFunction,
+  TypedResponse,
+} from '@remix-run/node';
 import { z } from 'zod';
-import { useActionData, useLoaderData, useTransition } from '@remix-run/react';
-import { Button } from '~/components/commons/button';
+import { useActionData, useLoaderData } from '@remix-run/react';
 import { Card } from '~/components/commons/card';
-import { Input } from '~/components/commons/form/input';
-import { Select } from '~/components/commons/form/select';
-import { TextArea } from '~/components/commons/form/text-area';
-import type { FieldGridType } from '~/components/commons/grid';
-import { Grid } from '~/components/commons/grid';
-import { ValidatedForm, validationError } from 'remix-validated-form';
+import { Col, Grid } from '~/components/commons/grid';
 import { Week, weekOptions } from '~/entities/week';
-import { notify, ToastType } from '~/components/commons/toast';
+import { notify } from '~/components/commons/toast';
 import { useEffect } from 'react';
+import {
+  getCongregation,
+  updateCongregation,
+} from '~/services/api/congregation.server';
+import type {
+  CongregationActionReturn,
+  CongregationLoaderReturn,
+} from '~/types/types';
+import { makeDomainFunction } from 'domain-functions';
+import { Form } from '~/components/commons/form/form';
+import { checkReturnMessage } from '~/services/api/common.server';
+import { FakeInput } from '~/components/commons/form/fake-input';
 
-export const validator = withZod(
-  z.object({
-    name: z.string().min(1, { message: 'Nome é um campo obrigatório' }),
-    number: z.string().min(1, { message: 'Número é um campo obrigatório' }),
-    address: z.string().min(1, { message: 'Endereço é um campo obrigatório' }),
-    midweekMeetingDay: z.nativeEnum(Week, { required_error: 'Valor inválido' }),
-    weekendMeetingDay: z.nativeEnum(Week, { required_error: 'Valor inválido' }),
-  }),
-);
+const schema = z.object({
+  // id: z
+  //   .string(),
+  name: z.string().min(1, { message: 'Nome é um campo obrigatório' }),
+  number: z.preprocess(
+    (input) => (typeof input === 'number' ? input : 0),
+    z.number().gt(0, { message: 'Número é um campo obrigatório' }),
+  ),
+  address: z.string().min(1, { message: 'Endereço é um campo obrigatório' }),
+  midweekMeetingDay: z
+    .nativeEnum(Week, { required_error: 'Valor inválido' })
+    .default(Week.MONDAY),
+  weekendMeetingDay: z
+    .nativeEnum(Week, { required_error: 'Valor inválido' })
+    .default(Week.MONDAY),
+});
 
-export const action: ActionFunction = async ({ request }) => {
-  const data = await validator.validate(await request.formData());
+export const action: ActionFunction = async ({
+  request,
+}): Promise<TypedResponse<CongregationActionReturn>> => {
+  const mutation = makeDomainFunction(schema)(async (values) => updateCongregation(values));
 
-  if (data.error) {
-    return validationError(data.error);
-  }
-  const {
-    name, address, number, midweekMeetingDay, weekendMeetingDay,
-  } = data.data;
-
-  return { message: 'Salvo com sucesso' };
+  return checkReturnMessage({ request, schema, mutation });
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
-  console.log('');
+export const loader: LoaderFunction = async (): Promise<CongregationLoaderReturn> => {
+  const congregation = await getCongregation();
 
-  return {};
+  return { congregation };
 };
 
 export default function Congregation() {
-  const invoices = useLoaderData();
-  const data = useActionData();
-  const transition = useTransition();
+  const { congregation } = useLoaderData<CongregationLoaderReturn>();
+  const dataAction = useActionData<CongregationActionReturn>();
 
   useEffect(() => {
-    if (data?.message) {
-      notify({ message: data.message });
+    if (dataAction?.message) {
+      notify({ message: dataAction.message, type: dataAction.messageType });
     }
-  }, [data]);
-
-  const grid: FieldGridType = [
-    { children: <Input label="Congregação Id" name="id" disabled /> },
-    {
-      children: <Input label="Nome da congregação" name="name" />,
-    },
-    {
-      children: (
-        <Input label="Número da congregação" name="number" type="number" />
-      ),
-    },
-    {
-      children: <TextArea label="Endereço do salão do reino" name="address" />,
-    },
-    {
-      children: (
-        <Select
-          label="Dia da reunião de meio de semana"
-          name="midweekMeetingDay"
-          options={weekOptions}
-        />
-      ),
-    },
-    {
-      children: (
-        <Select
-          label="Dia da reunião de fim de semana"
-          name="weekendMeetingDay"
-          options={weekOptions}
-        />
-      ),
-    },
-
-    { children: <div className="border">01</div> },
-    { children: <>{JSON.stringify(transition)}</>, colSpan: 2 },
-    {
-      children: <Button disabled={transition.state !== 'idle'}>Salvar</Button>,
-    },
-  ];
+  }, [dataAction]);
 
   return (
     <Card>
-      <ValidatedForm validator={validator} method="post">
-        <Grid cols={2} grids={grid} />
-      </ValidatedForm>
+      <Form schema={schema} values={congregation}>
+        {({ Field, Errors, Button }) => (
+          <Grid cols={2}>
+            <Col>
+              <FakeInput value="xxx" label="Id da congregação" disabled />
+            </Col>
+            <Col>
+              <Field name="name" label="Nome da congregação" />
+            </Col>
+            <Col>
+              <Field
+                name="number"
+                label="Número da congregação"
+                type="number"
+              />
+            </Col>
+            <Col>
+              <Field
+                name="address"
+                label="Endereço do Salão do Reino"
+                multiline
+              />
+            </Col>
+            <Col>
+              <Field
+                name="midweekMeetingDay"
+                label="Dia da reunião de meio de semana"
+                options={weekOptions}
+              />
+            </Col>
+            <Col>
+              <Field
+                name="weekendMeetingDay"
+                label="Dia da reunião de fim de semana"
+                options={weekOptions}
+              />
+            </Col>
+            <Col>
+              <Button>salve</Button>
+            </Col>
+            <Errors />
+          </Grid>
+        )}
+      </Form>
     </Card>
   );
 }
