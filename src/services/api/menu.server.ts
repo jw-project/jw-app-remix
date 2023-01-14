@@ -1,9 +1,10 @@
-import { firestore } from 'firebase-admin';
+import { remoteConfig } from 'firebase-admin';
 import type { MenuType } from '~/components/menu/types';
-import { getAllData } from './common.server';
 
 export const getMenu = async (): Promise<MenuType[]> => {
-  const menuSnap = await firestore().collection('menu').get();
+  const {
+    parameters: { menu },
+  } = await remoteConfig().getTemplate();
 
-  return getAllData(menuSnap);
+  return JSON.parse(menu.defaultValue?.value);
 };

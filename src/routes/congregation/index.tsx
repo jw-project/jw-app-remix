@@ -22,11 +22,11 @@ import { makeDomainFunction } from 'domain-functions';
 import { Form } from '~/components/commons/form/form';
 import { checkReturnMessage } from '~/services/api/common.server';
 import { FakeInput } from '~/components/commons/form/fake-input';
+import { useTranslation as getTranslation } from 'react-i18next';
+import { i18nBasicConfig } from '~/i18n/i18n';
 
 const schema = z.object({
-  // id: z
-  //   .string(),
-  name: z.string().min(1, { message: 'Nome é um campo obrigatório' }),
+  // name: z.string().min(1, { message: tCommon('requiredField', { name: tScreen('name') }) }),
   number: z.preprocess(
     (input) => (typeof input === 'number' ? input : 0),
     z.number().gt(0, { message: 'Número é um campo obrigatório' }),
@@ -49,12 +49,15 @@ export const action: ActionFunction = async ({
 };
 
 export const loader: LoaderFunction = async (): Promise<CongregationLoaderReturn> => {
+  const t = await i18nBasicConfig.getFixedT(request);
+  console.log(tCommon('requiredField', { name: 'Nome do campo' }));
   const congregation = await getCongregation();
 
   return { congregation };
 };
 
 export default function Congregation() {
+  const { t: tScreen } = getTranslation('routes', { keyPrefix: 'congregation' });
   const { congregation } = useLoaderData<CongregationLoaderReturn>();
   const dataAction = useActionData<CongregationActionReturn>();
 
@@ -70,41 +73,41 @@ export default function Congregation() {
         {({ Field, Errors, Button }) => (
           <Grid cols={2}>
             <Col>
-              <FakeInput value="xxx" label="Id da congregação" disabled />
+              <FakeInput value="xxx" label={tScreen('id')} disabled />
             </Col>
             <Col>
-              <Field name="name" label="Nome da congregação" />
+              <Field name="name" label={tScreen('name')} />
             </Col>
             <Col>
               <Field
                 name="number"
-                label="Número da congregação"
+                label={tScreen('number')}
                 type="number"
               />
             </Col>
             <Col>
               <Field
                 name="address"
-                label="Endereço do Salão do Reino"
+                label={tScreen('address')}
                 multiline
               />
             </Col>
             <Col>
               <Field
                 name="midweekMeetingDay"
-                label="Dia da reunião de meio de semana"
-                options={weekOptions}
+                label={tScreen('midweekMeetingDay')}
+                options={weekOptions()}
               />
             </Col>
             <Col>
               <Field
                 name="weekendMeetingDay"
-                label="Dia da reunião de fim de semana"
-                options={weekOptions}
+                label={tScreen('weekendMeetingDay')}
+                options={weekOptions()}
               />
             </Col>
             <Col>
-              <Button>salve</Button>
+              <Button>{tScreen('save')}</Button>
             </Col>
             <Errors />
           </Grid>

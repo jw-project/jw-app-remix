@@ -14,15 +14,16 @@ import {
   useLoaderData,
 } from '@remix-run/react';
 import { Provider } from 'jotai';
-import React from 'react';
+import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import { ClientOnly } from 'remix-utils';
 import { BodyMargin } from './components/body-margin';
 import { Menu } from './components/menu';
 import { Navbar } from './components/navbar';
+import { i18nextServerConfig } from './i18n/i18next.server';
 import { getMenu } from './services/api/menu.server';
 import {
-  firebaseAdminConnection,
   verifyIsAuthenticated,
 } from './services/firebase-connection.server';
 import styles from './tailwind.css';
@@ -46,13 +47,13 @@ export const links: LinksFunction = () => [
 ];
 
 export const loader: LoaderFunction = async ({ request }) => {
+  const locale = await i18nextServerConfig.getLocale(request);
+
   const url = new URL(request.url);
   const isLoginPath = url.pathname === '/login';
 
-  firebaseAdminConnection();
-
   if (isLoginPath) {
-    return { isLoginPath };
+    return { isLoginPath, locale };
   }
 
   try {
@@ -65,16 +66,22 @@ export const loader: LoaderFunction = async ({ request }) => {
   const rootLoaderReturn: RootLoaderReturn = {
     menu: await getMenu(),
     isLoginPath,
+    locale,
   };
 
   return rootLoaderReturn;
 };
 
 export default function App() {
-  const { isLoginPath } = useLoaderData<RootLoaderReturn>();
+  const { isLoginPath, locale } = useLoaderData<RootLoaderReturn>();
+  const { i18n } = useTranslation('routes', { keyPrefix: 'login' });
+
+  useEffect(() => {
+    i18n.changeLanguage(locale);
+  }, []);
 
   return (
-    <html lang="en">
+    <html lang={locale} dir={i18n.dir()}>
       <head>
         <Meta />
         <Links />
@@ -93,7 +100,6 @@ export default function App() {
               </BodyMargin>
             </>
           )}
-
           <ScrollRestoration />
           <Scripts />
           <LiveReload />

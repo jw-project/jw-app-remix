@@ -1,4 +1,3 @@
-import type { FirebaseOptions } from 'firebase/app';
 import type { ToastType } from '~/components/commons/toast';
 import type { MenuType } from '~/components/menu/types';
 import type { CongregationEntity } from '~/entities/congregation';
@@ -6,10 +5,7 @@ import type { CongregationEntity } from '~/entities/congregation';
 export type RootLoaderReturn = {
   isLoginPath: boolean;
   menu: MenuType[];
-};
-
-export type LoginLoaderReturn = {
-  firebaseConfig: FirebaseOptions;
+  locale: string;
 };
 
 export type CongregationLoaderReturn = {
