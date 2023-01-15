@@ -23,20 +23,23 @@ import { Form } from '~/components/commons/form/form';
 import { checkReturnMessage } from '~/services/api/common.server';
 import { FakeInput } from '~/components/commons/form/fake-input';
 import { useTranslation as getTranslation } from 'react-i18next';
-import { i18nBasicConfig } from '~/i18n/i18n';
 
 const schema = z.object({
-  // name: z.string().min(1, { message: tCommon('requiredField', { name: tScreen('name') }) }),
+  name: z.string().min(1, { message: 'requiredField' }),
   number: z.preprocess(
     (input) => (typeof input === 'number' ? input : 0),
-    z.number().gt(0, { message: 'Número é um campo obrigatório' }),
+    z.number().gt(0, { message: 'requiredField' }),
   ),
-  address: z.string().min(1, { message: 'Endereço é um campo obrigatório' }),
+  address: z.string().min(1, { message: 'requiredField' }),
   midweekMeetingDay: z
-    .nativeEnum(Week, { required_error: 'Valor inválido' })
+    .nativeEnum(Week, {
+      errorMap: () => ({ message: 'invalidField' }),
+    })
     .default(Week.MONDAY),
   weekendMeetingDay: z
-    .nativeEnum(Week, { required_error: 'Valor inválido' })
+    .nativeEnum(Week, {
+      errorMap: () => ({ message: 'invalidField' }),
+    })
     .default(Week.MONDAY),
 });
 
@@ -49,15 +52,15 @@ export const action: ActionFunction = async ({
 };
 
 export const loader: LoaderFunction = async (): Promise<CongregationLoaderReturn> => {
-  const t = await i18nBasicConfig.getFixedT(request);
-  console.log(tCommon('requiredField', { name: 'Nome do campo' }));
   const congregation = await getCongregation();
 
   return { congregation };
 };
 
 export default function Congregation() {
-  const { t: tScreen } = getTranslation('routes', { keyPrefix: 'congregation' });
+  const { t: tScreen } = getTranslation('routes', {
+    keyPrefix: 'congregation',
+  });
   const { congregation } = useLoaderData<CongregationLoaderReturn>();
   const dataAction = useActionData<CongregationActionReturn>();
 
@@ -79,24 +82,16 @@ export default function Congregation() {
               <Field name="name" label={tScreen('name')} />
             </Col>
             <Col>
-              <Field
-                name="number"
-                label={tScreen('number')}
-                type="number"
-              />
+              <Field name="number" label={tScreen('number')} type="number" />
             </Col>
             <Col>
-              <Field
-                name="address"
-                label={tScreen('address')}
-                multiline
-              />
+              <Field name="address" label={tScreen('address')} multiline />
             </Col>
             <Col>
               <Field
                 name="midweekMeetingDay"
                 label={tScreen('midweekMeetingDay')}
-                options={weekOptions()}
+                options={[...weekOptions(), { name: 'fs', value: '1' }]}
               />
             </Col>
             <Col>

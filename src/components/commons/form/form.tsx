@@ -5,9 +5,10 @@ import {
 } from '@remix-run/react';
 import { Input } from './input';
 import { TextArea } from './text-area';
-import { ErrorLabel, Label } from './style-base';
+import { Label } from './style-base';
 import { Button } from '../button';
 import { Select } from './select';
+import { ErrorLabel } from './error-label';
 
 const RemixForm = createForm({
   component: FrameworkForm, useNavigation, useSubmit, useActionData,

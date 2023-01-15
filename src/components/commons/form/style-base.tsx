@@ -10,12 +10,6 @@ export const Label = tailStyled.label`
   mb-2
 `;
 
-export const ErrorLabel = tailStyled.p`
-  text-red-500
-  text-xs
-  italic
-`;
-
 export const inputsStyleBase = (error?: boolean) => `
   disabled:bg-gray-200
   disabled:cursor-not-allowed
