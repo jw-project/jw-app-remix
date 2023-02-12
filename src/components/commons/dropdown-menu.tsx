@@ -1,8 +1,11 @@
+import React from 'react';
+
 import { Menu } from '@headlessui/react';
 import tailStyled from 'tailwind-styled-components';
 import { v4 as uuid } from 'uuid';
-import { Dropdown } from './dropdown';
+
 import { Divider } from './divider';
+import { Dropdown } from './dropdown';
 
 const MenuItem = tailStyled.div<{ $active: boolean }>`
   ${({ $active }) => ($active ? 'bg-gray-100' : '')}

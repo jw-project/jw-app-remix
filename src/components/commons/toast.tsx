@@ -1,6 +1,9 @@
-import { Transition } from '@headlessui/react';
+import React from 'react';
 import { toast } from 'react-hot-toast';
+
+import { Transition } from '@headlessui/react';
 import tailStyled from 'tailwind-styled-components';
+
 import { Icon } from './icon';
 
 export enum ToastType {

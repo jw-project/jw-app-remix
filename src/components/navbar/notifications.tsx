@@ -1,4 +1,7 @@
+import React from 'react';
+
 import tailStyled from 'tailwind-styled-components';
+
 import { DropdownMenu } from '../commons/dropdown-menu';
 import { Icon } from '../commons/icon';
 import { NotificationBadge } from '../commons/notification-badge';

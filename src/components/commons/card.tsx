@@ -1,4 +1,5 @@
 import React from 'react';
+
 import tailStyled from 'tailwind-styled-components';
 
 export const CardStyled = tailStyled.div`

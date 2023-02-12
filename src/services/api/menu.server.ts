@@ -1,4 +1,5 @@
 import { remoteConfig } from 'firebase-admin';
+
 import type { MenuType } from '~/components/menu/types';
 
 export const getMenu = async (): Promise<MenuType[]> => {

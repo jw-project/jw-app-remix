@@ -1,3 +1,5 @@
+import React from 'react';
+
 type ClassNameOpts =
   | 'material-symbols-outlined'
   | 'material-symbols-rounded'

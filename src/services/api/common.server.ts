@@ -7,6 +7,7 @@ import type {
 } from 'firebase-admin/firestore';
 import { performMutation } from 'remix-forms';
 import type { z, ZodRawShape } from 'zod';
+
 import { ToastType } from '~/components/commons/toast';
 
 export const getAllData = <T>(snap: QuerySnapshot<DocumentData>) => snap

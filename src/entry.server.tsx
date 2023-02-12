@@ -1,10 +1,13 @@
-import { PassThrough } from "stream";
-import type { EntryContext } from "@remix-run/node";
-import { Response } from "@remix-run/node";
-import { RemixServer } from "@remix-run/react";
-import isbot from "isbot";
-import { renderToPipeableStream } from "react-dom/server";
-import { firebaseAdminConnection } from "./services/firebase-connection.server";
+import React from 'react';
+import { renderToPipeableStream } from 'react-dom/server';
+
+import type { EntryContext } from '@remix-run/node';
+import { Response } from '@remix-run/node';
+import { RemixServer } from '@remix-run/react';
+import isbot from 'isbot';
+import { PassThrough } from 'stream';
+
+import { firebaseAdminConnection } from './services/firebase-connection.server';
 
 const ABORT_DELAY = 5000;
 
@@ -12,11 +15,11 @@ export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  remixContext: EntryContext
+  remixContext: EntryContext,
 ) {
-  const callbackName = isbot(request.headers.get("user-agent"))
-    ? "onAllReady"
-    : "onShellReady";
+  const callbackName = isbot(request.headers.get('user-agent'))
+    ? 'onAllReady'
+    : 'onShellReady';
 
   firebaseAdminConnection();
 
@@ -27,7 +30,7 @@ export default async function handleRequest(
       <RemixServer context={remixContext} url={request.url} />,
       {
         [callbackName]: () => {
-          responseHeaders.set("Content-Type", "text/html");
+          responseHeaders.set('Content-Type', 'text/html');
 
           const body = new PassThrough();
 
@@ -37,7 +40,7 @@ export default async function handleRequest(
             new Response(body, {
               headers: responseHeaders,
               status: didError ? 500 : responseStatusCode,
-            })
+            }),
           );
         },
         onShellError: (err: unknown) => {
@@ -47,7 +50,7 @@ export default async function handleRequest(
           didError = true;
           console.error(error);
         },
-      }
+      },
     );
     setTimeout(abort, ABORT_DELAY);
   });

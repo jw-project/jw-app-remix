@@ -1,10 +1,11 @@
-import { Fragment } from 'react';
-import tailStyled from 'tailwind-styled-components';
+import React, { Fragment } from 'react';
+
 import { Link } from '@remix-run/react';
-// import { useTranslation } from 'react-i18next';
+import tailStyled from 'tailwind-styled-components';
+
+import { Icon } from '../commons/icon';
 import { MenuLabel } from './menu';
 import type { MenuType, MenuListType } from './types';
-import { Icon } from '../commons/icon';
 
 export const IconMenuStyled = tailStyled.span`
     w-12
@@ -24,7 +25,7 @@ export const LinkLabelMenuStyled = tailStyled.span`
     flex-grow
 `;
 
-const t = (a)=>a
+const t = (a) => a;
 
 function MenuLink({ list }: { list: MenuListType[] }) {
   // const { t } = useTranslation('menu');

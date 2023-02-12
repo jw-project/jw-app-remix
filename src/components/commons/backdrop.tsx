@@ -1,5 +1,6 @@
+import React, { Fragment } from 'react';
+
 import { Transition } from '@headlessui/react';
-import { Fragment } from 'react';
 import tailStyled from 'tailwind-styled-components';
 
 const BackdropStyled = tailStyled.div`

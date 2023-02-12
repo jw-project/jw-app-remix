@@ -1,4 +1,5 @@
 import React from 'react';
+
 // import { useTranslation } from 'react-i18next';
 import tailStyled from 'tailwind-styled-components';
 
@@ -8,8 +9,7 @@ const ErrorLabelStyled = tailStyled.p`
   italic
 `;
 
-
-const t = (a)=>a
+const t = (a) => a;
 
 export function ErrorLabel({ children }: React.PropsWithChildren) {
   // const { t } = useTranslation();

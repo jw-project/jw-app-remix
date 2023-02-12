@@ -1,3 +1,5 @@
+import React, { useEffect } from 'react';
+
 import type { ActionFunction } from '@remix-run/node';
 import { redirect } from '@remix-run/node';
 import { useFetcher } from '@remix-run/react';
@@ -7,14 +9,13 @@ import {
   signInWithRedirect,
   onAuthStateChanged,
 } from 'firebase/auth';
-import { useEffect } from 'react';
+
 import {
   LoadingSubtitle,
   LoadingTitle,
   Overlay,
   Spinner,
 } from '~/components/login/login';
-import { useTranslation } from '~/i18n/i18n-provider';
 import { sessionLogin } from '~/services/firebase-connection.server';
 
 export const action: ActionFunction = async ({ request }) => redirect('/', {
@@ -23,11 +24,19 @@ export const action: ActionFunction = async ({ request }) => redirect('/', {
   },
 });
 
-const translate = (a)=>a
+const translate = (a) => a;
 
 export default function Login() {
   const fetcher = useFetcher();
-  //const { translate } = useTranslation();
+  // const { translate } = useTranslation();
+
+  const redirectToLogin = () => {
+    const provider = new GoogleAuthProvider();
+    const auth = getAuth();
+    signInWithRedirect(auth, provider)
+      .then(() => {})
+      .catch(() => {});
+  };
 
   const checkUser = () => {
     const auth = getAuth();
@@ -58,21 +67,11 @@ export default function Login() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const redirectToLogin = () => {
-    const provider = new GoogleAuthProvider();
-    const auth = getAuth();
-    signInWithRedirect(auth, provider)
-      .then(() => {})
-      .catch(() => {});
-  };
-
   return (
     <Overlay>
       <Spinner />
       <LoadingTitle>{translate('wait')}</LoadingTitle>
-      <LoadingSubtitle>
-        {translate('description')}
-      </LoadingSubtitle>
+      <LoadingSubtitle>{translate('description')}</LoadingSubtitle>
     </Overlay>
   );
 }

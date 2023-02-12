@@ -1,5 +1,7 @@
 import { firestore } from 'firebase-admin';
+
 import type { CongregationEntity } from '~/entities/congregation';
+
 import { getData } from './common.server';
 
 export const getCongregation = async (): Promise<CongregationEntity> => {
