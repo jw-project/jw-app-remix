@@ -3,10 +3,10 @@ module.exports = {
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "airbnb",
-    "airbnb-typescript",
     "@remix-run/eslint-config",
     "@remix-run/eslint-config/node",
+    // "airbnb",
+    // "airbnb-typescript",
   ],
   parserOptions: {
     project: "./tsconfig.json",

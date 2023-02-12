@@ -8,13 +8,13 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth';
 import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   LoadingSubtitle,
   LoadingTitle,
   Overlay,
   Spinner,
 } from '~/components/login/login';
+import { useTranslation } from '~/i18n/i18n-provider';
 import { sessionLogin } from '~/services/firebase-connection.server';
 
 export const action: ActionFunction = async ({ request }) => redirect('/', {
@@ -23,9 +23,11 @@ export const action: ActionFunction = async ({ request }) => redirect('/', {
   },
 });
 
+const translate = (a)=>a
+
 export default function Login() {
   const fetcher = useFetcher();
-  const { t } = useTranslation('routes', { keyPrefix: 'login' });
+  //const { translate } = useTranslation();
 
   const checkUser = () => {
     const auth = getAuth();
@@ -67,9 +69,9 @@ export default function Login() {
   return (
     <Overlay>
       <Spinner />
-      <LoadingTitle>{t('wait')}</LoadingTitle>
+      <LoadingTitle>{translate('wait')}</LoadingTitle>
       <LoadingSubtitle>
-        {t('description')}
+        {translate('description')}
       </LoadingSubtitle>
     </Overlay>
   );

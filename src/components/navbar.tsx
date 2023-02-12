@@ -1,4 +1,5 @@
 import { useAtomValue } from 'jotai';
+import styled from 'styled-components';
 import { showMenuAtom } from '~/atoms/global-atoms';
 import { Avatar } from './navbar/avatar';
 import { MobileAsideButton } from './navbar/mobile-aside-button';
@@ -10,6 +11,8 @@ import {
 } from './navbar/navbar';
 import { Notifications } from './navbar/notifications';
 
+
+
 export function Navbar() {
   const showMenu = useAtomValue(showMenuAtom);
 
@@ -20,6 +23,8 @@ export function Navbar() {
           <MobileAsideButton />
         </NavbarItem>
       </NavbarStart>
+
+
 
       <NavbarEnd>
         <NavbarItem $withDivider>

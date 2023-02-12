@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import tailStyled from 'tailwind-styled-components';
 import { Link } from '@remix-run/react';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import { MenuLabel } from './menu';
 import type { MenuType, MenuListType } from './types';
 import { Icon } from '../commons/icon';
@@ -24,8 +24,10 @@ export const LinkLabelMenuStyled = tailStyled.span`
     flex-grow
 `;
 
+const t = (a)=>a
+
 function MenuLink({ list }: { list: MenuListType[] }) {
-  const { t } = useTranslation('menu');
+  // const { t } = useTranslation('menu');
 
   return (
     <ul>
@@ -44,11 +46,11 @@ function MenuLink({ list }: { list: MenuListType[] }) {
 }
 
 export function MenuBody({ menu }: { menu: MenuType[] }) {
-  const { t, i18n } = useTranslation('menu', { keyPrefix: 'categories' });
+  // const { t, i18n } = useTranslation('menu', { keyPrefix: 'categories' });
 
   return (
     <>
-      <button type="button" onClick={() => { i18n.changeLanguage('en'); }}>as</button>
+      {/* <button type="button" onClick={() => { i18n.changeLanguage('en'); }}>as</button> */}
       {menu.map(({ label, list }) => (
         <Fragment key={label}>
           <MenuLabel>{t(label)}</MenuLabel>

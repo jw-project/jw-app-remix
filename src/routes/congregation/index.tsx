@@ -2,43 +2,43 @@ import type {
   ActionFunction,
   LoaderFunction,
   TypedResponse,
-} from '@remix-run/node';
-import { z } from 'zod';
-import { useActionData, useLoaderData } from '@remix-run/react';
-import { Card } from '~/components/commons/card';
-import { Col, Grid } from '~/components/commons/grid';
-import { Week, weekOptions } from '~/entities/week';
-import { notify } from '~/components/commons/toast';
-import { useEffect } from 'react';
+} from "@remix-run/node";
+import { z } from "zod";
+import { useActionData, useLoaderData } from "@remix-run/react";
+import { Card } from "~/components/commons/card";
+import { Col, Grid } from "~/components/commons/grid";
+import { Week, weekOptions } from "~/entities/week";
+import { notify } from "~/components/commons/toast";
+import { useEffect } from "react";
 import {
   getCongregation,
   updateCongregation,
-} from '~/services/api/congregation.server';
+} from "~/services/api/congregation.server";
 import type {
   CongregationActionReturn,
   CongregationLoaderReturn,
-} from '~/types/types';
-import { makeDomainFunction } from 'domain-functions';
-import { Form } from '~/components/commons/form/form';
-import { checkReturnMessage } from '~/services/api/common.server';
-import { FakeInput } from '~/components/commons/form/fake-input';
-import { useTranslation as getTranslation } from 'react-i18next';
+} from "~/types/types";
+import { makeDomainFunction } from "domain-functions";
+import { Form } from "~/components/commons/form/form";
+import { checkReturnMessage } from "~/services/api/common.server";
+import { FakeInput } from "~/components/commons/form/fake-input";
+import { useTranslation } from "~/i18n/i18n";
 
 const schema = z.object({
-  name: z.string().min(1, { message: 'requiredField' }),
+  name: z.string().min(1, { message: "requiredField" }),
   number: z.preprocess(
-    (input) => (typeof input === 'number' ? input : 0),
-    z.number().gt(0, { message: 'requiredField' }),
+    (input) => (typeof input === "number" ? input : 0),
+    z.number().gt(0, { message: "requiredField" })
   ),
-  address: z.string().min(1, { message: 'requiredField' }),
+  address: z.string().min(1, { message: "requiredField" }),
   midweekMeetingDay: z
     .nativeEnum(Week, {
-      errorMap: () => ({ message: 'invalidField' }),
+      errorMap: () => ({ message: "invalidField" }),
     })
     .default(Week.MONDAY),
   weekendMeetingDay: z
     .nativeEnum(Week, {
-      errorMap: () => ({ message: 'invalidField' }),
+      errorMap: () => ({ message: "invalidField" }),
     })
     .default(Week.MONDAY),
 });
@@ -46,21 +46,23 @@ const schema = z.object({
 export const action: ActionFunction = async ({
   request,
 }): Promise<TypedResponse<CongregationActionReturn>> => {
-  const mutation = makeDomainFunction(schema)(async (values) => updateCongregation(values));
+  const mutation = makeDomainFunction(schema)(async (values) =>
+    updateCongregation(values)
+  );
 
   return checkReturnMessage({ request, schema, mutation });
 };
 
-export const loader: LoaderFunction = async (): Promise<CongregationLoaderReturn> => {
-  const congregation = await getCongregation();
+export const loader: LoaderFunction =
+  async (): Promise<CongregationLoaderReturn> => {
+    const congregation = await getCongregation();
 
-  return { congregation };
-};
+    return { congregation };
+  };
 
 export default function Congregation() {
-  const { t: tScreen } = getTranslation('routes', {
-    keyPrefix: 'congregation',
-  });
+  const { translate } = useTranslation("routes.congregation");
+
   const { congregation } = useLoaderData<CongregationLoaderReturn>();
   const dataAction = useActionData<CongregationActionReturn>();
 
@@ -76,33 +78,33 @@ export default function Congregation() {
         {({ Field, Errors, Button }) => (
           <Grid cols={2}>
             <Col>
-              <FakeInput value="xxx" label={tScreen('id')} disabled />
+              <FakeInput value="xxx" label={translate("id")} disabled />
             </Col>
             <Col>
-              <Field name="name" label={tScreen('name')} />
+              <Field name="name" label={translate("name")} />
             </Col>
             <Col>
-              <Field name="number" label={tScreen('number')} type="number" />
+              <Field name="number" label={translate("number")} type="number" />
             </Col>
             <Col>
-              <Field name="address" label={tScreen('address')} multiline />
+              <Field name="address" label={translate("address")} multiline />
             </Col>
             <Col>
               <Field
                 name="midweekMeetingDay"
-                label={tScreen('midweekMeetingDay')}
-                options={[...weekOptions(), { name: 'fs', value: '1' }]}
+                label={translate("midweekMeetingDay")}
+                options={[...weekOptions(), { name: "fs", value: "1" }]}
               />
             </Col>
             <Col>
               <Field
                 name="weekendMeetingDay"
-                label={tScreen('weekendMeetingDay')}
+                label={translate("weekendMeetingDay")}
                 options={weekOptions()}
               />
             </Col>
             <Col>
-              <Button>{tScreen('save')}</Button>
+              <Button>{translate("save")}</Button>
             </Col>
             <Errors />
           </Grid>

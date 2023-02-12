@@ -1,6 +1,6 @@
 {
   "files.eol": "\n",
-  "jestrunner.jestCommand": "npm run test --",
+  "jestrunner.jestCommand": "pnpm run test --",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },

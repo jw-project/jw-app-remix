@@ -1,6 +1,6 @@
 import { atom } from 'jotai';
 
-export const showMenu = atom(false);
+const showMenu = atom(false);
 
 export const showMenuAtom = atom(
   (get) => get(showMenu),
