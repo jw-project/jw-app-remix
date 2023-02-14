@@ -1,8 +1,11 @@
 {
   "include": [
     "remix.env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
+    "./src/**/*.ts",
+    "./src/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
   ],
   "compilerOptions": {
     "lib": [
@@ -15,6 +18,7 @@
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "skipLibCheck": true,
     "target": "ES2019",
     "strict": true,
     "allowJs": true,

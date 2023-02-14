@@ -8,7 +8,7 @@
     "dev": "run-p \"dev:*\"",
     "dev:css": "pnpm run generate:css -- --watch",
     "dev:remix": "remix dev",
-    "lint": "eslint ./src",
+    "lint": "pnpm typecheck && eslint ./src",
     "lint:fix": "pnpm run lint --fix",
     "generate:css": "pnpm exec tailwindcss -i ./src/styles/global.css -o ./src/tailwind.css",
     "start": "remix-serve build",

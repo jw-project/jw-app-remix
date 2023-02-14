@@ -1,5 +1,8 @@
 import { remoteConfig } from 'firebase-admin';
-import type { RemoteConfigParameter } from 'firebase-admin/lib/remote-config/remote-config-api';
+import type {
+  RemoteConfigParameter,
+  RemoteConfigParameterValue,
+} from 'firebase-admin/lib/remote-config/remote-config-api';
 
 import type { Translations } from './i18n';
 
@@ -9,7 +12,13 @@ function remoteConfigToI18nResources(
   const resources: Translations = {};
   Object.keys(parameters).forEach((lng) => {
     const language = lng.replace('_', '-');
-    resources[language] = JSON.parse(parameters[lng].defaultValue?.value);
+    resources[language] = JSON.parse(
+      (
+        parameters[lng].defaultValue as RemoteConfigParameterValue & {
+          value: string;
+        }
+      )?.value,
+    );
   });
   return resources;
 }

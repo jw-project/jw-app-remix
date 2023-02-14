@@ -15,9 +15,7 @@ export const getCongregation = async (): Promise<CongregationEntity> => {
   return getData(congregationDoc);
 };
 
-export const updateCongregation = async (
-  congregation: CongregationEntity,
-) => {
+export const updateCongregation = async (congregation: CongregationEntity) => {
   console.log('validações');
 
   return firestore()

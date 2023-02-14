@@ -1,7 +1,8 @@
 import React from 'react';
 
-// import { useTranslation } from 'react-i18next';
 import tailStyled from 'tailwind-styled-components';
+
+import { useTranslation } from '~/i18n/i18n';
 
 const ErrorLabelStyled = tailStyled.p`
   text-red-500
@@ -9,13 +10,11 @@ const ErrorLabelStyled = tailStyled.p`
   italic
 `;
 
-const t = (a) => a;
-
 export function ErrorLabel({ children }: React.PropsWithChildren) {
-  // const { t } = useTranslation();
+  const { translate } = useTranslation();
 
   if (typeof children === 'string') {
-    return <ErrorLabelStyled>{t(children)}</ErrorLabelStyled>;
+    return <ErrorLabelStyled>{translate(children)}</ErrorLabelStyled>;
   }
 
   return <ErrorLabelStyled>{children}</ErrorLabelStyled>;

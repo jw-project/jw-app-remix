@@ -22,6 +22,7 @@ import { ClientOnly } from 'remix-utils';
 
 import { BodyMargin } from './components/body-margin';
 import { Menu } from './components/menu';
+import type { MenuType } from './components/menu/types';
 import { Navbar } from './components/navbar';
 import { TranslationConfig } from './i18n/i18n';
 import { getTranslateResources } from './i18n/i18next.server';
@@ -31,7 +32,6 @@ import {
   verifyIsAuthenticated,
 } from './services/firebase-connection.server';
 import styles from './tailwind.css';
-import type { RootLoaderReturn } from './types/types';
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
@@ -49,6 +49,12 @@ export const links: LinksFunction = () => [
     href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded',
   },
 ];
+
+export type RootLoaderReturn = {
+  isLoginPath: boolean;
+  menu: MenuType[];
+  locale: TranslationConfig;
+};
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   firebaseAdminConnection();

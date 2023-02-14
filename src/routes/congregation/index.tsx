@@ -13,7 +13,9 @@ import { Card } from '~/components/commons/card';
 import { FakeInput } from '~/components/commons/form/fake-input';
 import { Form } from '~/components/commons/form/form';
 import { Col, Grid } from '~/components/commons/grid';
+import type { ToastType } from '~/components/commons/toast';
 import { notify } from '~/components/commons/toast';
+import type { CongregationEntity } from '~/entities/congregation';
 import { Week, weekOptions } from '~/entities/week';
 import { useTranslation } from '~/i18n/i18n';
 import { checkReturnMessage } from '~/services/api/common.server';
@@ -21,29 +23,32 @@ import {
   getCongregation,
   updateCongregation,
 } from '~/services/api/congregation.server';
-import type {
-  CongregationActionReturn,
-  CongregationLoaderReturn,
-} from '~/types/types';
 
 const schema = z.object({
-  name: z.string().min(1, { message: 'requiredField' }),
+  name: z.string().min(1, { message: 'common.requiredField' }),
   number: z.preprocess(
     (input) => (typeof input === 'number' ? input : 0),
-    z.number().gt(0, { message: 'requiredField' }),
+    z.number().gt(0, { message: 'common.requiredField' }),
   ),
-  address: z.string().min(1, { message: 'requiredField' }),
+  address: z.string().min(1, { message: 'common.requiredField' }),
   midweekMeetingDay: z
     .nativeEnum(Week, {
-      errorMap: () => ({ message: 'invalidField' }),
+      errorMap: () => ({ message: 'common.invalidField' }),
     })
     .default(Week.MONDAY),
   weekendMeetingDay: z
     .nativeEnum(Week, {
-      errorMap: () => ({ message: 'invalidField' }),
+      errorMap: () => ({ message: 'common.invalidField' }),
     })
     .default(Week.MONDAY),
 });
+
+export type CongregationActionReturn =
+  | {
+    message: string;
+    messageType?: ToastType;
+  }
+  | undefined;
 
 export const action: ActionFunction = async ({
   request,
@@ -51,6 +56,10 @@ export const action: ActionFunction = async ({
   const mutation = makeDomainFunction(schema)(async (values) => updateCongregation(values));
 
   return checkReturnMessage({ request, schema, mutation });
+};
+
+export type CongregationLoaderReturn = {
+  congregation: CongregationEntity;
 };
 
 export const loader: LoaderFunction = async (): Promise<CongregationLoaderReturn> => {
