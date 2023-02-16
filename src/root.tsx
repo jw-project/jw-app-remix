@@ -24,6 +24,7 @@ import { BodyMargin } from './components/body-margin';
 import { Menu } from './components/menu';
 import type { MenuType } from './components/menu/types';
 import { Navbar } from './components/navbar';
+import type { Translations } from './i18n/i18n';
 import { TranslationConfig } from './i18n/i18n';
 import { getTranslateResources } from './i18n/i18next.server';
 import { getMenu } from './services/api/menu.server';
@@ -32,6 +33,7 @@ import {
   verifyIsAuthenticated,
 } from './services/firebase-connection.server';
 import styles from './tailwind.css';
+import { cache } from './utils/cache';
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
@@ -59,7 +61,11 @@ export type RootLoaderReturn = {
 export const loader: LoaderFunction = async ({ request, params }) => {
   firebaseAdminConnection();
 
-  const resources = await getTranslateResources();
+  let resources = cache.get<Translations>('resources');
+  if (!resources) {
+    resources = await getTranslateResources();
+    cache.set('resources', resources);
+  }
 
   const locale = new TranslationConfig({
     defaultLanguage:
@@ -77,6 +83,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     return { isLoginPath, locale };
   }
 
+  // const start = performance.now();
   let user: UserRecord;
   try {
     user = await verifyIsAuthenticated(request);
@@ -90,7 +97,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     isLoginPath,
     locale,
   };
+  // const end = performance.now();
+  // const time = (end - start) / 1000;
 
+  // console.log(`Tempo de execução: ${time} segundos.`);
   return rootLoaderReturn;
 };
 
