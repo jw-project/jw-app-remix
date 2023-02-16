@@ -1,10 +1,10 @@
 import type { ActionFunction } from '@remix-run/server-runtime';
 import { json } from '@remix-run/server-runtime';
 
-import { cache } from '../utils/cache';
+import { cache } from '~/utils/cache';
 
 export const action: ActionFunction = () => {
-  cache.del(['resources']);
+  cache.del(['resources', 'menu']);
 
   return json({ cache: 'clear' });
 };

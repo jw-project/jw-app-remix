@@ -1,12 +1,10 @@
 import React from 'react';
-import { Toaster } from 'react-hot-toast';
 
 import type {
   LinksFunction,
   LoaderFunction,
   MetaFunction,
 } from '@remix-run/node';
-import { redirect } from '@remix-run/node';
 import {
   Links,
   LiveReload,
@@ -16,22 +14,12 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from '@remix-run/react';
-import type { UserRecord } from 'firebase-admin/auth';
 import { Provider } from 'jotai';
-import { ClientOnly } from 'remix-utils';
 
-import { BodyMargin } from './components/body-margin';
-import { Menu } from './components/menu';
-import type { MenuType } from './components/menu/types';
-import { Navbar } from './components/navbar';
 import type { Translations } from './i18n/i18n';
 import { TranslationConfig } from './i18n/i18n';
 import { getTranslateResources } from './i18n/i18next.server';
-import { getMenu } from './services/api/menu.server';
-import {
-  firebaseAdminConnection,
-  verifyIsAuthenticated,
-} from './services/firebase-connection.server';
+import { firebaseAdminConnection } from './services/firebase-connection.server';
 import styles from './tailwind.css';
 import { cache } from './utils/cache';
 
@@ -53,12 +41,13 @@ export const links: LinksFunction = () => [
 ];
 
 export type RootLoaderReturn = {
-  isLoginPath: boolean;
-  menu: MenuType[];
   locale: TranslationConfig;
 };
 
-export const loader: LoaderFunction = async ({ request, params }) => {
+export const loader: LoaderFunction = async ({
+  request,
+  params,
+}): Promise<RootLoaderReturn> => {
   firebaseAdminConnection();
 
   let resources = cache.get<Translations>('resources');
@@ -76,36 +65,13 @@ export const loader: LoaderFunction = async ({ request, params }) => {
       || 'en',
   }).addAllTranslations(resources);
 
-  const url = new URL(request.url);
-  const isLoginPath = url.pathname === '/login';
-
-  if (isLoginPath) {
-    return { isLoginPath, locale };
-  }
-
-  // const start = performance.now();
-  let user: UserRecord;
-  try {
-    user = await verifyIsAuthenticated(request);
-  } catch (error) {
-    console.error(error);
-    return redirect('/login');
-  }
-
-  const rootLoaderReturn: RootLoaderReturn = {
-    menu: await getMenu(),
-    isLoginPath,
+  return {
     locale,
   };
-  // const end = performance.now();
-  // const time = (end - start) / 1000;
-
-  // console.log(`Tempo de execução: ${time} segundos.`);
-  return rootLoaderReturn;
 };
 
 export default function App() {
-  const { isLoginPath, locale } = useLoaderData<RootLoaderReturn>();
+  const { locale } = useLoaderData<RootLoaderReturn>();
 
   return (
     <html lang={locale.defaultLanguage} dir={locale.defaultLanguage}>
@@ -115,18 +81,7 @@ export default function App() {
       </head>
       <body>
         <Provider>
-          {isLoginPath ? (
-            <Outlet />
-          ) : (
-            <>
-              <ClientOnly>{() => <Toaster />}</ClientOnly>
-              <Navbar />
-              <Menu />
-              <BodyMargin>
-                <Outlet />
-              </BodyMargin>
-            </>
-          )}
+          <Outlet />
           <ScrollRestoration />
           <Scripts />
           <LiveReload />
