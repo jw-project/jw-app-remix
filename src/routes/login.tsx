@@ -6,6 +6,7 @@ import { useFetcher, useLoaderData } from '@remix-run/react';
 import type { FirebaseOptions } from 'firebase/app';
 import type { User } from 'firebase/auth';
 import {
+  signInWithPopup,
   GoogleAuthProvider,
   getAuth,
   signInWithRedirect,
@@ -52,9 +53,11 @@ export default function Login() {
   const redirectToLogin = () => {
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
-    signInWithRedirect(auth, provider)
-      .then(() => {})
-      .catch(() => {});
+    signInWithPopup(auth, provider).catch(() => {
+      signInWithRedirect(auth, provider)
+        .then(() => {})
+        .catch(() => {});
+    });
   };
 
   const checkUser = () => {

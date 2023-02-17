@@ -3,10 +3,12 @@ import React, { Fragment } from 'react';
 import { Link } from '@remix-run/react';
 import tailStyled from 'tailwind-styled-components';
 
+import type { Permissions } from '~/entities/permissions';
+import { PermissionsEnum } from '~/entities/permissions';
 import { useTranslation } from '~/i18n/i18n';
 
 import { Icon } from '../commons/icon';
-import { MenuLabel } from './menu';
+import { MenuLabel } from './menu-styled';
 import type { MenuType, MenuListType } from './types';
 
 export const IconMenuStyled = tailStyled.span`
@@ -27,7 +29,11 @@ export const LinkLabelMenuStyled = tailStyled.span`
     flex-grow
 `;
 
-function MenuLink({ list }: { list: MenuListType[] }) {
+function MenuLink({
+  list,
+}: {
+  list: MenuListType[];
+}) {
   const { translate } = useTranslation('menu');
 
   return (
@@ -46,12 +52,29 @@ function MenuLink({ list }: { list: MenuListType[] }) {
   );
 }
 
-export function MenuBody({ menu }: { menu: MenuType[] }) {
+export function MenuBody({
+  menu,
+  permissions,
+}: {
+  menu: MenuType[];
+  permissions: Permissions;
+}) {
   const { translate } = useTranslation('menu');
+
+  const filterMenu = () => menu //
+    .map((item) => ({
+      ...item,
+      list: item.list //
+        .filter((listItem) => [PermissionsEnum.EDIT, PermissionsEnum.READ] //
+          .includes(
+            permissions[listItem.permissionKey] || PermissionsEnum.NOT,
+          )),
+    })) //
+    .filter((item) => item.list.length);
 
   return (
     <>
-      {menu.map(({ label, list }) => (
+      {filterMenu().map(({ label, list }) => (
         <Fragment key={label}>
           <MenuLabel>{translate(label)}</MenuLabel>
           <MenuLink list={list} />

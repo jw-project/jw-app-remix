@@ -1,32 +1,29 @@
-import tailStyled from 'tailwind-styled-components';
+import React from 'react';
 
-export const Aside = tailStyled.aside<{ $expanded: boolean }>`
-    w-60
-    -left-60
-    fixed
-    top-0
-    z-40
-    h-screen
-    bg-gray-800
-    transition-all
-    ${({ $expanded }) => ($expanded ? 'left-0' : 'lg:left-0')}
-`;
+import { useLoaderData } from '@remix-run/react';
+import { useAtom } from 'jotai';
 
-export const MenuHeader = tailStyled.div`
-    flex
-    flex-row
-    w-full
-    bg-gray-900
-    text-white
-    flex-1
-    px-3
-    h-14
-    items-center
-`;
+import { showMenuAtom } from '~/atoms/global-atoms';
+import type { LayoutLoaderReturn } from '~/routes/__app';
 
-export const MenuLabel = tailStyled.p`
-    p-3
-    text-xs
-    uppercase
-    text-gray-400
-`;
+import { Backdrop } from '../commons/backdrop';
+import { MenuBody } from './menu-body';
+import { Aside, MenuHeader } from './menu-styled';
+
+export function Menu() {
+  const { menu, user } = useLoaderData<LayoutLoaderReturn>();
+  const [showMenu, setShowMenu] = useAtom(showMenuAtom);
+
+  return (
+    <>
+      <Aside $expanded={showMenu}>
+        <MenuHeader>
+          Admin
+          <b className="font-black">One</b>
+        </MenuHeader>
+        <MenuBody menu={menu} permissions={user.permissions} />
+      </Aside>
+      <Backdrop onClick={() => setShowMenu()} visible={!showMenu} />
+    </>
+  );
+}

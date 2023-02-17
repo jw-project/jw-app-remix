@@ -2,34 +2,42 @@ import React from 'react';
 import { Toaster } from 'react-hot-toast';
 
 import { Outlet } from '@remix-run/react';
-import type { LoaderFunction } from '@remix-run/server-runtime';
+import type { LoaderFunction, TypedResponse } from '@remix-run/server-runtime';
 import { redirect } from '@remix-run/server-runtime';
-import type { UserRecord } from 'firebase-admin/auth';
 import { ClientOnly } from 'remix-utils';
 
 import { BodyMargin } from '~/components/body-margin';
-import { Menu } from '~/components/menu';
+import { Menu } from '~/components/menu/menu';
 import type { MenuType } from '~/components/menu/types';
-import { Navbar } from '~/components/navbar';
+import { Navbar } from '~/components/navbar/navbar';
+import type { PublisherEntity } from '~/entities/publisher';
 import { getMenu } from '~/services/api/menu.server';
-import { verifyIsAuthenticated } from '~/services/firebase-connection.server';
+import { getAuthenticatedUser } from '~/services/firebase-connection.server';
+import { cache } from '~/utils/cache';
 
-export type RootLoaderReturn = {
+export type LayoutLoaderReturn = {
   menu: MenuType[];
+  user: PublisherEntity;
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
-  let user: UserRecord;
+export const loader: LoaderFunction = async ({
+  request,
+}): Promise<LayoutLoaderReturn | TypedResponse<never>> => {
+  let user: PublisherEntity;
   try {
-    user = await verifyIsAuthenticated(request);
+    user = await getAuthenticatedUser(request);
   } catch (error) {
     console.error(error);
     return redirect('/login');
   }
 
-  return {
-    menu: await getMenu(),
-  };
+  let menu = cache.get<MenuType[]>('menu');
+  if (!menu) {
+    menu = await getMenu();
+    cache.set('menu', menu);
+  }
+
+  return { menu, user };
 };
 
 export default function Layout() {

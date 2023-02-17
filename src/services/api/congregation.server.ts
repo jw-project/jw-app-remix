@@ -5,6 +5,7 @@ import type { CongregationEntity } from '~/entities/congregation';
 import { getData } from './common.server';
 
 export const getCongregation = async (): Promise<CongregationEntity> => {
+  // eslint-disable-next-line no-console
   console.log('validações');
 
   const congregationDoc = await firestore()
@@ -16,6 +17,7 @@ export const getCongregation = async (): Promise<CongregationEntity> => {
 };
 
 export const updateCongregation = async (congregation: CongregationEntity) => {
+  // eslint-disable-next-line no-console
   console.log('validações');
 
   return firestore()

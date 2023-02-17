@@ -1,37 +1,39 @@
-import tailStyled from 'tailwind-styled-components';
+import React from 'react';
 
-export const NavbarBase = tailStyled.nav<{ $expanded: boolean }>`
-    top-0
-    left-0
-    right-0
-    fixed
-    flex
-    bg-white
-    h-14
-    border-b
-    border-gray-200
-    z-1
-    w-screen transition-all
-    lg:pl-60
-    lg:w-auto
-`;
+import { useAtomValue } from 'jotai';
 
-export const NavbarStart = tailStyled.div`
-    flex-1
-    items-stretch
-    flex
-    h-14
-`;
+import { showMenuAtom } from '~/atoms/global-atoms';
 
-export const NavbarItem = tailStyled.div<{ $withDivider?: boolean }>`
-    ${({ $withDivider }) => ($withDivider ? 'border-r border-gray-100' : '')}
-    items-center
-    py-2
-    px-3
-    w-16
-`;
+import { Avatar } from './avatar';
+import { MobileAsideButton } from './mobile-aside-button';
+import {
+  NavbarBase,
+  NavbarStart,
+  NavbarItem,
+  NavbarEnd,
+} from './navbar-styled';
+import { Notifications } from './notifications';
 
-export const NavbarEnd = tailStyled.div`
-    flex
-    items-stretch
-`;
+export function Navbar() {
+  const showMenu = useAtomValue(showMenuAtom);
+
+  return (
+    <NavbarBase id="navbar-main" $expanded={showMenu}>
+      <NavbarStart>
+        <NavbarItem>
+          <MobileAsideButton />
+        </NavbarItem>
+      </NavbarStart>
+
+      <NavbarEnd>
+        <NavbarItem $withDivider>
+          <Notifications />
+        </NavbarItem>
+
+        <NavbarItem>
+          <Avatar name="AB" />
+        </NavbarItem>
+      </NavbarEnd>
+    </NavbarBase>
+  );
+}

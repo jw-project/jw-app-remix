@@ -1,5 +1,9 @@
 import { initializeApp, cert, getApps } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
+import { getFirestore } from 'firebase-admin/firestore';
+
+import { PermissionsEnum } from '~/entities/permissions';
+import type { PublisherEntity } from '~/entities/publisher';
 
 import { commitSession, getSession } from './session.server';
 
@@ -19,13 +23,14 @@ export function firebaseAdminConnection() {
       });
       console.info('Firebase admin connected', getApps());
     }
+
     console.info('Firebase admin connected');
   } catch (error) {
     console.error('Firebase admin connect error:', error);
   }
 }
 
-export async function verifyIsAuthenticated(request: Request) {
+export async function getAuthenticatedUser(request: Request) {
   const session = await getSession(request.headers.get('Cookie'));
   const uidUser = session.get('uidUser');
 
@@ -40,10 +45,27 @@ export async function verifyIsAuthenticated(request: Request) {
     throw Error('No session');
   }
 
-  // TODO get user
+  const { docs: [result] } = await getFirestore()
+    .collectionGroup('publishers')
+    .where('email', '==', userRecord.email)
+    .get();
+
+  const publisherResult = result?.data() as PublisherEntity;
+  const publisher: PublisherEntity = {
+    ...publisherResult,
+    displayName: userRecord.displayName,
+    congregationId: result?.ref.parent.parent?.id,
+    email: userRecord.email || publisherResult.email,
+  };
+
+  if (!publisher.permissions) {
+    publisher.permissions = {
+      congregation: PermissionsEnum.EDIT,
+    };
+  }
 
   console.info(`Successfully fetched user data: ${JSON.stringify(userRecord)}`);
-  return userRecord;
+  return publisher;
 }
 
 export async function sessionLogin(request: Request) {

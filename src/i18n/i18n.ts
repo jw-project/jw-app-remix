@@ -5,54 +5,36 @@ export type Translation = Record<string, string | Record<string, string>>;
 
 export type Translations = Record<string, Translation>;
 
-export class TranslationConfig {
-  translations: Translations = {};
-
+export type TranslationConfig = {
+  translations: Translations;
   defaultLanguage: string;
-
   fallbackLanguage: string;
-
-  constructor({ defaultLanguage }: { defaultLanguage: string }) {
-    this.defaultLanguage = defaultLanguage;
-    this.fallbackLanguage = defaultLanguage;
-  }
-
-  addTranslation(language: string, translation: Translation) {
-    this.translations[language] = translation;
-    return this;
-  }
-
-  addAllTranslations(translations: Translations) {
-    this.translations = translations;
-    return this;
-  }
-}
+};
 
 function translateHigh(translations: Translation) {
   function getKey(key: string, plural = false) {
     const pKey = `${key}${plural ? '_plural' : ''}`;
 
-    return get(translations, pKey);
+    return get(translations, pKey)?.toString();
   }
 
   function translate(
     key: string,
     values?: Record<string, string | number>,
   ): string {
-    let message = getKey(key);
+    let message = getKey(key) || key;
 
     if (values) {
-      message = Object.entries(values).reduce((acc, [k, v]) => {
+      message = Object.entries(values).reduce((acc, [k, v = '']) => {
         if (
-          k === 'count'
-          && typeof v === 'number'
+          typeof v === 'number'
           && v > 1
           && getKey(key, true)
         ) {
-          return getKey(key, true);
+          return getKey(key, true).replace(`{${k}}`, `${v}`);
         }
 
-        return acc.replace(`{${k}}`, v.toString());
+        return acc.replace(`{${k}}`, `${v}`);
       }, message);
     }
 
@@ -66,7 +48,7 @@ export function useTranslation(prefixKey?: string) {
   const [{ data }] = useMatches();
 
   const translations = data.locale.translations[data.locale.defaultLanguage]
-    || (data.locale.translations[data.locale.fallbackLanguage] as Translation);
+    || data.locale.translations[data.locale.fallbackLanguage];
 
   return {
     translate: translateHigh(get(translations, prefixKey || '')),

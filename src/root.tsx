@@ -16,8 +16,7 @@ import {
 } from '@remix-run/react';
 import { Provider } from 'jotai';
 
-import type { Translations } from './i18n/i18n';
-import { TranslationConfig } from './i18n/i18n';
+import type { Translations, TranslationConfig } from './i18n/i18n';
 import { getTranslateResources } from './i18n/i18next.server';
 import { firebaseAdminConnection } from './services/firebase-connection.server';
 import styles from './tailwind.css';
@@ -56,14 +55,16 @@ export const loader: LoaderFunction = async ({
     cache.set('resources', resources);
   }
 
-  const locale = new TranslationConfig({
-    defaultLanguage:
-      params.language
-      || request.headers.get('x-language')
-      || (request.headers.get('accept-language')
-        && request.headers.get('accept-language')?.split(',')[0])
-      || 'en',
-  }).addAllTranslations(resources);
+  const languageDetected = params.language
+    || request.headers.get('x-language')
+    || (request.headers.get('accept-language')
+      && request.headers.get('accept-language')?.split(',')[0])
+    || 'en';
+  const locale: TranslationConfig = {
+    defaultLanguage: languageDetected,
+    fallbackLanguage: languageDetected,
+    translations: resources,
+  };
 
   return {
     locale,
