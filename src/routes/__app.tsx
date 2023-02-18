@@ -13,7 +13,7 @@ import { Navbar } from '~/components/navbar/navbar';
 import type { PublisherEntity } from '~/entities/publisher';
 import { getMenu } from '~/services/api/menu.server';
 import { getAuthenticatedUser } from '~/services/firebase-connection.server';
-import { cache } from '~/utils/cache';
+import { cacheConfigs } from '~/utils/cache';
 
 export type LayoutLoaderReturn = {
   menu: MenuType[];
@@ -31,10 +31,10 @@ export const loader: LoaderFunction = async ({
     return redirect('/login');
   }
 
-  let menu = cache.get<MenuType[]>('menu');
+  let menu = cacheConfigs.get<MenuType[]>('menu');
   if (!menu) {
     menu = await getMenu();
-    cache.set('menu', menu);
+    cacheConfigs.set('menu', menu);
   }
 
   return { menu, user };

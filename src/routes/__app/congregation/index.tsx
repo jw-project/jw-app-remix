@@ -35,12 +35,12 @@ const schema = z.object({
     .nativeEnum(Week, {
       errorMap: () => ({ message: 'common.invalidField' }),
     })
-    .default(Week.MONDAY),
+    .default(Week.THURSDAY),
   weekendMeetingDay: z
     .nativeEnum(Week, {
       errorMap: () => ({ message: 'common.invalidField' }),
     })
-    .default(Week.MONDAY),
+    .default(Week.SUNDAY),
 });
 
 export type CongregationActionReturn =
@@ -62,8 +62,8 @@ export type CongregationLoaderReturn = {
   congregation: CongregationEntity;
 };
 
-export const loader: LoaderFunction = async (): Promise<CongregationLoaderReturn> => {
-  const congregation = await getCongregation();
+export const loader: LoaderFunction = async ({ request }): Promise<CongregationLoaderReturn> => {
+  const congregation = await getCongregation(request);
 
   return { congregation };
 };

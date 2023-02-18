@@ -38,6 +38,12 @@ export async function getAuthenticatedUser(request: Request) {
     throw Error('No session');
   }
 
+  const cache = cacheUser?.get<PublisherEntity>(uidUser);
+  if (cache) {
+    console.info(`Successfully load user data from cache: ${JSON.stringify(cache)}`);
+    return cache;
+  }
+
   const userRecord = await getAuth().getUser(uidUser);
 
   if (!userRecord) {
@@ -63,6 +69,8 @@ export async function getAuthenticatedUser(request: Request) {
       congregation: PermissionsEnum.EDIT,
     };
   }
+
+  cacheUser?.set(uidUser, publisher);
 
   console.info(`Successfully fetched user data: ${JSON.stringify(userRecord)}`);
   return publisher;

@@ -20,7 +20,7 @@ import type { Translations, TranslationConfig } from './i18n/i18n';
 import { getTranslateResources } from './i18n/i18next.server';
 import { firebaseAdminConnection } from './services/firebase-connection.server';
 import styles from './tailwind.css';
-import { cache } from './utils/cache';
+import { cacheConfigs } from './utils/cache';
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
@@ -49,10 +49,10 @@ export const loader: LoaderFunction = async ({
 }): Promise<RootLoaderReturn> => {
   firebaseAdminConnection();
 
-  let resources = cache.get<Translations>('resources');
+  let resources = cacheConfigs.get<Translations>('resources');
   if (!resources) {
     resources = await getTranslateResources();
-    cache.set('resources', resources);
+    cacheConfigs.set('resources', resources);
   }
 
   const languageDetected = params.language

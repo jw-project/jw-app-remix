@@ -1,20 +1,28 @@
+/* eslint-disable import/no-mutable-exports */
+/* eslint-disable no-var */
+/* eslint-disable vars-on-top */
 import NodeCache from 'node-cache';
 
-// eslint-disable-next-line import/no-mutable-exports
-let cache: NodeCache;
+let cacheConfigs: NodeCache;
+let cacheUser: NodeCache;
 
 declare global {
-  // eslint-disable-next-line vars-on-top, no-var
-  var cache: NodeCache | undefined;
+  var cacheConfigs: NodeCache | undefined;
+  var cacheUser: NodeCache | undefined;
 }
 
 if (process.env.NODE_ENV === 'production') {
-  cache = new NodeCache();
+  cacheConfigs = new NodeCache();
+  cacheUser = new NodeCache();
 } else {
-  if (!global.cache) {
-    global.cache = new NodeCache({ stdTTL: 60 });
+  if (!global.cacheConfigs) {
+    global.cacheConfigs = new NodeCache({ stdTTL: 60 });
   }
-  cache = global.cache;
+  if (!global.cacheUser) {
+    global.cacheUser = new NodeCache({ stdTTL: 60 });
+  }
+  cacheConfigs = global.cacheConfigs;
+  cacheUser = global.cacheUser;
 }
 
-export { cache };
+export { cacheConfigs, cacheUser };
