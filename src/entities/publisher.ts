@@ -1,7 +1,7 @@
 import type { Permissions } from './permissions';
 
 export type PublisherEntity = {
-  congregationId?: string;
+  congregationId: string;
   email: string;
   name: string;
   displayName?: string; // used by firebase

@@ -1,6 +1,6 @@
+import { firestore } from 'firebase-admin';
 import { initializeApp, cert, getApps } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
-import { getFirestore } from 'firebase-admin/firestore';
 
 import { PermissionsEnum } from '~/entities/permissions';
 import type { PublisherEntity } from '~/entities/publisher';
@@ -30,7 +30,7 @@ export function firebaseAdminConnection() {
   }
 }
 
-export async function getAuthenticatedUser(request: Request) {
+export async function getAuthenticatedUser(request: Request, ignoreCache = false) {
   const session = await getSession(request.headers.get('Cookie'));
   const uidUser = session.get('uidUser');
 
@@ -39,7 +39,7 @@ export async function getAuthenticatedUser(request: Request) {
   }
 
   const cache = cacheUser?.get<PublisherEntity>(uidUser);
-  if (cache) {
+  if (cache && !ignoreCache) {
     console.info(`Successfully load user data from cache: ${JSON.stringify(cache)}`);
     return cache;
   }
@@ -51,7 +51,7 @@ export async function getAuthenticatedUser(request: Request) {
     throw Error('No session');
   }
 
-  const { docs: [result] } = await getFirestore()
+  const { docs: [result] } = await firestore()
     .collectionGroup('publishers')
     .where('email', '==', userRecord.email)
     .get();
@@ -60,12 +60,13 @@ export async function getAuthenticatedUser(request: Request) {
   const publisher: PublisherEntity = {
     ...publisherResult,
     displayName: userRecord.displayName,
-    congregationId: result?.ref.parent.parent?.id,
+    congregationId: result?.ref.parent.parent?.id || '',
     email: userRecord.email || publisherResult.email,
   };
 
   if (!publisher.permissions) {
     publisher.permissions = {
+      admin: true,
       congregation: PermissionsEnum.EDIT,
     };
   }

@@ -5,10 +5,11 @@ import type {
   LoaderFunction,
   TypedResponse,
 } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { useActionData, useLoaderData } from '@remix-run/react';
 import { makeDomainFunction } from 'domain-functions';
-import { z } from 'zod';
 
+import { CatchBoundaryComponent } from '~/components/catch-boundary';
 import { Card } from '~/components/commons/card';
 import { FakeInput } from '~/components/commons/form/fake-input';
 import { Form } from '~/components/commons/form/form';
@@ -16,34 +17,18 @@ import { Col, Grid } from '~/components/commons/grid';
 import type { ToastType } from '~/components/commons/toast';
 import { notify } from '~/components/commons/toast';
 import type { CongregationEntity } from '~/entities/congregation';
-import { Week, weekOptions } from '~/entities/week';
+import { weekOptions } from '~/entities/week';
 import { useTranslation } from '~/i18n/i18n';
+import { useUser } from '~/matches/use-user';
 import { checkReturnMessage } from '~/services/api/common.server';
 import {
   getCongregation,
-  updateCongregation,
-} from '~/services/api/congregation.server';
+  saveCongregation,
+} from '~/services/api/congregation/congregation.server';
+import { congregationFormSchema as schema } from '~/services/api/congregation/validations';
+import type { HttpError } from '~/services/api/throws-errors';
 
-const schema = z.object({
-  name: z.string().min(1, { message: 'common.requiredField' }),
-  number: z.preprocess(
-    (input) => (typeof input === 'number' ? input : 0),
-    z.number().gt(0, { message: 'common.requiredField' }),
-  ),
-  address: z.string().min(1, { message: 'common.requiredField' }),
-  midweekMeetingDay: z
-    .nativeEnum(Week, {
-      errorMap: () => ({ message: 'common.invalidField' }),
-    })
-    .default(Week.THURSDAY),
-  weekendMeetingDay: z
-    .nativeEnum(Week, {
-      errorMap: () => ({ message: 'common.invalidField' }),
-    })
-    .default(Week.SUNDAY),
-});
-
-export type CongregationActionReturn =
+type CongregationActionReturn =
   | {
     message: string;
     messageType?: ToastType;
@@ -53,40 +38,54 @@ export type CongregationActionReturn =
 export const action: ActionFunction = async ({
   request,
 }): Promise<TypedResponse<CongregationActionReturn>> => {
-  const mutation = makeDomainFunction(schema)(async (values) => updateCongregation(values));
+  const mutation = makeDomainFunction(schema)(//
+    async (values) => saveCongregation(request, values),
+  );
 
   return checkReturnMessage({ request, schema, mutation });
 };
 
-export type CongregationLoaderReturn = {
+type CongregationLoaderReturn = {
   congregation: CongregationEntity;
 };
 
-export const loader: LoaderFunction = async ({ request }): Promise<CongregationLoaderReturn> => {
-  const congregation = await getCongregation(request);
+export const loader: LoaderFunction = async ({
+  request,
+}): Promise<CongregationLoaderReturn> => {
+  try {
+    const congregation = await getCongregation(request);
 
-  return { congregation };
+    return { congregation };
+  } catch (error) {
+    const { message, status } = error as HttpError;
+
+    throw json({ message }, { status });
+  }
 };
 
 export default function Congregation() {
   const { translate } = useTranslation('routes.congregation');
-
+  const { translate: translateRoot } = useTranslation();
   const { congregation } = useLoaderData<CongregationLoaderReturn>();
   const dataAction = useActionData<CongregationActionReturn>();
+  const { congregationId } = useUser();
 
   useEffect(() => {
     if (dataAction?.message) {
-      notify({ message: dataAction.message, type: dataAction.messageType });
+      notify({
+        message: translateRoot(dataAction.message),
+        type: dataAction.messageType,
+      });
     }
   }, [dataAction]);
 
   return (
     <Card>
       <Form schema={schema} values={congregation}>
-        {({ Field, Errors, Button }) => (
+        {({ Field, Button }) => (
           <Grid cols={2}>
             <Col>
-              <FakeInput value="xxx" label={translate('id')} disabled />
+              <FakeInput value={congregationId} label={translate('id')} disabled />
             </Col>
             <Col>
               <Field name="name" label={translate('name')} />
@@ -114,10 +113,11 @@ export default function Congregation() {
             <Col>
               <Button>{translate('save')}</Button>
             </Col>
-            <Errors />
           </Grid>
         )}
       </Form>
     </Card>
   );
 }
+
+export const CatchBoundary = CatchBoundaryComponent;

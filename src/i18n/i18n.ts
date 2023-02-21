@@ -26,11 +26,7 @@ function translateHigh(translations: Translation) {
 
     if (values) {
       message = Object.entries(values).reduce((acc, [k, v = '']) => {
-        if (
-          typeof v === 'number'
-          && v > 1
-          && getKey(key, true)
-        ) {
+        if (typeof v === 'number' && v > 1 && getKey(key, true)) {
           return getKey(key, true).replace(`{${k}}`, `${v}`);
         }
 
@@ -50,7 +46,10 @@ export function useTranslation(prefixKey?: string) {
   const translations = data.locale.translations[data.locale.defaultLanguage]
     || data.locale.translations[data.locale.fallbackLanguage];
 
+  const filtredTranslations = prefixKey
+    ? get(translations, prefixKey || '')
+    : translations;
   return {
-    translate: translateHigh(get(translations, prefixKey || '')),
+    translate: translateHigh(filtredTranslations),
   };
 }

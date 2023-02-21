@@ -34,12 +34,12 @@ export async function checkReturnMessage<T extends ZodRawShape, F>({
       {
         ...result,
         // eslint-disable-next-line no-underscore-dangle
-        message: result.errors._global?.join(', ') || 'Any error',
+        message: result.errors._global?.join(', ') || '',
         messageType: ToastType.ERROR,
       },
       400,
     );
   }
 
-  return json({ message: 'salvou!' });
+  return json({ message: 'common.saved-success' });
 }

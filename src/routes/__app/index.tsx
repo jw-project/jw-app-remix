@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useNavigate } from '@remix-run/react';
 
+import { CatchBoundaryComponent } from '~/components/catch-boundary';
 import { Button } from '~/components/commons/button';
 import { Col, Grid } from '~/components/commons/grid';
 import { Paragraph } from '~/components/commons/paragraph';
@@ -56,21 +57,22 @@ export default function Index() {
         <Paragraph>
           {translate('new-congregation-text')}
         </Paragraph>
-        <Paragraph>
-          <Grid cols={2}>
-            <Col className="md:justify-self-start justify-self-center">
-              <Button onClick={reload} $bold>
-                {translate('reload-button')}
-              </Button>
-            </Col>
-            <Col>
-              <Button onClick={goToCongregation} $type="secondary">
-                {translate('access-congregation-button')}
-              </Button>
-            </Col>
-          </Grid>
-        </Paragraph>
+        <Paragraph />
+        <Grid cols={2}>
+          <Col className="md:justify-self-start justify-self-center">
+            <Button onClick={reload} $bold>
+              {translate('reload-button')}
+            </Button>
+          </Col>
+          <Col>
+            <Button onClick={goToCongregation} $type="secondary">
+              {translate('access-congregation-button')}
+            </Button>
+          </Col>
+        </Grid>
       </ContainerIndex>
     </HeaderIndex>
   );
 }
+
+export const CatchBoundary = CatchBoundaryComponent;

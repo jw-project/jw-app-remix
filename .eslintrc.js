@@ -19,6 +19,7 @@ module.exports = {
     "padded-blocks": ["error", "never"],
     "react/require-default-props": "off",
     "react/jsx-props-no-spreading": ["off"],
+    "@typescript-eslint/no-throw-literal": "off",
     "import-helpers/order-imports": [
       "warn",
       {

@@ -64,7 +64,7 @@ export const notify = ({
 }: {
   message: string;
   type?: ToastType;
-}) => toast.custom(({ id, visible }) => (
+}) => message && toast.custom(({ id, visible }) => (
   <Transition
     appear
     show={visible}
