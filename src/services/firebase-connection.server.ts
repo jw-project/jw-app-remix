@@ -4,6 +4,7 @@ import { getAuth } from 'firebase-admin/auth';
 
 import { PermissionsEnum } from '~/entities/permissions';
 import type { PublisherEntity } from '~/entities/publisher';
+import { cacheUser } from '~/utils/cache';
 
 import { commitSession, getSession } from './session.server';
 
