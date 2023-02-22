@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useLoaderData, useNavigate } from '@remix-run/react';
+import { useLoaderData, useMatches } from '@remix-run/react';
 
 import type { PublisherEntity } from '~/entities/publisher';
 import type { PublishersLoaderReturn } from '~/routes/__app/people/publishers';
@@ -18,17 +18,21 @@ import {
 
 export function PublisherList() {
   const { publishers } = useLoaderData<PublishersLoaderReturn>();
-  const navigate = useNavigate();
+  const match = useMatches();
 
-  const editPublisher = (publisher: PublisherEntity) => {
-    navigate(`/people/publishers/${publisher.id}`);
-  };
+  const checkPathname = (publisher: PublisherEntity) => Boolean(match//
+    .find((e) => e.pathname.includes(publisher.id)));
+
+  const navigateToPublisher = (publisher: PublisherEntity) => `/people/publishers/${publisher.id}`;
 
   return (
     <PublisherListStyled>
       {publishers.map((publisher) => (
         <li key={publisher.id}>
-          <PublisherItemStyled onClick={() => editPublisher(publisher)}>
+          <PublisherItemStyled
+            to={navigateToPublisher(publisher)}
+            $selected={checkPathname(publisher)}
+          >
             <PublisherItemIconContainer>
               <Icon size="icon-x-large" icon="person" />
             </PublisherItemIconContainer>

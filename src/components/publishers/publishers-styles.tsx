@@ -1,3 +1,4 @@
+import { Link } from '@remix-run/react';
 import tailStyled from 'tailwind-styled-components';
 
 export const PublisherContainer = tailStyled.div`
@@ -22,13 +23,13 @@ export const PublisherListStyled = tailStyled.ul`
     divide-y
 `;
 
-export const PublisherItemStyled = tailStyled.div`
+export const PublisherItemStyled = tailStyled(Link)<{ $selected: boolean }>`
     cursor-pointer
     rounded-lg
-    hover:bg-gray-50
     flex
     items-center
     p-4
+     ${({ $selected }) => ($selected ? 'bg-gray-100' : 'hover:bg-gray-50')}
 `;
 
 export const PublisherItemIconContainer = tailStyled.div`

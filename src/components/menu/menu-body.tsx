@@ -17,9 +17,9 @@ import type { MenuType, MenuListType } from './types';
 
 function MenuLink({ list }: { list: MenuListType[] }) {
   const { translate } = useTranslation('menu');
-  const v = useMatches();
+  const match = useMatches();
 
-  const checkPathname = (to: string) => Boolean(v.find((e) => `/${to}` === e.pathname));
+  const checkPathname = (to: string) => Boolean(match.find((e) => `/${to}` === e.pathname));
 
   return (
     <ul>
