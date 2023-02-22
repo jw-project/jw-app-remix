@@ -1,46 +1,31 @@
 import React, { Fragment } from 'react';
 
-import { Link } from '@remix-run/react';
-import tailStyled from 'tailwind-styled-components';
+import { useMatches } from '@remix-run/react';
 
 import type { Permissions } from '~/entities/permissions';
 import { PermissionsEnum } from '~/entities/permissions';
 import { useTranslation } from '~/i18n/i18n';
 
 import { Icon } from '../commons/icon';
-import { MenuLabel } from './menu-styled';
+import {
+  IconMenuStyled,
+  LinkLabelMenuStyled,
+  LinkMenuStyled,
+  MenuLabel,
+} from './menu-styled';
 import type { MenuType, MenuListType } from './types';
 
-export const IconMenuStyled = tailStyled.span`
-    w-12
-    flex
-    justify-center
-    text-gray-400
-`;
-
-export const LinkMenuStyled = tailStyled(Link)`
-    py-2
-    flex
-    text-gray-300
-    hover:bg-gray-700
-`;
-
-export const LinkLabelMenuStyled = tailStyled.span`
-    flex-grow
-`;
-
-function MenuLink({
-  list,
-}: {
-  list: MenuListType[];
-}) {
+function MenuLink({ list }: { list: MenuListType[] }) {
   const { translate } = useTranslation('menu');
+  const v = useMatches();
+
+  const checkPathname = (to: string) => Boolean(v.find((e) => `/${to}` === e.pathname));
 
   return (
     <ul>
       {list.map(({ icon, label, to }) => (
         <li key={label}>
-          <LinkMenuStyled to={to}>
+          <LinkMenuStyled to={to} $selected={checkPathname(to)}>
             <IconMenuStyled>
               <Icon icon={icon} />
             </IconMenuStyled>

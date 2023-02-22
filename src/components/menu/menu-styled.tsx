@@ -1,3 +1,4 @@
+import { Link } from '@remix-run/react';
 import tailStyled from 'tailwind-styled-components';
 
 export const Aside = tailStyled.aside<{ $expanded: boolean }>`
@@ -29,4 +30,23 @@ export const MenuLabel = tailStyled.p`
     text-xs
     uppercase
     text-gray-400
+`;
+
+export const IconMenuStyled = tailStyled.span`
+    w-12
+    flex
+    justify-center
+    text-gray-400
+`;
+
+export const LinkMenuStyled = tailStyled(Link)<{ $selected: boolean }>`
+    py-2
+    flex
+    text-gray-300
+    hover:bg-gray-700
+    ${({ $selected }) => ($selected ? 'bg-gray-700' : '')}
+`;
+
+export const LinkLabelMenuStyled = tailStyled.span`
+    flex-grow
 `;
