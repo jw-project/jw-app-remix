@@ -16,6 +16,7 @@ import { Form } from '~/components/commons/form/form';
 import { Col, Grid } from '~/components/commons/grid';
 import type { ToastType } from '~/components/commons/toast';
 import { notify } from '~/components/commons/toast';
+import { Subtitle } from '~/components/commons/typography';
 import type { CongregationEntity } from '~/entities/congregation';
 import { weekOptions } from '~/entities/week';
 import { useTranslation } from '~/i18n/i18n';
@@ -38,7 +39,8 @@ type CongregationActionReturn =
 export const action: ActionFunction = async ({
   request,
 }): Promise<TypedResponse<CongregationActionReturn>> => {
-  const mutation = makeDomainFunction(schema)(//
+  const mutation = makeDomainFunction(schema)(
+    //
     async (values) => saveCongregation(request, values),
   );
 
@@ -85,7 +87,11 @@ export default function Congregation() {
         {({ Field, Button }) => (
           <Grid cols={2}>
             <Col>
-              <FakeInput value={congregationId} label={translate('id')} disabled />
+              <FakeInput
+                value={congregationId}
+                label={translate('id')}
+                disabled
+              />
             </Col>
             <Col>
               <Field name="name" label={translate('name')} />
@@ -99,19 +105,87 @@ export default function Congregation() {
             <Col>
               <Field
                 name="midweekMeetingDay"
-                label={translate('midweekMeetingDay')}
-                options={[...weekOptions(), { name: 'fs', value: '1' }]}
+                label={translate('midweek-meeting-day')}
+                options={weekOptions()}
               />
             </Col>
             <Col>
               <Field
                 name="weekendMeetingDay"
-                label={translate('weekendMeetingDay')}
-                options={weekOptions()}
+                label={translate('weekend-meeting-day')}
               />
             </Col>
             <Col>
-              <Button>{translate('save')}</Button>
+              <Field
+                name="midweekMeetingTime"
+                label={translate('midweek-meeting-time')}
+                type="time"
+              />
+            </Col>
+            <Col>
+              <Field
+                name="weekendMeetingTime"
+                label={translate('weekend-meeting-time')}
+                type="time"
+              />
+            </Col>
+            <Col colSpan={2}>
+              <Subtitle>{translate('online-meeting-subtitle')}</Subtitle>
+            </Col>
+            <Col>
+              <Field
+                name="onlineMeetingSoftware"
+                label={translate('online-meeting-software')}
+              />
+            </Col>
+            <Col>
+              <Field
+                name="onlineMeetingId"
+                label={translate('online-meeting-id')}
+              />
+            </Col>
+            <Col>
+              <Field
+                name="onlineMeetingDialNumber"
+                label={translate('online-meeting-dial-number')}
+              />
+            </Col>
+            <Col>
+              <Field
+                name="onlineMeetingPassword"
+                label={translate('online-meeting-password')}
+              />
+            </Col>
+            <Col>
+              <Field
+                name="onlineMeetingLink"
+                label={translate('online-meeting-link')}
+              />
+            </Col>
+            <Col colSpan={2}>
+              <Subtitle>{translate('circuit-subtitle')}</Subtitle>
+            </Col>
+            <Col>
+              <Field
+                name="circuitName"
+                label={translate('circuit-name')}
+              />
+            </Col>
+            <Col>
+              <Field
+                name="circuitOverseerName"
+                label={translate('circuit-overseer-name')}
+              />
+            </Col>
+            <Col>
+              <Field
+                name="circuitOverseerContact"
+                label={translate('circuit-overseer-contact')}
+              />
+            </Col>
+            <Col />
+            <Col>
+              <Button>{translateRoot('common.save')}</Button>
             </Col>
           </Grid>
         )}
