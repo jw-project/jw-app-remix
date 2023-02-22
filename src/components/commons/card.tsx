@@ -1,26 +1,22 @@
-import React from 'react';
-
 import tailStyled from 'tailwind-styled-components';
 
-export const CardStyled = tailStyled.div`
+type PadType = 0 | 'sm' | 'md';
+
+const padSwitch = (padded: PadType) => {
+  switch (padded) {
+    case 0:
+      return '';
+    case 'sm':
+      return 'p-4 md:p-6';
+    case 'md':
+    default:
+      return 'p-6 md:p-8';
+  }
+};
+
+export const Card = tailStyled.div<{ padded?: PadType }>`
   bg-white
   shadow
   rounded-lg
-  sm:p-6
-  xl:p-8
-  2xl:col-span-2
+  ${({ padded = 'md' }) => padSwitch(padded)}
 `;
-
-export const CardContentStyled = tailStyled.div`
-  p-6
-`;
-
-export function Card({ children }: React.PropsWithChildren) {
-  return (
-    <CardStyled>
-      <CardContentStyled>
-        {children}
-      </CardContentStyled>
-    </CardStyled>
-  );
-}

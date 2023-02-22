@@ -10,12 +10,18 @@ import type { z, ZodRawShape } from 'zod';
 
 import { ToastType } from '~/components/commons/toast';
 
-export const getAllData = <T>(snap: QuerySnapshot<DocumentData>) => snap
-  .docs
-  .map((e) => e.data()) as T;
+export const getAllData = <T>(
+  snap: QuerySnapshot<DocumentData>,
+  { includeId }: { includeId: boolean } | undefined = { includeId: true },
+) => snap.docs.map((e) => {
+    const obj = e.data();
+    if (includeId) {
+      obj.id = e.id;
+    }
+    return obj;
+  }) as T;
 
-export const getData = <T>(snap: DocumentSnapshot<DocumentData>) => snap
-  .data() as T;
+export const getData = <T>(snap: DocumentSnapshot<DocumentData>) => snap.data() as T;
 
 export async function checkReturnMessage<T extends ZodRawShape, F>({
   request,

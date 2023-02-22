@@ -1,10 +1,5 @@
 import React from 'react';
 
-type ClassNameOpts =
-  | 'material-symbols-outlined'
-  | 'material-symbols-rounded'
-  | 'material-symbols-sharp';
-
 export type IconOpts =
   | '10k'
   | '10k'
@@ -4672,12 +4667,12 @@ export type IconOpts =
 
 export function Icon({
   icon,
-  className = 'material-symbols-rounded',
+  className,
   size,
 }: {
-  className?: ClassNameOpts;
+  className?: string;
   icon: IconOpts;
-  size?: 'icon-small'
+  size?: 'icon-small' | 'icon-medium' | 'icon-large' | 'icon-x-large';
 }) {
-  return <span className={`${size} ${className}`}>{icon}</span>;
+  return <span className={`${size} ${className} material-symbols-rounded`}>{icon}</span>;
 }

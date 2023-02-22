@@ -59,7 +59,7 @@ export function MenuBody({
   menu: MenuType[];
   permissions: Permissions;
 }) {
-  const { translate } = useTranslation('menu');
+  const { translate } = useTranslation('menu.categories');
 
   const filterMenu = () => menu //
     .map((item) => ({

@@ -49,6 +49,7 @@ const newCongregation = async (
     .collection('publishers') //
     .add({
       name: displayName,
+      displayName,
       permissions: fullPermission,
       email,
     });
@@ -66,7 +67,10 @@ export const saveCongregation = async (
 
   canWrite(permissions, 'congregation');
 
-  const { empty, docs: [findedCongregation] } = await firestore()
+  const {
+    empty,
+    docs: [findedCongregation],
+  } = await firestore()
     .collection('congregation')
     .where('number', '==', congregation.number)
     .get();

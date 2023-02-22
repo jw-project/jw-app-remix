@@ -1,6 +1,7 @@
 import type { Permissions } from './permissions';
 
 export type PublisherEntity = {
+  id: string;
   congregationId: string;
   email: string;
   name: string;
