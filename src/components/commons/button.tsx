@@ -20,7 +20,7 @@ const buttonStyles = {
 };
 
 type ButtonType = {
-  $type?: keyof typeof buttonStyles;
+  $buttonStyle?: keyof typeof buttonStyles;
   $bold?: boolean;
 };
 
@@ -36,7 +36,7 @@ export const Button = tailStyled.button<ButtonType>`
     whitespace-nowrap
     rounded
     focus:outline-none
-    ${({ $type }) => buttonStyles[$type || 'primary']}
+    ${({ $buttonStyle }) => buttonStyles[$buttonStyle || 'primary']}
     ${({ $bold }) => ($bold ? 'font-bold' : '')}
     disabled:opacity-50
     disabled:cursor-not-allowed

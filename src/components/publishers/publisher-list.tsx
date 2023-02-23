@@ -31,7 +31,7 @@ export function PublisherList() {
         <li key={publisher.id}>
           <PublisherItemStyled
             to={navigateToPublisher(publisher)}
-            $selected={checkPathname(publisher)}
+            selected={checkPathname(publisher)}
           >
             <PublisherItemIconContainer>
               <Icon size="icon-x-large" icon="person" />

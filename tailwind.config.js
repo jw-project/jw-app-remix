@@ -4,7 +4,10 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar")({ nocompatible: true })],
+  variants: {
+    scrollbar: ["rounded"],
+  },
   safelist: [
     {
       pattern: /grid-cols-(1|2|3|4)$/,

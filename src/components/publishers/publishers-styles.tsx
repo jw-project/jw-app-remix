@@ -23,13 +23,13 @@ export const PublisherListStyled = tailStyled.ul`
     divide-y
 `;
 
-export const PublisherItemStyled = tailStyled(Link)<{ $selected: boolean }>`
+export const PublisherItemStyled = tailStyled(Link)<{ selected: boolean }>`
     cursor-pointer
     rounded-lg
     flex
     items-center
     p-4
-     ${({ $selected }) => ($selected ? 'bg-gray-100' : 'hover:bg-gray-50')}
+     ${({ selected }) => (selected ? 'bg-gray-100' : 'hover:bg-gray-50')}
 `;
 
 export const PublisherItemIconContainer = tailStyled.div`

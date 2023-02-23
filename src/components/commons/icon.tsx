@@ -4672,7 +4672,16 @@ export function Icon({
 }: {
   className?: string;
   icon: IconOpts;
-  size?: 'icon-small' | 'icon-medium' | 'icon-large' | 'icon-x-large';
+  size?:
+  | 'icon-x-small'
+  | 'icon-small'
+  | 'icon-medium'
+  | 'icon-large'
+  | 'icon-x-large';
 }) {
-  return <span className={`${size} ${className} material-symbols-rounded`}>{icon}</span>;
+  return (
+    <span className={`${size} ${className} material-symbols-rounded`}>
+      {icon}
+    </span>
+  );
 }

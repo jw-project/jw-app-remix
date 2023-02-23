@@ -65,7 +65,7 @@ export default function Index() {
             </Button>
           </Col>
           <Col>
-            <Button onClick={goToCongregation} $type="secondary">
+            <Button onClick={goToCongregation} $buttonStyle="secondary">
               {translate('access-congregation-button')}
             </Button>
           </Col>

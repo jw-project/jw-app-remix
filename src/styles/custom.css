@@ -1,3 +1,7 @@
+.icon-x-small.material-symbols-rounded {
+  @apply text-lg leading-5;
+}
+
 .icon-small.material-symbols-rounded {
   @apply text-xl leading-4;
 }
