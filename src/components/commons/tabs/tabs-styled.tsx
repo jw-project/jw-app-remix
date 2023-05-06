@@ -51,16 +51,20 @@ export const TabLinkStyled = tailStyled(Link)<SelectAndDisableType>`
     p-4
     rounded-t-lg
     group
-    ${({ selected }) => (selected
-    ? 'bg-white hover:bg-white text-gray-600'
-    : 'hover:text-gray-600 hover:bg-gray-200')}
-    ${({ $disabled }) => ($disabled
-    ? 'cursor-not-allowed hover:bg-gray-100 hover:text-gray-500'
-    : '')}
+    ${({ selected }) =>
+      selected
+        ? 'bg-white hover:bg-white text-gray-600'
+        : 'hover:text-gray-600 hover:bg-gray-200'}
+    ${({ $disabled }) =>
+      $disabled
+        ? 'cursor-not-allowed hover:bg-gray-100 hover:text-gray-500'
+        : ''}
 `;
 
 export const TabIconStyled = tailStyled(Icon)<SelectAndDisableType>`
     mr-2
-    ${({ selected }) => (selected ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500')}
-    ${({ $disabled }) => ($disabled ? 'hover:text-gray-400 group-hover:text-gray-400' : '')}
+    ${({ selected }) =>
+      selected ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500'}
+    ${({ $disabled }) =>
+      $disabled ? 'hover:text-gray-400 group-hover:text-gray-400' : ''}
 `;

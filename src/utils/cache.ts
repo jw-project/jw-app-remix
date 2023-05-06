@@ -1,6 +1,3 @@
-/* eslint-disable import/no-mutable-exports */
-/* eslint-disable no-var */
-/* eslint-disable vars-on-top */
 import NodeCache from 'node-cache';
 
 let cacheConfigs: NodeCache;

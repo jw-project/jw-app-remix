@@ -1,9 +1,8 @@
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 export function useHorizontalScroll() {
   const elRef = useRef<HTMLElement>();
 
-  // eslint-disable-next-line consistent-return
   useEffect(() => {
     function handleWheel(event: WheelEvent) {
       const container = elRef.current;

@@ -20,12 +20,8 @@ export default function Index() {
     return (
       <HeaderIndex>
         <ContainerIndex>
-          <Title>
-            {translate('welcome')}
-          </Title>
-          <Paragraph>
-            {translate('hope')}
-          </Paragraph>
+          <Title>{translate('welcome')}</Title>
+          <Paragraph>{translate('hope')}</Paragraph>
         </ContainerIndex>
       </HeaderIndex>
     );
@@ -42,21 +38,13 @@ export default function Index() {
   return (
     <HeaderIndex>
       <ContainerIndex>
-        <Title>
-          {translate('welcome')}
-        </Title>
-        <Paragraph>
-          {translate('login-not-found')}
-        </Paragraph>
+        <Title>{translate('welcome')}</Title>
+        <Paragraph>{translate('login-not-found')}</Paragraph>
         <Paragraph>
           {translate('include-email-in-profile', { email })}
         </Paragraph>
-        <Paragraph>
-          {translate('refresh-page')}
-        </Paragraph>
-        <Paragraph>
-          {translate('new-congregation-text')}
-        </Paragraph>
+        <Paragraph>{translate('refresh-page')}</Paragraph>
+        <Paragraph>{translate('new-congregation-text')}</Paragraph>
         <Paragraph />
         <Grid cols={2}>
           <Col className="md:justify-self-start justify-self-center">

@@ -31,8 +31,8 @@ function CustomSelect(
   {
     ...props
   }: React.DetailedHTMLProps<
-  React.SelectHTMLAttributes<HTMLSelectElement>,
-  HTMLSelectElement
+    React.SelectHTMLAttributes<HTMLSelectElement>,
+    HTMLSelectElement
   >,
   ref: React.ForwardedRef<HTMLSelectElement>,
 ): JSX.Element {
@@ -40,11 +40,7 @@ function CustomSelect(
 
   return (
     <div className="relative">
-      <SelectStyled
-        ref={ref}
-        $error={Boolean(errors)}
-        {...props}
-      />
+      <SelectStyled ref={ref} $error={Boolean(errors)} {...props} />
       <SelectorStyled>
         <Icon icon="expand_more" />
       </SelectorStyled>
@@ -53,6 +49,6 @@ function CustomSelect(
 }
 
 export const Select = React.forwardRef<
-HTMLSelectElement,
-JSX.IntrinsicElements['select']
+  HTMLSelectElement,
+  JSX.IntrinsicElements['select']
 >(CustomSelect);

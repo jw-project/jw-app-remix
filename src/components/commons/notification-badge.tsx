@@ -18,7 +18,9 @@ export const NotificationBadgeStyled = tailStyled.div`
 `;
 
 export function NotificationBadge({ children }: React.PropsWithChildren) {
-  if (!children) return null;
+  if (!children) {
+    return null;
+  }
 
   return <NotificationBadgeStyled>{children}</NotificationBadgeStyled>;
 }

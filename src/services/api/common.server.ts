@@ -6,22 +6,25 @@ import type {
   QuerySnapshot,
 } from 'firebase-admin/firestore';
 import { performMutation } from 'remix-forms';
-import type { z, ZodRawShape } from 'zod';
+import type { ZodRawShape, z } from 'zod';
 
 import { ToastType } from '~/components/commons/toast';
 
 export const getAllData = <T>(
   snap: QuerySnapshot<DocumentData>,
   { includeId }: { includeId: boolean } | undefined = { includeId: true },
-) => snap.docs.map((e) => {
+) =>
+  snap.docs.map((e) => {
     const obj = e.data();
     if (includeId) {
       obj.id = e.id;
     }
+
     return obj;
   }) as T;
 
-export const getData = <T>(snap: DocumentSnapshot<DocumentData>) => snap.data() as T;
+export const getData = <T>(snap: DocumentSnapshot<DocumentData>) =>
+  snap.data() as T;
 
 export async function checkReturnMessage<T extends ZodRawShape, F>({
   request,
@@ -36,6 +39,7 @@ export async function checkReturnMessage<T extends ZodRawShape, F>({
 
   if (!result.success) {
     console.error('This erro:', result.errors, 'on try sent:', result.values);
+
     return json(
       {
         ...result,

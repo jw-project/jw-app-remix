@@ -8,7 +8,8 @@ import { TabsCard } from '~/components/commons/tabs/tabs-styled';
 export default function PublisherEdit() {
   const match = useMatches();
 
-  const checkPathname = (to: string) => Boolean(match.find((e) => e.pathname.includes(to)));
+  const checkPathname = (to: string) =>
+    Boolean(match.find((e) => e.pathname.includes(to)));
 
   return (
     <>

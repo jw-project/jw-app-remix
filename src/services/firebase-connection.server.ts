@@ -1,5 +1,5 @@
 import { firestore } from 'firebase-admin';
-import { initializeApp, cert, getApps } from 'firebase-admin/app';
+import { cert, getApps, initializeApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 
 import { PermissionsEnum } from '~/entities/permissions';
@@ -31,7 +31,10 @@ export function firebaseAdminConnection() {
   }
 }
 
-export async function getAuthenticatedUser(request: Request, ignoreCache = false) {
+export async function getAuthenticatedUser(
+  request: Request,
+  ignoreCache = false,
+) {
   const session = await getSession(request.headers.get('Cookie'));
   const uidUser = session.get('uidUser');
 
@@ -41,7 +44,10 @@ export async function getAuthenticatedUser(request: Request, ignoreCache = false
 
   const cache = cacheUser?.get<PublisherEntity>(uidUser);
   if (cache && !ignoreCache) {
-    console.info(`Successfully load user data from cache: ${JSON.stringify(cache)}`);
+    console.info(
+      `Successfully load user data from cache: ${JSON.stringify(cache)}`,
+    );
+
     return cache;
   }
 
@@ -52,7 +58,9 @@ export async function getAuthenticatedUser(request: Request, ignoreCache = false
     throw Error('No session');
   }
 
-  const { docs: [result] } = await firestore()
+  const {
+    docs: [result],
+  } = await firestore()
     .collectionGroup('publishers')
     .where('email', '==', userRecord.email)
     .get();
@@ -75,6 +83,7 @@ export async function getAuthenticatedUser(request: Request, ignoreCache = false
   cacheUser?.set(uidUser, publisher);
 
   console.info(`Successfully fetched user data: ${JSON.stringify(userRecord)}`);
+
   return publisher;
 }
 

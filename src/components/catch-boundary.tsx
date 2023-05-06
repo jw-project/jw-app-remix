@@ -11,11 +11,7 @@ export function CatchBoundaryComponent() {
   return (
     <div>
       <h1>Caught</h1>
-      <p>
-        Status:
-        {' '}
-        {status}
-      </p>
+      <p>Status: {status}</p>
       {translate(data.message)}
     </div>
   );

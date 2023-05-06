@@ -20,6 +20,7 @@ function remoteConfigToI18nResources(
       )?.value,
     );
   });
+
   return resources;
 }
 

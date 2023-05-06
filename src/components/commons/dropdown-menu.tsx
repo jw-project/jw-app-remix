@@ -25,7 +25,8 @@ export type DropdownMenuType = {
   to: string;
 };
 
-const isDivider = (opt: DropdownMenuType | 'divider'): opt is 'divider' => typeof opt === 'string';
+const isDivider = (opt: DropdownMenuType | 'divider'): opt is 'divider' =>
+  typeof opt === 'string';
 
 export function DropdownMenu({
   options,

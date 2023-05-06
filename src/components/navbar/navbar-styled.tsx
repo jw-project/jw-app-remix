@@ -7,6 +7,7 @@ export const NavbarBase = tailStyled.nav<{ $expanded: boolean }>`
     fixed
     flex
     bg-white
+    dark:bg-gray-900
     h-14
     border-b
     border-gray-200

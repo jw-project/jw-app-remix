@@ -6,11 +6,11 @@ import { useFetcher, useLoaderData } from '@remix-run/react';
 import type { FirebaseOptions } from 'firebase/app';
 import type { User } from 'firebase/auth';
 import {
-  signInWithPopup,
   GoogleAuthProvider,
   getAuth,
-  signInWithRedirect,
   onAuthStateChanged,
+  signInWithPopup,
+  signInWithRedirect,
 } from 'firebase/auth';
 
 import {
@@ -23,11 +23,12 @@ import { useTranslation } from '~/i18n/i18n';
 import { firebaseClientConnection } from '~/services/firebase-connection.client';
 import { sessionLogin } from '~/services/firebase-connection.server';
 
-export const action: ActionFunction = async ({ request }) => redirect('/', {
-  headers: {
-    'Set-Cookie': await sessionLogin(request),
-  },
-});
+export const action: ActionFunction = async ({ request }) =>
+  redirect('/', {
+    headers: {
+      'Set-Cookie': await sessionLogin(request),
+    },
+  });
 
 type LoginLoaderReturn = {
   firebaseOptions: FirebaseOptions;

@@ -1,5 +1,6 @@
 import type { FirebaseOptions } from 'firebase/app';
 import { getApps, initializeApp } from 'firebase/app';
+
 // import { connectAuthEmulator, getAuth } from 'firebase/auth';
 // import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 // import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';

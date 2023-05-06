@@ -43,12 +43,14 @@ function translateHigh(translations: Translation) {
 export function useTranslation(prefixKey?: string) {
   const [{ data }] = useMatches();
 
-  const translations = data.locale.translations[data.locale.defaultLanguage]
-    || data.locale.translations[data.locale.fallbackLanguage];
+  const translations =
+    data.locale.translations[data.locale.defaultLanguage] ||
+    data.locale.translations[data.locale.fallbackLanguage];
 
   const filtredTranslations = prefixKey
     ? get(translations, prefixKey || '')
     : translations;
+
   return {
     translate: translateHigh(filtredTranslations),
   };

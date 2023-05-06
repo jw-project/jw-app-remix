@@ -1,9 +1,7 @@
-import React from 'react';
-import { Toaster } from 'react-hot-toast';
-
 import { Outlet } from '@remix-run/react';
 import type { LoaderFunction, TypedResponse } from '@remix-run/server-runtime';
 import { redirect } from '@remix-run/server-runtime';
+import { Toaster } from 'react-hot-toast';
 import { ClientOnly } from 'remix-utils';
 
 import { BodyMargin } from '~/components/body-margin';
@@ -28,6 +26,7 @@ export const loader: LoaderFunction = async ({
     user = await getAuthenticatedUser(request);
   } catch (error) {
     console.error(error);
+
     return redirect('/login');
   }
 

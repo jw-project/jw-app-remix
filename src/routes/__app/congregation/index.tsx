@@ -31,9 +31,9 @@ import type { HttpError } from '~/services/api/throws-errors';
 
 type CongregationActionReturn =
   | {
-    message: string;
-    messageType?: ToastType;
-  }
+      message: string;
+      messageType?: ToastType;
+    }
   | undefined;
 
 export const action: ActionFunction = async ({
@@ -166,10 +166,7 @@ export default function Congregation() {
               <Subtitle>{translate('circuit-subtitle')}</Subtitle>
             </Col>
             <Col>
-              <Field
-                name="circuitName"
-                label={translate('circuit-name')}
-              />
+              <Field name="circuitName" label={translate('circuit-name')} />
             </Col>
             <Col>
               <Field

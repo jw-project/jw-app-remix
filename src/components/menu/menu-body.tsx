@@ -13,13 +13,14 @@ import {
   LinkMenuStyled,
   MenuLabel,
 } from './menu-styled';
-import type { MenuType, MenuListType } from './types';
+import type { MenuListType, MenuType } from './types';
 
 function MenuLink({ list }: { list: MenuListType[] }) {
   const { translate } = useTranslation('menu');
   const match = useMatches();
 
-  const checkPathname = (to: string) => Boolean(match.find((e) => `/${to}` === e.pathname));
+  const checkPathname = (to: string) =>
+    Boolean(match.find((e) => `/${to}` === e.pathname));
 
   return (
     <ul>
@@ -46,16 +47,19 @@ export function MenuBody({
 }) {
   const { translate } = useTranslation('menu.categories');
 
-  const filterMenu = () => menu //
-    .map((item) => ({
-      ...item,
-      list: item.list //
-        .filter((listItem) => [PermissionsEnum.EDIT, PermissionsEnum.READ] //
-          .includes(
-            permissions[listItem.permissionKey] || PermissionsEnum.NOT,
-          )),
-    })) //
-    .filter((item) => item.list.length);
+  const filterMenu = () =>
+    menu //
+      .map((item) => ({
+        ...item,
+        list: item.list //
+          .filter((listItem) =>
+            [PermissionsEnum.EDIT, PermissionsEnum.READ] //
+              .includes(
+                permissions[listItem.permissionKey] || PermissionsEnum.NOT,
+              ),
+          ),
+      })) //
+      .filter((item) => item.list.length);
 
   return (
     <>

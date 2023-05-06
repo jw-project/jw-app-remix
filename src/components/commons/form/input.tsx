@@ -13,23 +13,17 @@ function CustomInput(
   {
     ...props
   }: React.DetailedHTMLProps<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  HTMLInputElement
+    React.InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
   >,
   ref: React.ForwardedRef<HTMLInputElement>,
 ): JSX.Element {
   const { errors } = useField();
 
-  return (
-    <InputStyled
-      ref={ref}
-      $error={Boolean(errors)}
-      {...props}
-    />
-  );
+  return <InputStyled ref={ref} $error={Boolean(errors)} {...props} />;
 }
 
 export const Input = React.forwardRef<
-HTMLInputElement,
-JSX.IntrinsicElements['input']
+  HTMLInputElement,
+  JSX.IntrinsicElements['input']
 >(CustomInput);

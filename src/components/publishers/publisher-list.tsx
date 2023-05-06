@@ -20,10 +20,11 @@ export function PublisherList() {
   const { publishers } = useLoaderData<PublishersLoaderReturn>();
   const match = useMatches();
 
-  const checkPathname = (publisher: PublisherEntity) => Boolean(match//
-    .find((e) => e.pathname.includes(publisher.id)));
+  const checkPathname = (publisher: PublisherEntity) =>
+    Boolean(match.find((e) => e.pathname.includes(publisher.id)));
 
-  const navigateToPublisher = (publisher: PublisherEntity) => `/people/publishers/${publisher.id}`;
+  const navigateToPublisher = (publisher: PublisherEntity) =>
+    `/people/publishers/${publisher.id}`;
 
   return (
     <PublisherListStyled>

@@ -1,7 +1,5 @@
-import React from 'react';
-import { toast } from 'react-hot-toast';
-
 import { Transition } from '@headlessui/react';
+import { toast } from 'react-hot-toast';
 import tailStyled from 'tailwind-styled-components';
 
 import { Icon } from './icon';
@@ -32,7 +30,10 @@ const ToastIcon = tailStyled.div<{ type: ToastType }>`
   w-8
   h-8
   rounded-lg
-  ${({ type }) => (type === ToastType.SUCESS ? 'bg-green-800 text-green-200' : 'dark:bg-red-800 dark:text-red-200')}
+  ${({ type }) =>
+    type === ToastType.SUCESS
+      ? 'bg-green-800 text-green-200'
+      : 'dark:bg-red-800 dark:text-red-200'}
 `;
 
 const ToastMessage = tailStyled.div`
@@ -64,30 +65,32 @@ export const notify = ({
 }: {
   message: string;
   type?: ToastType;
-}) => message && toast.custom(({ id, visible }) => (
-  <Transition
-    appear
-    show={visible}
-    className="w-1/2 flex justify-center"
-    enter="transition-all duration-150"
-    enterFrom="opacity-0 scale-50"
-    enterTo="opacity-100 scale-100"
-    leave="transition-all duration-150"
-    leaveFrom="opacity-100 scale-100"
-    leaveTo="opacity-0 scale-75"
-  >
-    <ToastContainer role="alert">
-      <ToastIcon type={type}>
-        <Icon icon={type === ToastType.SUCESS ? 'done' : 'close'} />
-      </ToastIcon>
-      <ToastMessage>{message}</ToastMessage>
-      <ToastButton
-        type="button"
-        onClick={() => toast.dismiss(id)}
-        aria-label="Close"
-      >
-        <Icon icon="close" size="icon-small" />
-      </ToastButton>
-    </ToastContainer>
-  </Transition>
-));
+}) =>
+  message &&
+  toast.custom(({ id, visible }) => (
+    <Transition
+      appear
+      show={visible}
+      className="w-1/2 flex justify-center"
+      enter="transition-all duration-150"
+      enterFrom="opacity-0 scale-50"
+      enterTo="opacity-100 scale-100"
+      leave="transition-all duration-150"
+      leaveFrom="opacity-100 scale-100"
+      leaveTo="opacity-0 scale-75"
+    >
+      <ToastContainer role="alert">
+        <ToastIcon type={type}>
+          <Icon icon={type === ToastType.SUCESS ? 'done' : 'close'} />
+        </ToastIcon>
+        <ToastMessage>{message}</ToastMessage>
+        <ToastButton
+          type="button"
+          onClick={() => toast.dismiss(id)}
+          aria-label="Close"
+        >
+          <Icon icon="close" size="icon-small" />
+        </ToastButton>
+      </ToastContainer>
+    </Transition>
+  ));

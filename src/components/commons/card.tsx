@@ -6,9 +6,12 @@ const padSwitch = (padded: PadType) => {
   switch (padded) {
     case 0:
       return '';
+
     case 'sm':
       return 'p-4 md:p-6';
+
     case 'md':
+
     default:
       return 'p-6 md:p-8';
   }

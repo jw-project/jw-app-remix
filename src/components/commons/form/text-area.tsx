@@ -13,23 +13,17 @@ function CustomTextArea(
   {
     ...props
   }: React.DetailedHTMLProps<
-  React.TextareaHTMLAttributes<HTMLTextAreaElement>,
-  HTMLTextAreaElement
+    React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+    HTMLTextAreaElement
   >,
   ref: React.ForwardedRef<HTMLTextAreaElement>,
 ): JSX.Element {
   const { errors } = useField();
 
-  return (
-    <TextAreaStyled
-      ref={ref}
-      $error={Boolean(errors)}
-      {...props}
-    />
-  );
+  return <TextAreaStyled ref={ref} $error={Boolean(errors)} {...props} />;
 }
 
 export const TextArea = React.forwardRef<
-HTMLTextAreaElement,
-JSX.IntrinsicElements['textarea']
+  HTMLTextAreaElement,
+  JSX.IntrinsicElements['textarea']
 >(CustomTextArea);

@@ -1,5 +1,6 @@
 {
   "include": [
+    "./.eslintrc.js",
     "remix.env.d.ts",
     "./src/**/*.ts",
     "./src/**/*.tsx"

@@ -1,8 +1,6 @@
-import React from 'react';
-
 import tailStyled from 'tailwind-styled-components';
 
-import { inputsStyleBase, Label } from './style-base';
+import { Label, inputsStyleBase } from './style-base';
 
 const FakeInputStyle = tailStyled.input`
   ${() => inputsStyleBase()}
