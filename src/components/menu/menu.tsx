@@ -1,7 +1,7 @@
 import { useLoaderData } from '@remix-run/react';
 import { useAtom } from 'jotai';
 
-import { showMenuAtom } from '~/atoms/global-atoms';
+import { showMenuAtom } from '~/atoms-global/menu';
 import type { LayoutLoaderReturn } from '~/routes/__app';
 
 import { Backdrop } from '../commons/backdrop';

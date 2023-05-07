@@ -1,7 +1,8 @@
-import { useMatches, useSubmit } from '@remix-run/react';
-import { useAtomValue } from 'jotai';
+import axios from 'axios';
+import { useAtomValue, useSetAtom } from 'jotai';
 
-import { showMenuAtom } from '~/atoms/global-atoms';
+import { showMenuAtom } from '~/atoms-global/menu';
+import { themeAtom } from '~/atoms-global/theme';
 
 import { Avatar } from './avatar';
 import { MobileAsideButton } from './mobile-aside-button';
@@ -15,16 +16,13 @@ import { Notifications } from './notifications';
 
 export function Navbar() {
   const showMenu = useAtomValue(showMenuAtom);
-  const submit = useSubmit();
-  const matches = useMatches();
+  const changeThemeAtom = useSetAtom(themeAtom);
 
-  const changeTheme = () => {
-    submit(
-      { changeTheme: 'true', route: matches.pop()?.pathname || '/' },
-      {
-        method: 'POST',
-      },
-    );
+  const changeTheme = async () => {
+    const theme = changeThemeAtom();
+    try {
+      await axios.post('/api/save-theme', { theme });
+    } catch (error) {}
   };
 
   return (

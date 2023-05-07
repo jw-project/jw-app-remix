@@ -68,6 +68,8 @@ export async function getAuthenticatedUser(
   const publisherResult = result?.data() as PublisherEntity;
   const publisher: PublisherEntity = {
     ...publisherResult,
+    id: result.id,
+    uidUser,
     displayName: userRecord.displayName,
     congregationId: result?.ref.parent.parent?.id || '',
     email: userRecord.email || publisherResult.email,

@@ -20,6 +20,7 @@
     "@remix-run/v1-route-convention": "^0.1.1",
     "@remix-run/vercel": "^1.16.0",
     "@vercel/node": "^2.14.1",
+    "axios": "^1.4.0",
     "domain-functions": "^1.7.0",
     "firebase": "^9.21.0",
     "firebase-admin": "^11.8.0",

@@ -4,7 +4,7 @@ import { redirect } from '@remix-run/server-runtime';
 import { Toaster } from 'react-hot-toast';
 import { ClientOnly } from 'remix-utils';
 
-import { BodyMargin } from '~/components/body-margin';
+import { BodyMargin } from '~/components/commons/body/body-margin';
 import { Menu } from '~/components/menu/menu';
 import type { MenuType } from '~/components/menu/types';
 import { Navbar } from '~/components/navbar/navbar';

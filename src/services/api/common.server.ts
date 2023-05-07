@@ -43,7 +43,6 @@ export async function checkReturnMessage<T extends ZodRawShape, F>({
     return json(
       {
         ...result,
-        // eslint-disable-next-line no-underscore-dangle
         message: result.errors._global?.join(', ') || '',
         messageType: ToastType.ERROR,
       },

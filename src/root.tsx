@@ -1,27 +1,24 @@
-import { json, redirect } from '@remix-run/node';
+import { useMemo } from 'react';
+
+import { json } from '@remix-run/node';
 import type {
-  ActionFunction,
   LinksFunction,
   LoaderFunction,
   TypedResponse,
   V2_MetaFunction,
 } from '@remix-run/node';
-import {
-  Links,
-  LiveReload,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  useLoaderData,
-} from '@remix-run/react';
+import { Links, Meta, useLoaderData } from '@remix-run/react';
 import { getMessaging } from 'firebase-admin/messaging';
-import { Provider } from 'jotai';
+import { Provider, createStore } from 'jotai';
 
+import { themeAtom } from './atoms-global/theme';
+import { Body } from './components/commons/body/body';
 import type { TranslationConfig, Translations } from './i18n/i18n';
 import { getTranslateResources } from './i18n/i18next.server';
-import { firebaseAdminConnection } from './services/firebase-connection.server';
-import { getSessionTheme, saveSessionTheme } from './services/theme.server';
+import {
+  firebaseAdminConnection,
+  getAuthenticatedUser,
+} from './services/firebase-connection.server';
 import styles from './styles/global.css';
 import { cacheConfigs } from './utils/cache';
 
@@ -44,16 +41,6 @@ export const links: LinksFunction = () => [
   },
 ];
 
-export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.formData();
-
-  return redirect(formData.get('route')?.toString() || '/', {
-    headers: {
-      'Set-Cookie': await saveSessionTheme(request),
-    },
-  });
-};
-
 export type RootLoaderReturn = {
   locale: TranslationConfig;
   themeMode: 'dark' | 'light';
@@ -61,7 +48,6 @@ export type RootLoaderReturn = {
 
 export const loader: LoaderFunction = async ({
   request,
-  params,
 }): Promise<TypedResponse<RootLoaderReturn>> => {
   firebaseAdminConnection();
 
@@ -80,29 +66,30 @@ export const loader: LoaderFunction = async ({
     resources = await getTranslateResources();
     cacheConfigs.set('resources', resources);
   }
+  const { theme = 'light', language = 'en' } = await getAuthenticatedUser(
+    request,
+  );
 
-  const languageDetected =
-    params.language ||
-    request.headers.get('x-language') ||
-    (request.headers.get('accept-language') &&
-      request.headers.get('accept-language')?.split(',')[0]) ||
-    'en';
   const locale: TranslationConfig = {
-    defaultLanguage: languageDetected,
-    fallbackLanguage: languageDetected,
+    defaultLanguage: language,
+    fallbackLanguage: language,
     translations: resources,
   };
 
-  const themeMode = await getSessionTheme(request);
-
   return json({
     locale,
-    themeMode,
+    themeMode: theme,
   });
 };
 
 export default function App() {
   const { locale, themeMode } = useLoaderData<RootLoaderReturn>();
+  const store = useMemo(() => {
+    const newStore = createStore();
+    newStore.set(themeAtom, themeMode);
+
+    return newStore;
+  }, [themeMode]);
 
   return (
     <html lang={locale.defaultLanguage} dir={locale.defaultLanguage}>
@@ -110,14 +97,9 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className={themeMode}>
-        <Provider>
-          <Outlet />
-          <ScrollRestoration />
-          <Scripts />
-          <LiveReload />
-        </Provider>
-      </body>
+      <Provider store={store}>
+        <Body />
+      </Provider>
     </html>
   );
 }
