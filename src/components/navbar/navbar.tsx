@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useMatches, useSubmit } from '@remix-run/react';
 import { useAtomValue } from 'jotai';
 

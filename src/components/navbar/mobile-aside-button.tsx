@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useSetAtom } from 'jotai';
 import tailStyled from 'tailwind-styled-components';
 

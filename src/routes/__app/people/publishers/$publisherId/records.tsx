@@ -1,5 +1,3 @@
-import React from 'react';
-
 import DataGrid from 'react-data-grid';
 
 export default function PublisherRecords() {

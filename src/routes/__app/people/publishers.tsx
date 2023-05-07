@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Outlet } from '@remix-run/react';
 import type { LoaderFunction } from '@remix-run/server-runtime';
 

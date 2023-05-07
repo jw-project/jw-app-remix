@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Outlet, useMatches } from '@remix-run/react';
 
 import { Tab, Tabs } from '~/components/commons/tabs/tabs';

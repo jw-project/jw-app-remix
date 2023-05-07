@@ -1,5 +1,3 @@
-import React from 'react';
-
 import tailStyled from 'tailwind-styled-components';
 
 import { Dropdown } from '../commons/dropdown';

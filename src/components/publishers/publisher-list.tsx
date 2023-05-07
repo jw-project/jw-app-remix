@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useLoaderData, useMatches } from '@remix-run/react';
 
 import type { PublisherEntity } from '~/entities/publisher';

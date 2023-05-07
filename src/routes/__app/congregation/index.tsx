@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import type {
   ActionFunction,
@@ -9,7 +9,6 @@ import { json } from '@remix-run/node';
 import { useActionData, useLoaderData } from '@remix-run/react';
 import { makeDomainFunction } from 'domain-functions';
 
-import { CatchBoundaryComponent } from '~/components/catch-boundary';
 import { Card } from '~/components/commons/card';
 import { FakeInput } from '~/components/commons/form/fake-input';
 import { Form } from '~/components/commons/form/form';
@@ -190,5 +189,3 @@ export default function Congregation() {
     </Card>
   );
 }
-
-export const CatchBoundary = CatchBoundaryComponent;

@@ -1,12 +1,10 @@
-import React from 'react';
-
 import { useNavigate } from '@remix-run/react';
 
-import { CatchBoundaryComponent } from '~/components/catch-boundary';
 import { Button } from '~/components/commons/button';
 import { Col, Grid } from '~/components/commons/grid';
 import { Paragraph } from '~/components/commons/paragraph';
 import { Title } from '~/components/commons/title';
+import { ErrorScreen } from '~/components/error-screen';
 import { ContainerIndex, HeaderIndex } from '~/components/index/index-styled';
 import { useTranslation } from '~/i18n/i18n';
 import { useUser } from '~/matches/use-user';
@@ -63,4 +61,4 @@ export default function Index() {
   );
 }
 
-export const CatchBoundary = CatchBoundaryComponent;
+export const ErrorBoundary = ErrorScreen;
