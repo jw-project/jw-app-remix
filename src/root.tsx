@@ -11,6 +11,7 @@ import { Links, Meta, useLoaderData } from '@remix-run/react';
 import { getMessaging } from 'firebase-admin/messaging';
 import { Provider, createStore } from 'jotai';
 
+import type { Theme } from './atoms-global/theme';
 import { themeAtom } from './atoms-global/theme';
 import { Body } from './components/commons/body/body';
 import type { TranslationConfig, Translations } from './i18n/i18n';
@@ -66,9 +67,11 @@ export const loader: LoaderFunction = async ({
     resources = await getTranslateResources();
     cacheConfigs.set('resources', resources);
   }
-  const { theme = 'light', language = 'en' } = await getAuthenticatedUser(
-    request,
-  );
+  let theme: Theme = 'light';
+  let language = request.headers.get('accept-language')?.split(',')[0] || 'en';
+  try {
+    ({ theme, language } = await getAuthenticatedUser(request));
+  } catch (error) {}
 
   const locale: TranslationConfig = {
     defaultLanguage: language,
