@@ -3,8 +3,8 @@ import type {
   ActionFunction,
   LinksFunction,
   LoaderFunction,
-  MetaFunction,
   TypedResponse,
+  V2_MetaFunction,
 } from '@remix-run/node';
 import {
   Links,
@@ -22,14 +22,16 @@ import type { TranslationConfig, Translations } from './i18n/i18n';
 import { getTranslateResources } from './i18n/i18next.server';
 import { firebaseAdminConnection } from './services/firebase-connection.server';
 import { getSessionTheme, saveSessionTheme } from './services/theme.server';
-import styles from './tailwind.css';
+import styles from './styles/global.css';
 import { cacheConfigs } from './utils/cache';
 
-export const meta: MetaFunction = () => ({
-  charset: 'utf-8',
-  title: 'New Remix App',
-  viewport: 'width=device-width,initial-scale=1',
-});
+export const meta: V2_MetaFunction = () => {
+  return [
+    { title: 'New Remix App' },
+    { charset: 'utf-8' },
+    { name: 'viewport', content: 'width=device-width,initial-scale=1' },
+  ];
+};
 
 export const links: LinksFunction = () => [
   {

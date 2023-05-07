@@ -22,7 +22,7 @@ export function Navbar() {
     submit(
       { changeTheme: 'true', route: matches.pop()?.pathname || '/' },
       {
-        method: 'post',
+        method: 'POST',
       },
     );
   };

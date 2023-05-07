@@ -72,7 +72,7 @@ export default function Login() {
           fetcher.submit(
             { token: (user as User & { accessToken: string }).accessToken },
             {
-              method: 'post',
+              method: 'POST',
             },
           );
         } else {
