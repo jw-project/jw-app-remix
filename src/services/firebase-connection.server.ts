@@ -1,10 +1,11 @@
+import { error, info } from 'console';
 import { firestore } from 'firebase-admin';
 import { cert, getApps, initializeApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 
 import { PermissionsEnum } from '~/entities/permissions';
 import type { PublisherEntity } from '~/entities/publisher';
-import { cacheUser } from '~/utils/cache';
+import { cacheUser } from '~/utils/cache.server';
 
 import { commitSession, getSession } from './session.server';
 
@@ -22,12 +23,12 @@ export function firebaseAdminConnection() {
         databaseURL: 'https://jw-project-dev.firebaseio.com',
         storageBucket: 'gs://jw-project-dev.appspot.com',
       });
-      console.info('Firebase admin connected', getApps());
+      info('Firebase admin connected', getApps());
     }
 
-    console.info('Firebase admin connected');
-  } catch (error) {
-    console.error('Firebase admin connect error:', error);
+    info('Firebase admin connected');
+  } catch (e) {
+    error('Firebase admin connect error:', e);
   }
 }
 
@@ -44,9 +45,7 @@ export async function getAuthenticatedUser(
 
   const cache = cacheUser?.get<PublisherEntity>(uidUser);
   if (cache && !ignoreCache) {
-    console.info(
-      `Successfully load user data from cache: ${JSON.stringify(cache)}`,
-    );
+    info(`Successfully load user data from cache: ${JSON.stringify(cache)}`);
 
     return cache;
   }
@@ -54,7 +53,7 @@ export async function getAuthenticatedUser(
   const userRecord = await getAuth().getUser(uidUser);
 
   if (!userRecord) {
-    console.info('Error fetching auth user data');
+    info('Error fetching auth user data');
     throw Error('No session');
   }
 
@@ -68,7 +67,7 @@ export async function getAuthenticatedUser(
   const publisherResult = result?.data() as PublisherEntity;
   const publisher: PublisherEntity = {
     ...publisherResult,
-    id: result.id,
+    id: result?.id,
     uidUser,
     displayName: userRecord.displayName,
     congregationId: result?.ref.parent.parent?.id || '',
@@ -84,7 +83,7 @@ export async function getAuthenticatedUser(
 
   cacheUser?.set(uidUser, publisher);
 
-  console.info(`Successfully fetched user data: ${JSON.stringify(userRecord)}`);
+  info(`Successfully fetched user data: ${JSON.stringify(userRecord)}`);
 
   return publisher;
 }

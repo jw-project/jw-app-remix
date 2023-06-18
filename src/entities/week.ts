@@ -15,12 +15,12 @@ export const weekOptions = (): SelectOptionsType[] => {
   const { translate } = translation('enum.week');
 
   return [
-    { name: translate(Week.MONDAY), value: Week.MONDAY },
-    { name: translate(Week.TUESDAY), value: Week.TUESDAY },
-    { name: translate(Week.WEDNESDAY), value: Week.WEDNESDAY },
-    { name: translate(Week.THURSDAY), value: Week.THURSDAY },
-    { name: translate(Week.FRIDAY), value: Week.FRIDAY },
-    { name: translate(Week.SATURDAY), value: Week.SATURDAY },
-    { name: translate(Week.SUNDAY), value: Week.SUNDAY },
+    { label: translate(Week.MONDAY), value: Week.MONDAY },
+    { label: translate(Week.TUESDAY), value: Week.TUESDAY },
+    { label: translate(Week.WEDNESDAY), value: Week.WEDNESDAY },
+    { label: translate(Week.THURSDAY), value: Week.THURSDAY },
+    { label: translate(Week.FRIDAY), value: Week.FRIDAY },
+    { label: translate(Week.SATURDAY), value: Week.SATURDAY },
+    { label: translate(Week.SUNDAY), value: Week.SUNDAY },
   ];
 };

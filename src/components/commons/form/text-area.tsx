@@ -1,29 +1,44 @@
 import React from 'react';
 
-import { useField } from 'remix-forms';
+import { Controller, useFormContext } from 'react-hook-form';
 import tailStyled from 'tailwind-styled-components';
 
+import { FieldArea } from './field-area';
 import { inputsStyleBase } from './style-base';
+import type { InputType } from './types';
 
 const TextAreaStyled = tailStyled.textarea<{ $error?: boolean }>`
     ${({ $error }) => inputsStyleBase($error)}
 `;
 
-function CustomTextArea(
-  {
-    ...props
-  }: React.DetailedHTMLProps<
-    React.TextareaHTMLAttributes<HTMLTextAreaElement>,
-    HTMLTextAreaElement
-  >,
-  ref: React.ForwardedRef<HTMLTextAreaElement>,
-): JSX.Element {
-  const { errors } = useField();
+export function TextArea({
+  name,
+  label,
+  ...props
+}: React.DetailedHTMLProps<
+  React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+  HTMLTextAreaElement
+> &
+  InputType): JSX.Element {
+  const {
+    formState: { errors },
+    control,
+  } = useFormContext();
 
-  return <TextAreaStyled ref={ref} $error={Boolean(errors)} {...props} />;
+  return (
+    <FieldArea name={name} label={label}>
+      <Controller
+        render={({ field: { ref, ...field } }) => (
+          <TextAreaStyled
+            {...field}
+            ref={ref}
+            $error={Boolean(errors[name])}
+            {...props}
+          />
+        )}
+        control={control}
+        name={name}
+      />
+    </FieldArea>
+  );
 }
-
-export const TextArea = React.forwardRef<
-  HTMLTextAreaElement,
-  JSX.IntrinsicElements['textarea']
->(CustomTextArea);

@@ -1,13 +1,15 @@
 import React from 'react';
 
-import { useField } from 'remix-forms';
+import { Controller, useFormContext } from 'react-hook-form';
 import tailStyled from 'tailwind-styled-components';
 
 import { Icon } from '../icon';
+import { FieldArea } from './field-area';
 import { inputsStyleBase } from './style-base';
+import type { InputType } from './types';
 
 export type SelectOptionsType = {
-  name: string;
+  label: string;
   value: string;
 };
 
@@ -27,28 +29,46 @@ const SelectorStyled = tailStyled.div`
   px-2
 `;
 
-function CustomSelect(
-  {
-    ...props
-  }: React.DetailedHTMLProps<
-    React.SelectHTMLAttributes<HTMLSelectElement>,
-    HTMLSelectElement
-  >,
-  ref: React.ForwardedRef<HTMLSelectElement>,
-): JSX.Element {
-  const { errors } = useField();
+export function Select({
+  name,
+  label,
+  options,
+  ...props
+}: React.DetailedHTMLProps<
+  React.SelectHTMLAttributes<HTMLSelectElement>,
+  HTMLSelectElement
+> &
+  InputType & { options: SelectOptionsType[] }): JSX.Element {
+  const {
+    formState: { errors },
+    control,
+  } = useFormContext();
 
   return (
-    <div className="relative">
-      <SelectStyled ref={ref} $error={Boolean(errors)} {...props} />
-      <SelectorStyled>
-        <Icon icon="expand_more" />
-      </SelectorStyled>
-    </div>
+    <FieldArea name={name} label={label}>
+      <Controller
+        render={({ field: { ref, ...field } }) => (
+          <div className="relative">
+            <SelectStyled
+              {...field}
+              ref={ref}
+              $error={Boolean(errors[name])}
+              {...props}
+            >
+              {options.map(({ label: labelOpt, value }) => (
+                <option key={value} value={value}>
+                  {labelOpt}
+                </option>
+              ))}
+            </SelectStyled>
+            <SelectorStyled>
+              <Icon icon="expand_more" />
+            </SelectorStyled>
+          </div>
+        )}
+        control={control}
+        name={name}
+      />
+    </FieldArea>
   );
 }
-
-export const Select = React.forwardRef<
-  HTMLSelectElement,
-  JSX.IntrinsicElements['select']
->(CustomSelect);

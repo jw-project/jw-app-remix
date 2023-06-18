@@ -1,6 +1,7 @@
 import { Outlet } from '@remix-run/react';
 import type { LoaderFunction, TypedResponse } from '@remix-run/server-runtime';
 import { redirect } from '@remix-run/server-runtime';
+import { error } from 'console';
 import { Toaster } from 'react-hot-toast';
 import { ClientOnly } from 'remix-utils';
 
@@ -11,7 +12,7 @@ import { Navbar } from '~/components/navbar/navbar';
 import type { PublisherEntity } from '~/entities/publisher';
 import { getMenu } from '~/services/api/menu.server';
 import { getAuthenticatedUser } from '~/services/firebase-connection.server';
-import { cacheConfigs } from '~/utils/cache';
+import { cacheConfigs } from '~/utils/cache.server';
 
 export type LayoutLoaderReturn = {
   menu: MenuType[];
@@ -24,8 +25,8 @@ export const loader: LoaderFunction = async ({
   let user: PublisherEntity;
   try {
     user = await getAuthenticatedUser(request);
-  } catch (error) {
-    console.error(error);
+  } catch (e) {
+    error(e);
 
     return redirect('/login');
   }

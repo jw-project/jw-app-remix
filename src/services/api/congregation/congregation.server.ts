@@ -1,4 +1,3 @@
-import { InputError } from 'domain-functions';
 import { firestore } from 'firebase-admin';
 
 import type { CongregationEntity } from '~/entities/congregation';
@@ -7,13 +6,16 @@ import { PermissionsEnum } from '~/entities/permissions';
 import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
 import { getData } from '../common.server';
+import { InputError } from '../errors';
 import { canRead, canWrite } from '../permissions.server';
 
-export const getCongregation = async (
-  request: Request,
-): Promise<CongregationEntity> => {
-  const { congregationId, permissions } = await getAuthenticatedUser(request);
-
+export const getCongregation = async ({
+  congregationId,
+  permissions,
+}: {
+  congregationId: string;
+  permissions: Permissions;
+}): Promise<CongregationEntity> => {
   canRead(permissions, 'congregation');
 
   if (!congregationId) {
@@ -28,12 +30,15 @@ export const getCongregation = async (
   return getData(congregationDoc);
 };
 
-const newCongregation = async (
-  request: Request,
-  congregation: CongregationEntity,
-) => {
-  const { displayName, email } = await getAuthenticatedUser(request);
-
+const newCongregation = async ({
+  congregation,
+  displayName,
+  email,
+}: {
+  congregation: CongregationEntity;
+  displayName?: string;
+  email: string;
+}) => {
   const congregationSaved = await firestore()
     .collection('congregation')
     .add(congregation);
@@ -54,17 +59,24 @@ const newCongregation = async (
       email,
     });
 
-  await getAuthenticatedUser(request, true);
+  // await getAuthenticatedUser(request, true);
 
   return congregationSaved.get();
 };
 
-export const saveCongregation = async (
-  request: Request,
-  congregation: CongregationEntity,
-) => {
-  const { congregationId, permissions } = await getAuthenticatedUser(request);
-
+export const saveCongregation = async ({
+  congregation,
+  congregationId,
+  permissions,
+  displayName,
+  email,
+}: {
+  congregation: CongregationEntity;
+  congregationId: string;
+  permissions: Permissions;
+  displayName?: string;
+  email: string;
+}) => {
   canWrite(permissions, 'congregation');
 
   const {
@@ -83,7 +95,7 @@ export const saveCongregation = async (
   }
 
   if (!congregationId) {
-    return newCongregation(request, congregation);
+    return newCongregation({ congregation, displayName, email });
   }
 
   return firestore()

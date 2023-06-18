@@ -1,32 +1,27 @@
 import { useEffect } from 'react';
 
-import type {
-  ActionFunction,
-  LoaderFunction,
-  TypedResponse,
-} from '@remix-run/node';
+import type { LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { useActionData, useLoaderData } from '@remix-run/react';
-import { makeDomainFunction } from 'domain-functions';
+import { useAtomValue } from 'jotai';
 
+import { savingData } from '~/atoms-global/saving';
 import { Card } from '~/components/commons/card';
-import { FakeInput } from '~/components/commons/form/fake-input';
 import { Form } from '~/components/commons/form/form';
+import { Input } from '~/components/commons/form/input';
+import { Select } from '~/components/commons/form/select';
+import { TextArea } from '~/components/commons/form/text-area';
 import { Col, Grid } from '~/components/commons/grid';
 import type { ToastType } from '~/components/commons/toast';
-import { notify } from '~/components/commons/toast';
 import { Subtitle } from '~/components/commons/typography';
 import type { CongregationEntity } from '~/entities/congregation';
 import { weekOptions } from '~/entities/week';
 import { useTranslation } from '~/i18n/i18n';
 import { useUser } from '~/matches/use-user';
-import { checkReturnMessage } from '~/services/api/common.server';
-import {
-  getCongregation,
-  saveCongregation,
-} from '~/services/api/congregation/congregation.server';
+import { getCongregation } from '~/services/api/congregation/congregation.server';
 import { congregationFormSchema as schema } from '~/services/api/congregation/validations';
 import type { HttpError } from '~/services/api/throws-errors';
+import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
 type CongregationActionReturn =
   | {
@@ -34,17 +29,6 @@ type CongregationActionReturn =
       messageType?: ToastType;
     }
   | undefined;
-
-export const action: ActionFunction = async ({
-  request,
-}): Promise<TypedResponse<CongregationActionReturn>> => {
-  const mutation = makeDomainFunction(schema)(
-    //
-    async (values) => saveCongregation(request, values),
-  );
-
-  return checkReturnMessage({ request, schema, mutation });
-};
 
 type CongregationLoaderReturn = {
   congregation: CongregationEntity;
@@ -54,7 +38,8 @@ export const loader: LoaderFunction = async ({
   request,
 }): Promise<CongregationLoaderReturn> => {
   try {
-    const congregation = await getCongregation(request);
+    const { congregationId, permissions } = await getAuthenticatedUser(request);
+    const congregation = await getCongregation({ congregationId, permissions });
 
     return { congregation };
   } catch (error) {
@@ -67,124 +52,126 @@ export const loader: LoaderFunction = async ({
 export default function Congregation() {
   const { translate } = useTranslation('routes.congregation');
   const { translate: translateRoot } = useTranslation();
+  const a = useAtomValue(savingData);
   const { congregation } = useLoaderData<CongregationLoaderReturn>();
   const dataAction = useActionData<CongregationActionReturn>();
   const { congregationId } = useUser();
 
-  useEffect(() => {
-    if (dataAction?.message) {
-      notify({
-        message: translateRoot(dataAction.message),
-        type: dataAction.messageType,
-      });
-    }
-  }, [dataAction]);
+  // useEffect(() => {
+  //   if (dataAction?.message) {
+  //     notify({
+  //       message: translateRoot(dataAction.message),
+  //       type: dataAction.messageType,
+  //     });
+  //   }
+  // }, [dataAction]);
 
   return (
     <Card>
-      <Form schema={schema} values={congregation}>
-        {({ Field, Button }) => (
-          <Grid cols={2}>
-            <Col>
-              <FakeInput
-                value={congregationId}
-                label={translate('id')}
-                disabled
-              />
-            </Col>
-            <Col>
-              <Field name="name" label={translate('name')} />
-            </Col>
-            <Col>
-              <Field name="number" label={translate('number')} type="number" />
-            </Col>
-            <Col>
-              <Field name="address" label={translate('address')} multiline />
-            </Col>
-            <Col>
-              <Field
-                name="midweekMeetingDay"
-                label={translate('midweek-meeting-day')}
-                options={weekOptions()}
-              />
-            </Col>
-            <Col>
-              <Field
-                name="weekendMeetingDay"
-                label={translate('weekend-meeting-day')}
-              />
-            </Col>
-            <Col>
-              <Field
-                name="midweekMeetingTime"
-                label={translate('midweek-meeting-time')}
-                type="time"
-              />
-            </Col>
-            <Col>
-              <Field
-                name="weekendMeetingTime"
-                label={translate('weekend-meeting-time')}
-                type="time"
-              />
-            </Col>
-            <Col colSpan={2}>
-              <Subtitle>{translate('online-meeting-subtitle')}</Subtitle>
-            </Col>
-            <Col>
-              <Field
-                name="onlineMeetingSoftware"
-                label={translate('online-meeting-software')}
-              />
-            </Col>
-            <Col>
-              <Field
-                name="onlineMeetingId"
-                label={translate('online-meeting-id')}
-              />
-            </Col>
-            <Col>
-              <Field
-                name="onlineMeetingDialNumber"
-                label={translate('online-meeting-dial-number')}
-              />
-            </Col>
-            <Col>
-              <Field
-                name="onlineMeetingPassword"
-                label={translate('online-meeting-password')}
-              />
-            </Col>
-            <Col>
-              <Field
-                name="onlineMeetingLink"
-                label={translate('online-meeting-link')}
-              />
-            </Col>
-            <Col colSpan={2}>
-              <Subtitle>{translate('circuit-subtitle')}</Subtitle>
-            </Col>
-            <Col>
-              <Field name="circuitName" label={translate('circuit-name')} />
-            </Col>
-            <Col>
-              <Field
-                name="circuitOverseerName"
-                label={translate('circuit-overseer-name')}
-              />
-            </Col>
-            <Col>
-              <Field
-                name="circuitOverseerContact"
-                label={translate('circuit-overseer-contact')}
-              />
-            </Col>
-            <Col />
-            <Col>
-              <Button>{translateRoot('common.save')}</Button>
-            </Col>
-          </Grid>
-        )}
+      <Form
+        schema={schema}
+        defaultValues={congregation}
+        api="api/congregation/save"
+      >
+        <Grid cols={2}>
+          <Col>
+            <Input
+              name="id"
+              value={congregationId}
+              label={translate('id')}
+              disabled
+            />
+          </Col>
+          <Col>
+            <Input name="name" label={translate('name')} />
+          </Col>
+          <Col>
+            <Input name="number" label={translate('number')} type="number" />
+          </Col>
+          <Col>
+            <TextArea name="address" label={translate('address')} />
+          </Col>
+          <Col>
+            <Select
+              name="midweekMeetingDay"
+              label={translate('midweek-meeting-day')}
+              options={weekOptions()}
+            />
+          </Col>
+          <Col>
+            <Select
+              name="weekendMeetingDay"
+              label={translate('weekend-meeting-day')}
+              options={weekOptions()}
+            />
+          </Col>
+          <Col>
+            <Input
+              name="midweekMeetingTime"
+              label={translate('midweek-meeting-time')}
+              type="time"
+            />
+          </Col>
+          <Col>
+            <Input
+              name="weekendMeetingTime"
+              label={translate('weekend-meeting-time')}
+              type="time"
+            />
+          </Col>
+          <Col colSpan={2}>
+            <Subtitle>{translate('online-meeting-subtitle')}</Subtitle>
+          </Col>
+          <Col>
+            <Input
+              name="onlineMeetingSoftware"
+              label={translate('online-meeting-software')}
+            />
+          </Col>
+          <Col>
+            <Input
+              name="onlineMeetingId"
+              label={translate('online-meeting-id')}
+            />
+          </Col>
+          <Col>
+            <Input
+              name="onlineMeetingDialNumber"
+              label={translate('online-meeting-dial-number')}
+            />
+          </Col>
+          <Col>
+            <Input
+              name="onlineMeetingPassword"
+              label={translate('online-meeting-password')}
+            />
+          </Col>
+          <Col>
+            <Input
+              name="onlineMeetingLink"
+              label={translate('online-meeting-link')}
+            />
+          </Col>
+          <Col colSpan={2}>
+            <Subtitle>{translate('circuit-subtitle')}</Subtitle>
+          </Col>
+          <Col>
+            <Input name="circuitName" label={translate('circuit-name')} />
+          </Col>
+          <Col>
+            <Input
+              name="circuitOverseerName"
+              label={translate('circuit-overseer-name')}
+            />
+          </Col>
+          <Col>
+            <Input
+              name="circuitOverseerContact"
+              label={translate('circuit-overseer-contact')}
+            />
+          </Col>
+          <Col />
+        </Grid>
       </Form>
     </Card>
   );

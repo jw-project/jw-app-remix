@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useAtomValue, useSetAtom } from 'jotai';
 
 import { showMenuAtom } from '~/atoms-global/menu';
+import { isSavingAtom } from '~/atoms-global/saving';
 import { themeAtom } from '~/atoms-global/theme';
 
 import { Avatar } from './avatar';
@@ -16,6 +17,8 @@ import { Notifications } from './notifications';
 
 export function Navbar() {
   const showMenu = useAtomValue(showMenuAtom);
+  const isSaving = useAtomValue(isSavingAtom);
+
   const changeThemeAtom = useSetAtom(themeAtom);
 
   const changeTheme = async () => {
@@ -34,6 +37,8 @@ export function Navbar() {
       </NavbarStart>
 
       <NavbarEnd>
+        <NavbarItem>salvando {isSaving.toString()}</NavbarItem>
+
         <NavbarItem>
           <button onClick={changeTheme}>mudar theme</button>
         </NavbarItem>
