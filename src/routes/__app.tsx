@@ -1,4 +1,7 @@
-import { Outlet } from '@remix-run/react';
+import { Fragment, useEffect, useState } from 'react';
+
+import { Transition } from '@headlessui/react';
+import { Outlet, useNavigation } from '@remix-run/react';
 import type { LoaderFunction, TypedResponse } from '@remix-run/server-runtime';
 import { redirect } from '@remix-run/server-runtime';
 import { error } from 'console';
@@ -41,14 +44,31 @@ export const loader: LoaderFunction = async ({
 };
 
 export default function Layout() {
+  const [show, setShow] = useState(false);
+  const { state } = useNavigation();
+
+  useEffect(() => {
+    setShow(state === 'idle');
+  }, [state]);
+
   return (
     <>
       <ClientOnly>{() => <Toaster />}</ClientOnly>
       <Navbar />
       <Menu />
-      <BodyMargin>
-        <Outlet />
-      </BodyMargin>
+      <Transition
+        show={show}
+        enter="transition-opacity duration-300"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-300"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
+        <BodyMargin>
+          <Outlet />
+        </BodyMargin>
+      </Transition>
     </>
   );
 }
