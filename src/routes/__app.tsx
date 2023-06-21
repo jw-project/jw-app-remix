@@ -5,8 +5,6 @@ import { Outlet, useNavigation } from '@remix-run/react';
 import type { LoaderFunction, TypedResponse } from '@remix-run/server-runtime';
 import { redirect } from '@remix-run/server-runtime';
 import { error } from 'console';
-import { Toaster } from 'react-hot-toast';
-import { ClientOnly } from 'remix-utils';
 
 import { BodyMargin } from '~/components/commons/body/body-margin';
 import { Menu } from '~/components/menu/menu';
@@ -53,7 +51,6 @@ export default function Layout() {
 
   return (
     <>
-      <ClientOnly>{() => <Toaster />}</ClientOnly>
       <Navbar />
       <Menu />
       <Transition

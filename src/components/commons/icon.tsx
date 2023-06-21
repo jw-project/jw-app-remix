@@ -1,3 +1,5 @@
+import React from 'react';
+
 export type IconOpts =
   | '10k'
   | '10k'
@@ -4663,23 +4665,31 @@ export type IconOpts =
   | 'zoom_out_map'
   | 'zoom_out_map';
 
-export function Icon({
-  icon,
-  className,
-  size,
-}: {
-  className?: string;
-  icon: IconOpts;
-  size?:
-    | 'icon-x-small'
-    | 'icon-small'
-    | 'icon-medium'
-    | 'icon-large'
-    | 'icon-x-large';
-}) {
+export const Icon = React.forwardRef<
+  HTMLSpanElement,
+  {
+    className?: string;
+    icon: IconOpts;
+    size?:
+      | 'icon-x-small'
+      | 'icon-small'
+      | 'icon-medium'
+      | 'icon-large'
+      | 'icon-x-large';
+    onClick?: () => void;
+  }
+>(({ icon, className, size, onClick }, forwardedRef) => {
   return (
-    <span className={`${size} ${className} material-symbols-rounded`}>
+    <span
+      ref={forwardedRef}
+      onClick={onClick}
+      className={`${size} ${className} ${
+        onClick ? 'cursor-pointer' : ''
+      } material-symbols-rounded`}
+    >
       {icon}
     </span>
   );
-}
+});
+
+Icon.displayName = 'Icon';

@@ -1,11 +1,9 @@
-import axios from 'axios';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 
 import { showMenuAtom } from '~/atoms-global/menu';
-import { isSavingAtom } from '~/atoms-global/saving';
-import { themeAtom } from '~/atoms-global/theme';
 
 import { Avatar } from './avatar';
+import { ChangeTheme } from './change-theme';
 import { MobileAsideButton } from './mobile-aside-button';
 import {
   NavbarBase,
@@ -14,19 +12,10 @@ import {
   NavbarStart,
 } from './navbar-styled';
 import { Notifications } from './notifications';
+import { SavingIndicator } from './saving-indicator';
 
 export function Navbar() {
   const showMenu = useAtomValue(showMenuAtom);
-  const isSaving = useAtomValue(isSavingAtom);
-
-  const changeThemeAtom = useSetAtom(themeAtom);
-
-  const changeTheme = async () => {
-    const theme = changeThemeAtom();
-    try {
-      await axios.post('/api/save-theme', { theme });
-    } catch (error) {}
-  };
 
   return (
     <NavbarBase id="navbar-main" $expanded={showMenu}>
@@ -37,10 +26,12 @@ export function Navbar() {
       </NavbarStart>
 
       <NavbarEnd>
-        <NavbarItem>salvando {isSaving.toString()}</NavbarItem>
+        <NavbarItem>
+          <SavingIndicator />
+        </NavbarItem>
 
         <NavbarItem>
-          <button onClick={changeTheme}>mudar theme</button>
+          <ChangeTheme />
         </NavbarItem>
 
         <NavbarItem $withDivider>

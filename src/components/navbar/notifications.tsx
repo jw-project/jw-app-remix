@@ -15,7 +15,7 @@ const NotificationsStyled = tailStyled.div`
 export function Notifications() {
   const Button = (
     <NotificationsStyled>
-      <Icon icon="notifications" />
+      <Icon icon="notifications" className="dark:text-white" />
       <NotificationBadge>2</NotificationBadge>
     </NotificationsStyled>
   );

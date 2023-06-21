@@ -1,12 +1,8 @@
-import { json } from '@remix-run/node';
 import type {
   DocumentData,
   DocumentSnapshot,
   QuerySnapshot,
 } from 'firebase-admin/firestore';
-import type { ZodRawShape, z } from 'zod';
-
-import { ToastType } from '~/components/commons/toast';
 
 export const getAllData = <T>(
   snap: QuerySnapshot<DocumentData>,
@@ -23,30 +19,3 @@ export const getAllData = <T>(
 
 export const getData = <T>(snap: DocumentSnapshot<DocumentData>) =>
   snap.data() as T;
-
-export async function checkReturnMessage<T extends ZodRawShape, F>({
-  request,
-  schema,
-  mutation,
-}: {
-  request: Request;
-  schema: z.ZodObject<T>;
-  mutation: DomainFunction<F>;
-}) {
-  const result = await performMutation({ request, schema, mutation });
-
-  if (!result.success) {
-    console.error('This erro:', result.errors, 'on try sent:', result.values);
-
-    return json(
-      {
-        ...result,
-        message: result.errors._global?.join(', ') || '',
-        messageType: ToastType.ERROR,
-      },
-      400,
-    );
-  }
-
-  return json({ message: 'common.saved-success' });
-}

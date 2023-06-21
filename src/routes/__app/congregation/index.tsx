@@ -12,7 +12,6 @@ import { Input } from '~/components/commons/form/input';
 import { Select } from '~/components/commons/form/select';
 import { TextArea } from '~/components/commons/form/text-area';
 import { Col, Grid } from '~/components/commons/grid';
-import type { ToastType } from '~/components/commons/toast';
 import { Subtitle } from '~/components/commons/typography';
 import type { CongregationEntity } from '~/entities/congregation';
 import { weekOptions } from '~/entities/week';

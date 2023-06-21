@@ -7,7 +7,7 @@ export const NavbarBase = tailStyled.nav<{ $expanded: boolean }>`
     fixed
     flex
     bg-white
-    dark:bg-gray-900
+    dark:bg-gray-800
     h-14
     border-b
     border-gray-200
@@ -25,7 +25,10 @@ export const NavbarStart = tailStyled.div`
 `;
 
 export const NavbarItem = tailStyled.div<{ $withDivider?: boolean }>`
-    ${({ $withDivider }) => ($withDivider ? 'border-r border-gray-100' : '')}
+    ${({ $withDivider }) =>
+      $withDivider ? 'border-r border-gray-100 dark:border-gray-700' : ''}
+    flex
+    justify-center
     items-center
     py-2
     px-3

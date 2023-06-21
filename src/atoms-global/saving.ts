@@ -22,7 +22,7 @@ const instanceTimeout = (set: Setter, newData: SavingDataType) => {
     } finally {
       set(removeSavingDataAtom, newData);
     }
-  }, 20000);
+  }, 2000);
 };
 
 export const savingData = atom<Array<SavingDataTypeInternal>>([]);
