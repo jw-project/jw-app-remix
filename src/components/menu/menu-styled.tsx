@@ -10,6 +10,7 @@ export const Aside = w.aside(
     z-40
     h-screen
     bg-gray-800
+    dark:bg-gray-900
     transition-all
 `,
   {
@@ -50,11 +51,14 @@ export const LinkMenuStyled = w(Link, {
   className: `
     py-2
     flex
+    transition-colors
     text-gray-300
     hover:bg-gray-700
+    dark:hover:bg-gray-800
 `,
   variants: {
-    selected: (selected: boolean) => (selected ? 'bg-gray-700' : ''),
+    selected: (selected: boolean) =>
+      selected ? 'bg-gray-700 dark:bg-gray-800' : '',
   },
   transient: ['selected'],
 });

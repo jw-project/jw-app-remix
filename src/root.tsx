@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 
-import { Links, Meta, useLoaderData } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 import { Provider, createStore } from 'jotai';
 
+import { languageAtom } from './atoms-global/language';
 import { themeAtom } from './atoms-global/theme';
 import { Body } from './components/commons/body/body';
 import type { RootLoaderReturn } from './server-routes/root.server';
@@ -14,19 +15,14 @@ export default function App() {
   const store = useMemo(() => {
     const newStore = createStore();
     newStore.set(themeAtom, themeMode);
+    newStore.set(languageAtom, locale);
 
     return newStore;
-  }, [themeMode]);
+  }, [themeMode, locale]);
 
   return (
-    <html lang={locale.defaultLanguage} dir={locale.defaultLanguage}>
-      <head>
-        <Meta />
-        <Links />
-      </head>
-      <Provider store={store}>
-        <Body />
-      </Provider>
-    </html>
+    <Provider store={store}>
+      <Body />
+    </Provider>
   );
 }

@@ -1,13 +1,15 @@
 import React from 'react';
 
+import { useAtomValue } from 'jotai';
 import { Controller, useFormContext } from 'react-hook-form';
-import styled from 'windstitch';
+
+import { themeAtom } from '~/atoms-global/theme';
 
 import { FieldArea } from './field-area';
-import { inputBase } from './style-base';
+import { inputBaseFactory } from './style-base';
 import type { InputType } from './types';
 
-const InputStyled = styled('input', inputBase);
+const InputStyled = inputBaseFactory('input');
 
 export function Input({
   name,
@@ -22,6 +24,7 @@ export function Input({
     formState: { errors },
     control,
   } = useFormContext();
+  const theme = useAtomValue(themeAtom);
 
   return (
     <FieldArea name={name} label={label}>
@@ -32,6 +35,7 @@ export function Input({
             ref={ref}
             error={Boolean(errors[name])}
             {...props}
+            style={{ colorScheme: theme }}
           />
         )}
         control={control}

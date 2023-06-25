@@ -54,7 +54,7 @@ export default function Layout() {
       <Navbar />
       <Menu />
       <Transition
-        as={Fragment}
+        as={BodyMargin}
         show={show}
         enter="transition-opacity duration-300"
         enterFrom="opacity-0"
@@ -63,9 +63,7 @@ export default function Layout() {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <BodyMargin>
-          <Outlet />
-        </BodyMargin>
+        <Outlet />
       </Transition>
     </>
   );

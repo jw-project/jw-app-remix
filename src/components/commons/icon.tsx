@@ -4683,7 +4683,7 @@ export const Icon = React.forwardRef<
     <span
       ref={forwardedRef}
       onClick={onClick}
-      className={`${size} ${className} ${
+      className={`transition-colors ${size} ${className} ${
         onClick ? 'cursor-pointer' : ''
       } material-symbols-rounded`}
     >

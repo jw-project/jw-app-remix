@@ -1,11 +1,14 @@
 import React from 'react';
 
+import { useAtomValue } from 'jotai';
 import { Controller, useFormContext } from 'react-hook-form';
-import styled, { w } from 'windstitch';
+import { w } from 'windstitch';
+
+import { themeAtom } from '~/atoms-global/theme';
 
 import { Icon } from '../icon';
 import { FieldArea } from './field-area';
-import { inputBase } from './style-base';
+import { inputBaseFactory } from './style-base';
 import type { InputType } from './types';
 
 export type SelectOptionsType = {
@@ -13,14 +16,7 @@ export type SelectOptionsType = {
   value: string;
 };
 
-const SelectStyled = styled('select', {
-  ...inputBase,
-  className: `
-  ${inputBase.className}
-  block
-  appearance-none
-`,
-});
+const SelectStyled = inputBaseFactory('select', 'block appearance-none');
 
 const SelectorStyled = w.div(`
   pointer-events-none
@@ -30,6 +26,8 @@ const SelectorStyled = w.div(`
   flex
   items-center
   px-2
+  transition-colors
+  dark:text-gray-300
 `);
 
 export function Select({
@@ -46,6 +44,7 @@ export function Select({
     formState: { errors },
     control,
   } = useFormContext();
+  const theme = useAtomValue(themeAtom);
 
   return (
     <FieldArea name={name} label={label}>
@@ -57,6 +56,7 @@ export function Select({
               ref={ref}
               error={Boolean(errors[name])}
               {...props}
+              style={{ colorScheme: theme }}
             >
               {options.map(({ label: labelOpt, value }) => (
                 <option key={value} value={value}>

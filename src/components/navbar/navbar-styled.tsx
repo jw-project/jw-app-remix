@@ -6,13 +6,15 @@ export const NavbarBase = w.nav(`
     right-0
     fixed
     flex
+    transition-colors
     bg-white
-    dark:bg-gray-800
+    dark:bg-slate-800
     h-14
     border-b
     border-gray-200
+    dark:border-gray-700
     z-10
-    w-screen transition-all
+    w-screen
     lg:pl-60
     lg:w-auto
 `);
