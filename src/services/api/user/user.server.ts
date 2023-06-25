@@ -16,6 +16,7 @@ export const saveTheme = async (request: Request) => {
   cacheUser?.del(uidUser);
 };
 
+// TODO remover não usado
 export const saveLanguage = async (request: Request) => {
   const { language } = await request.json();
   const { congregationId, id, uidUser } = await getAuthenticatedUser(request);

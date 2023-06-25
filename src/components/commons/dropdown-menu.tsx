@@ -1,14 +1,14 @@
 import React from 'react';
 
 import { Menu } from '@headlessui/react';
-import tailStyled from 'tailwind-styled-components';
 import { v4 as uuid } from 'uuid';
+import { w } from 'windstitch';
 
 import { Divider } from './divider';
 import { Dropdown } from './dropdown';
 
-const MenuItem = tailStyled.div<{ $active: boolean }>`
-  ${({ $active }) => ($active ? 'bg-gray-100' : '')}
+const MenuItem = w.div(
+  `
   group
   flex
   w-full
@@ -18,9 +18,16 @@ const MenuItem = tailStyled.div<{ $active: boolean }>`
   py-2
   text-sm
   cursor-pointer
-`;
+`,
+  {
+    variants: {
+      active: (active: boolean) => (active ? 'bg-gray-100' : ''),
+    },
+    transient: ['active'],
+  },
+);
 
-export type DropdownMenuType = {
+type DropdownMenuType = {
   label: string;
   to: string;
 };
@@ -48,7 +55,7 @@ export function DropdownMenu({
 
         return (
           <Menu.Item key={opt.label}>
-            {({ active }) => <MenuItem $active={active}>{opt.label}</MenuItem>}
+            {({ active }) => <MenuItem active={active}>{opt.label}</MenuItem>}
           </Menu.Item>
         );
       })}

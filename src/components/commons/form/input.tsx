@@ -1,15 +1,13 @@
 import React from 'react';
 
 import { Controller, useFormContext } from 'react-hook-form';
-import tailStyled from 'tailwind-styled-components';
+import styled from 'windstitch';
 
 import { FieldArea } from './field-area';
-import { inputsStyleBase } from './style-base';
+import { inputBase } from './style-base';
 import type { InputType } from './types';
 
-const InputStyled = tailStyled.input<{ $error?: boolean }>`
-  ${({ $error }) => inputsStyleBase($error)}
-`;
+const InputStyled = styled('input', inputBase);
 
 export function Input({
   name,
@@ -32,7 +30,7 @@ export function Input({
           <InputStyled
             {...field}
             ref={ref}
-            $error={Boolean(errors[name])}
+            error={Boolean(errors[name])}
             {...props}
           />
         )}

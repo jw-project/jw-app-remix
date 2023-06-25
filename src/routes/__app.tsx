@@ -54,6 +54,7 @@ export default function Layout() {
       <Navbar />
       <Menu />
       <Transition
+        as={Fragment}
         show={show}
         enter="transition-opacity duration-300"
         enterFrom="opacity-0"

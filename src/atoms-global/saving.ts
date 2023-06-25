@@ -61,7 +61,7 @@ export const addSavingDataAtom = atom(
   },
 );
 
-export const removeSavingDataAtom = atom(
+const removeSavingDataAtom = atom(
   null,
   (_get, set, removeData: SavingDataType) => {
     set(savingData, (current) =>

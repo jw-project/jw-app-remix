@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { Controller, useFormContext } from 'react-hook-form';
-import tailStyled from 'tailwind-styled-components';
+import styled, { w } from 'windstitch';
 
 import { Icon } from '../icon';
 import { FieldArea } from './field-area';
-import { inputsStyleBase } from './style-base';
+import { inputBase } from './style-base';
 import type { InputType } from './types';
 
 export type SelectOptionsType = {
@@ -13,13 +13,16 @@ export type SelectOptionsType = {
   value: string;
 };
 
-const SelectStyled = tailStyled.select<{ $error?: boolean }>`
-  ${({ $error }) => inputsStyleBase($error)}
+const SelectStyled = styled('select', {
+  ...inputBase,
+  className: `
+  ${inputBase.className}
   block
   appearance-none
-`;
+`,
+});
 
-const SelectorStyled = tailStyled.div`
+const SelectorStyled = w.div(`
   pointer-events-none
   absolute
   inset-y-0
@@ -27,7 +30,7 @@ const SelectorStyled = tailStyled.div`
   flex
   items-center
   px-2
-`;
+`);
 
 export function Select({
   name,
@@ -52,7 +55,7 @@ export function Select({
             <SelectStyled
               {...field}
               ref={ref}
-              $error={Boolean(errors[name])}
+              error={Boolean(errors[name])}
               {...props}
             >
               {options.map(({ label: labelOpt, value }) => (

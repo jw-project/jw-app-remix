@@ -1,7 +1,8 @@
 import { Link } from '@remix-run/react';
-import tailStyled from 'tailwind-styled-components';
+import { w } from 'windstitch';
 
-export const Aside = tailStyled.aside<{ $expanded: boolean }>`
+export const Aside = w.aside(
+  `
     w-60
     -left-60
     fixed
@@ -10,10 +11,16 @@ export const Aside = tailStyled.aside<{ $expanded: boolean }>`
     h-screen
     bg-gray-800
     transition-all
-    ${({ $expanded }) => ($expanded ? 'left-0' : 'lg:left-0')}
-`;
+`,
+  {
+    variants: {
+      expanded: (expanded: boolean) => (expanded ? 'left-0' : 'lg:left-0'),
+    },
+    transient: ['expanded'],
+  },
+);
 
-export const MenuHeader = tailStyled.div`
+export const MenuHeader = w.div(`
     flex
     flex-row
     w-full
@@ -23,30 +30,35 @@ export const MenuHeader = tailStyled.div`
     px-3
     h-14
     items-center
-`;
+`);
 
-export const MenuLabel = tailStyled.p`
+export const MenuLabel = w.p(`
     p-3
     text-xs
     uppercase
     text-gray-400
-`;
+`);
 
-export const IconMenuStyled = tailStyled.span`
+export const IconMenuStyled = w.span(`
     w-12
     flex
     justify-center
     text-gray-400
-`;
+`);
 
-export const LinkMenuStyled = tailStyled(Link)<{ $selected: boolean }>`
+export const LinkMenuStyled = w(Link, {
+  className: `
     py-2
     flex
     text-gray-300
     hover:bg-gray-700
-    ${({ $selected }) => ($selected ? 'bg-gray-700' : '')}
-`;
+`,
+  variants: {
+    selected: (selected: boolean) => (selected ? 'bg-gray-700' : ''),
+  },
+  transient: ['selected'],
+});
 
-export const LinkLabelMenuStyled = tailStyled.span`
+export const LinkLabelMenuStyled = w.span(`
     flex-grow
-`;
+`);

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import tailStyled from 'tailwind-styled-components';
+import { w } from 'windstitch';
 
-export const NotificationBadgeStyled = tailStyled.div`
+const NotificationBadgeStyled = w.div(`
   inline-flex
   absolute  
   -mt-6
@@ -15,7 +15,7 @@ export const NotificationBadgeStyled = tailStyled.div`
   text-white
   bg-red-500
   rounded-full
-`;
+`);
 
 export function NotificationBadge({ children }: React.PropsWithChildren) {
   if (!children) {

@@ -1,6 +1,6 @@
-import tailStyled from 'tailwind-styled-components';
+import { w } from 'windstitch';
 
-export const Overlay = tailStyled.div`
+export const Overlay = w.div(`
     fixed
     top-0
     left-0
@@ -15,23 +15,23 @@ export const Overlay = tailStyled.div`
     flex-col
     items-center
     justify-center
-`;
+`);
 
-export const LoadingTitle = tailStyled.h2`
+export const LoadingTitle = w.h2(`
     text-center
     text-white
     text-xl
     font-semibold
     mb-1
-`;
+`);
 
-export const LoadingSubtitle = tailStyled.p`
+export const LoadingSubtitle = w.p(`
     w-1/3
     text-center
     text-white
-`;
+`);
 
-export const Spinner = tailStyled.div`
+export const Spinner = w.div(`
     w-16
     h-16
     border-4
@@ -41,4 +41,4 @@ export const Spinner = tailStyled.div`
     animate-spin
     border-t-transparent
     mb-5
-`;
+`);

@@ -1,23 +1,42 @@
-import tailStyled from 'tailwind-styled-components';
+import { w } from 'windstitch';
 
-type Options = 1 | 2 | 3 | 4;
-
-type ColSpanType = {
-  colSpan?: Options;
-};
-
-type ColType = {
-  cols: Options;
-};
-
-export const Grid = tailStyled.div<ColType>`
+export const Grid = w.div(
+  `
   grid
   grid-cols-1
-  ${({ cols }) => `md:grid-cols-${cols}`}
   gap-4
-`;
+`,
+  {
+    variants: {
+      cols: {
+        1: 'md:grid-cols-1',
+        2: 'md:grid-cols-2',
+        3: 'md:grid-cols-3',
+        4: 'md:grid-cols-4',
+      },
+    },
+    defaultVariants: {
+      cols: 1,
+    },
+  },
+);
 
-export const Col = tailStyled.div<ColSpanType>`
+export const Col = w.div(
+  `
   col-span-1
-  ${({ colSpan }) => `md:col-span-${colSpan}`}
-`;
+`,
+  {
+    variants: {
+      colSpan: {
+        0: '',
+        1: 'md:col-span-1',
+        2: 'md:col-span-2',
+        3: 'md:col-span-3',
+        4: 'md:col-span-4',
+      },
+    },
+    defaultVariants: {
+      colSpan: 0,
+    },
+  },
+);

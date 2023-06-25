@@ -1,7 +1,7 @@
 import { useMatches } from '@remix-run/react';
 import { get } from 'lodash';
 
-export type Translation = Record<string, string | Record<string, string>>;
+type Translation = Record<string, string | Record<string, string>>;
 
 export type Translations = Record<string, Translation>;
 

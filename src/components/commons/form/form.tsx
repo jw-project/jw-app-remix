@@ -15,7 +15,7 @@ import type { ZodType, ZodTypeDef } from 'zod';
 
 import { addSavingDataAtom } from '~/atoms-global/saving';
 
-export type ActionDataReturn<TFieldValues extends FieldValues> = {
+type ActionDataReturn<TFieldValues extends FieldValues> = {
   success: boolean;
   errors?: {
     field: FieldPath<TFieldValues> | `root.${string}` | 'root';

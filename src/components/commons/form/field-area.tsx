@@ -1,14 +1,14 @@
 import React from 'react';
 
 import { useFormContext } from 'react-hook-form';
-import tailStyled from 'tailwind-styled-components';
+import { w } from 'windstitch';
 
 import { ErrorLabel } from './error-label';
 import { Label } from './style-base';
 
-export const FieldAreaWrapper = tailStyled.div`
+const FieldAreaWrapper = w.div(`
   w-full
-`;
+`);
 
 export const FieldArea = ({
   children,

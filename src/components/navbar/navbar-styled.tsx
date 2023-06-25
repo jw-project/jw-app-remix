@@ -1,6 +1,6 @@
-import tailStyled from 'tailwind-styled-components';
+import { w } from 'windstitch';
 
-export const NavbarBase = tailStyled.nav<{ $expanded: boolean }>`
+export const NavbarBase = w.nav(`
     top-0
     left-0
     right-0
@@ -15,27 +15,35 @@ export const NavbarBase = tailStyled.nav<{ $expanded: boolean }>`
     w-screen transition-all
     lg:pl-60
     lg:w-auto
-`;
+`);
 
-export const NavbarStart = tailStyled.div`
+export const NavbarStart = w.div(`
     flex-1
     items-stretch
     flex
     h-14
-`;
+`);
 
-export const NavbarItem = tailStyled.div<{ $withDivider?: boolean }>`
-    ${({ $withDivider }) =>
-      $withDivider ? 'border-r border-gray-100 dark:border-gray-700' : ''}
+export const NavbarItem = w.div(
+  `
     flex
     justify-center
     items-center
     py-2
     px-3
     w-16
-`;
+`,
+  {
+    variants: {
+      divider: (divider: boolean) =>
+        divider ? 'border-r border-gray-100 dark:border-gray-700' : '',
+    },
+    defaultVariants: { divider: false },
+    transient: ['divider'],
+  },
+);
 
-export const NavbarEnd = tailStyled.div`
+export const NavbarEnd = w.div(`
     flex
     items-stretch
-`;
+`);

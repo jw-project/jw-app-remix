@@ -22,14 +22,14 @@ export function Tab({ title, to, icon, selected, disabled }: TabProp) {
       <TabLinkStyled
         to={disabled ? '#' : to}
         selected={selected}
-        $disabled={Boolean(disabled)}
+        disabled={Boolean(disabled)}
       >
         {icon && (
           <TabIconStyled
             icon={icon}
             size="icon-x-small"
             selected={selected}
-            $disabled={Boolean(disabled)}
+            disabled={Boolean(disabled)}
           />
         )}
         {title}

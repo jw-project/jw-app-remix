@@ -1,8 +1,8 @@
-import tailStyled from 'tailwind-styled-components';
+import { w } from 'windstitch';
 
 import { Dropdown } from '../commons/dropdown';
 
-const AvatarStyled = tailStyled.div`
+const AvatarStyled = w.div(`
     inline-flex
     overflow-hidden
     relative
@@ -12,12 +12,12 @@ const AvatarStyled = tailStyled.div`
     h-10
     rounded-full
     bg-gray-600
-`;
+`);
 
-const LettersStyled = tailStyled.div`
+const LettersStyled = w.div(`
     font-medium
     text-gray-300
-`;
+`);
 
 export function Avatar({ name }: { name: string }) {
   const Button = (

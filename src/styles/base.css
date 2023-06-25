@@ -3,5 +3,5 @@
 }
 
 body {
-  @apply text-base pt-14 lg:pl-60;
+  @apply text-base pt-14 lg:pl-60 h-screen;
 }

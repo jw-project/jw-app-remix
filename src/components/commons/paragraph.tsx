@@ -1,6 +1,6 @@
-import tailStyled from 'tailwind-styled-components';
+import { w } from 'windstitch';
 
-export const Paragraph = tailStyled.p`
+export const Paragraph = w.p(`
     text-base
     text-gray-600
     mt-4
@@ -8,4 +8,4 @@ export const Paragraph = tailStyled.p`
     flex-col
     items-center
     md:items-start
-`;
+`);

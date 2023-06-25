@@ -1,16 +1,16 @@
-import tailStyled from 'tailwind-styled-components';
+import { w } from 'windstitch';
 
 import { DropdownMenu } from '../commons/dropdown-menu';
 import { Icon } from '../commons/icon';
 import { NotificationBadge } from '../commons/notification-badge';
 
-const NotificationsStyled = tailStyled.div`
+const NotificationsStyled = w.div(`
   flex
   items-center
   justify-center
   h-10
   w-10
-`;
+`);
 
 export function Notifications() {
   const Button = (

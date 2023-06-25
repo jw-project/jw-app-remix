@@ -1,6 +1,9 @@
-import tailStyled from 'tailwind-styled-components';
+import type { ElementType } from 'react';
 
-export const Label = tailStyled.label`
+import { w } from 'windstitch';
+import type { ComponentConfig } from 'windstitch/dist/types';
+
+export const Label = w.label(`
   block
   uppercase
   tracking-wide
@@ -8,18 +11,32 @@ export const Label = tailStyled.label`
   text-xs
   font-bold
   mb-2
-`;
+`);
 
-export const inputsStyleBase = (error?: boolean) => `
-  disabled:bg-gray-200
-  disabled:cursor-not-allowed
-  w-full
-  bg-gray-50
-  text-gray-700
-  border
-  rounded
-  py-3
-  px-4
-  mb-3
-  ${error ? 'border-red-500' : ''}
-`;
+export const inputBase: ComponentConfig<
+  { error: (value: boolean) => string },
+  {
+    error: boolean;
+  },
+  ElementType
+> = {
+  className: `
+    disabled:bg-gray-200
+    disabled:cursor-not-allowed
+    w-full
+    bg-gray-50
+    text-gray-700
+    border
+    rounded
+    py-3
+    px-4
+    mb-3
+  `,
+  variants: {
+    error: (error?: boolean) => (error ? 'border-red-500' : ''),
+  },
+  defaultVariants: {
+    error: false,
+  },
+  transient: ['error'],
+};

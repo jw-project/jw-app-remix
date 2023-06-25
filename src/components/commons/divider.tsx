@@ -1,9 +1,9 @@
-import tailStyled from 'tailwind-styled-components';
+import { w } from 'windstitch';
 
-export const Divider = tailStyled.div`
+export const Divider = w.div(`
   w-full
   h-px
   bg-gray-100
   mt-1
   mb-1
-`;
+`);

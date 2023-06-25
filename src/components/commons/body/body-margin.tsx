@@ -1,7 +1,8 @@
-import tailStyled from 'tailwind-styled-components';
+import { w } from 'windstitch';
 
-export const BodyMargin = tailStyled.section`
+export const BodyMargin = w.section(`
   p-6
+  min-h-full
   bg-gray-50
   dark:bg-gray-600
-`;
+`);

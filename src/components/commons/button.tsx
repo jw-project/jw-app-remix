@@ -1,30 +1,7 @@
-import tailStyled from 'tailwind-styled-components';
+import { w } from 'windstitch';
 
-const buttonStyles = {
-  primary: `
-    bg-blue-500
-    border-blue-500
-    text-white
-    enabled:hover:border-gray-500
-    enabled:hover:bg-blue-600
-    enabled:active:bg-blue-700
-    `,
-  secondary: `
-    bg-gray-100
-    border-gray-100
-    text-gray-700
-    enabled:hover:border-gray-300
-    enabled:hover:bg-gray-200
-    enabled:active:bg-gray-300
-    `,
-};
-
-type ButtonType = {
-  $buttonStyle?: keyof typeof buttonStyles;
-  $bold?: boolean;
-};
-
-export const Button = tailStyled.button<ButtonType>`
+export const Button = w.button(
+  `
     leading-normal
     flex
     border
@@ -36,8 +13,32 @@ export const Button = tailStyled.button<ButtonType>`
     whitespace-nowrap
     rounded
     focus:outline-none
-    ${({ $buttonStyle }) => buttonStyles[$buttonStyle || 'primary']}
-    ${({ $bold }) => ($bold ? 'font-bold' : '')}
     disabled:opacity-50
     disabled:cursor-not-allowed
-`;
+`,
+  {
+    variants: {
+      buttonStyle: {
+        primary: `
+          bg-blue-500
+          border-blue-500
+          text-white
+          enabled:hover:border-gray-500
+          enabled:hover:bg-blue-600
+          enabled:active:bg-blue-700
+        `,
+        secondary: `
+          bg-gray-100
+          border-gray-100
+          text-gray-700
+          enabled:hover:border-gray-300
+          enabled:hover:bg-gray-200
+          enabled:active:bg-gray-300
+        `,
+      },
+      bold: (bold: boolean) => (bold ? 'font-bold' : ''),
+    },
+    defaultVariants: { buttonStyle: 'primary', bold: false },
+    transient: ['bold'],
+  },
+);

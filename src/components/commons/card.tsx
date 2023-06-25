@@ -1,25 +1,21 @@
-import tailStyled from 'tailwind-styled-components';
+import { w } from 'windstitch';
 
-type PadType = 0 | 'sm' | 'md';
-
-const padSwitch = (padded: PadType) => {
-  switch (padded) {
-    case 0:
-      return '';
-
-    case 'sm':
-      return 'p-4 md:p-6';
-
-    case 'md':
-
-    default:
-      return 'p-6 md:p-8';
-  }
-};
-
-export const Card = tailStyled.div<{ padded?: PadType }>`
+export const Card = w.div(
+  `
   bg-white
   shadow
   rounded-lg
-  ${({ padded = 'md' }) => padSwitch(padded)}
-`;
+`,
+  {
+    variants: {
+      padded: {
+        0: '',
+        sm: 'p-4 md:p-6',
+        md: 'p-6 md:p-8',
+      },
+    },
+    defaultVariants: {
+      padded: 'md',
+    },
+  },
+);

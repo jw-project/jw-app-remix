@@ -1,14 +1,14 @@
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 
 import { Transition } from '@headlessui/react';
-import tailStyled from 'tailwind-styled-components';
+import { w } from 'windstitch';
 
-const BackdropStyled = tailStyled.div`
+const BackdropStyled = w.div(`
   fixed
   inset-0
   bg-black/30
   z-10
-`;
+`);
 
 export function Backdrop({
   onClick,

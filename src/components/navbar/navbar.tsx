@@ -1,7 +1,3 @@
-import { useAtomValue } from 'jotai';
-
-import { showMenuAtom } from '~/atoms-global/menu';
-
 import { Avatar } from './avatar';
 import { ChangeTheme } from './change-theme';
 import { MobileAsideButton } from './mobile-aside-button';
@@ -15,10 +11,8 @@ import { Notifications } from './notifications';
 import { SavingIndicator } from './saving-indicator';
 
 export function Navbar() {
-  const showMenu = useAtomValue(showMenuAtom);
-
   return (
-    <NavbarBase id="navbar-main" $expanded={showMenu}>
+    <NavbarBase id="navbar-main">
       <NavbarStart>
         <NavbarItem>
           <MobileAsideButton />
@@ -34,7 +28,7 @@ export function Navbar() {
           <ChangeTheme />
         </NavbarItem>
 
-        <NavbarItem $withDivider>
+        <NavbarItem divider>
           <Notifications />
         </NavbarItem>
 

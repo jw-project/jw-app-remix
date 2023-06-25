@@ -26,7 +26,7 @@ function MenuLink({ list }: { list: MenuListType[] }) {
     <ul>
       {list.map(({ icon, label, to }) => (
         <li key={label}>
-          <LinkMenuStyled to={to} $selected={checkPathname(to)}>
+          <LinkMenuStyled to={to} selected={checkPathname(to)}>
             <IconMenuStyled>
               <Icon icon={icon} />
             </IconMenuStyled>

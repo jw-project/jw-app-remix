@@ -14,7 +14,7 @@ export function Menu() {
 
   return (
     <>
-      <Aside $expanded={showMenu}>
+      <Aside expanded={showMenu}>
         <MenuHeader>
           Admin
           <b className="font-black">One</b>

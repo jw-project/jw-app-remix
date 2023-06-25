@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 
-import tailStyled from 'tailwind-styled-components';
+import { w } from 'windstitch';
 
 type Diretion = 'top' | 'down' | 'left' | 'right';
 
@@ -38,6 +38,35 @@ function defineDirection(
   }
 }
 
+const TooltipWrapper = w.div(`
+    group
+    relative
+    flex
+    justify-center
+`);
+
+const TooltipStyled = w.div(`
+    absolute
+    z-10
+    inline-block
+    invisible
+    opacity-0
+    transition-opacity
+    whitespace-nowrap
+    pointer-events-none
+    px-3
+    py-2
+    text-sm
+    font-medium
+    rounded-lg
+    text-white
+    bg-gray-900
+    dark:bg-white
+    dark:text-gray-900
+    group-hover:opacity-100
+    group-hover:visible
+`);
+
 export function Tooltip({
   message,
   direction = 'down',
@@ -65,38 +94,7 @@ export function Tooltip({
   return (
     <TooltipWrapper role="tooltip" onMouseOver={mouseOver}>
       {children}
-      <TooltipStyled direction={direction} style={style}>
-        {message}
-      </TooltipStyled>
+      <TooltipStyled style={style}>{message}</TooltipStyled>
     </TooltipWrapper>
   );
 }
-
-const TooltipWrapper = tailStyled.div`
-    group
-    relative
-    flex
-    justify-center
-`;
-
-const TooltipStyled = tailStyled.div<{ direction: Diretion }>`
-    absolute
-    z-10
-    inline-block
-    invisible
-    opacity-0
-    transition-opacity
-    whitespace-nowrap
-    pointer-events-none
-    px-3
-    py-2
-    text-sm
-    font-medium
-    rounded-lg
-    text-white
-    bg-gray-900
-    dark:bg-white
-    dark:text-gray-900
-    group-hover:opacity-100
-    group-hover:visible
-`;

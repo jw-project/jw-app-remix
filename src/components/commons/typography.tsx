@@ -1,6 +1,6 @@
-import tailStyled from 'tailwind-styled-components';
+import { w } from 'windstitch';
 
-export const Subtitle = tailStyled.div`
+export const Subtitle = w.div(`
   block
   uppercase
   tracking-wide
@@ -8,4 +8,4 @@ export const Subtitle = tailStyled.div`
   text-md
   font-bold
   mb-2
-`;
+`);

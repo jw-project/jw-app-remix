@@ -1,15 +1,15 @@
 import { useSetAtom } from 'jotai';
-import tailStyled from 'tailwind-styled-components';
+import { w } from 'windstitch';
 
 import { showMenuAtom } from '~/atoms-global/menu';
 
 import { Icon } from '../commons/icon';
 
-const MobileAsideButtonStyled = tailStyled.div`
+const MobileAsideButtonStyled = w.div(`
     lg:hidden
     rotate-180
     cursor-pointer
-`;
+`);
 
 export function MobileAsideButton() {
   const setShowMenu = useSetAtom(showMenuAtom);

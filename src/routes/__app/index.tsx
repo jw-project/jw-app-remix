@@ -46,12 +46,12 @@ export default function Index() {
         <Paragraph />
         <Grid cols={2}>
           <Col className="md:justify-self-start justify-self-center">
-            <Button onClick={reload} $bold>
+            <Button onClick={reload} bold>
               {translate('reload-button')}
             </Button>
           </Col>
           <Col>
-            <Button onClick={goToCongregation} $buttonStyle="secondary">
+            <Button onClick={goToCongregation} buttonStyle="secondary">
               {translate('access-congregation-button')}
             </Button>
           </Col>
