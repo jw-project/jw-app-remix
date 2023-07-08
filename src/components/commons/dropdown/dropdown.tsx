@@ -12,6 +12,7 @@ const MenuItems = w(Menu.Items, {
     origin-top-right
     rounded-md
     bg-white
+    dark:bg-gray-900
     shadow-lg
     ring-1
     ring-black

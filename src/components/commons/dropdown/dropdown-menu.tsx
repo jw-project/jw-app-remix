@@ -4,7 +4,7 @@ import { Menu } from '@headlessui/react';
 import { v4 as uuid } from 'uuid';
 import { w } from 'windstitch';
 
-import { Divider } from './divider';
+import { Divider } from '../divider';
 import { Dropdown } from './dropdown';
 
 const MenuItem = w.div(
@@ -18,10 +18,12 @@ const MenuItem = w.div(
   py-2
   text-sm
   cursor-pointer
+  dark:text-gray-300
 `,
   {
     variants: {
-      active: (active: boolean) => (active ? 'bg-gray-100' : ''),
+      active: (active: boolean) =>
+        active ? 'bg-gray-100 dark:bg-gray-800' : '',
     },
     transient: ['active'],
   },

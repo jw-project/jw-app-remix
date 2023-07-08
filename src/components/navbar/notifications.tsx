@@ -1,6 +1,6 @@
 import { w } from 'windstitch';
 
-import { DropdownMenu } from '../commons/dropdown-menu';
+import { DropdownMenu } from '../commons/dropdown';
 import { Icon } from '../commons/icon';
 import { NotificationBadge } from '../commons/notification-badge';
 

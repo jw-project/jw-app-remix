@@ -14,9 +14,8 @@ export const NavbarBase = w.nav(`
     border-gray-200
     dark:border-gray-700
     z-10
-    w-screen
     lg:pl-60
-    lg:w-auto
+    w-auto
 `);
 
 export const NavbarStart = w.div(`

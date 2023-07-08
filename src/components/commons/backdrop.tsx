@@ -6,7 +6,8 @@ import { w } from 'windstitch';
 const BackdropStyled = w.div(`
   fixed
   inset-0
-  bg-black/30
+  bg-black/60
+  dark:bg-white/20
   z-10
 `);
 

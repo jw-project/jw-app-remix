@@ -2,8 +2,7 @@ import { useNavigate } from '@remix-run/react';
 
 import { Button } from '~/components/commons/button';
 import { Col, Grid } from '~/components/commons/grid';
-import { Paragraph } from '~/components/commons/paragraph';
-import { Title } from '~/components/commons/title';
+import { Paragraph, Title } from '~/components/commons/typography';
 import { ErrorScreen } from '~/components/error-screen';
 import { ContainerIndex, HeaderIndex } from '~/components/index/index-styled';
 import { useTranslation } from '~/i18n/i18n';

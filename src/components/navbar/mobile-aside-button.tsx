@@ -9,6 +9,7 @@ const MobileAsideButtonStyled = w.div(`
     lg:hidden
     rotate-180
     cursor-pointer
+    dark:text-white
 `);
 
 export function MobileAsideButton() {
