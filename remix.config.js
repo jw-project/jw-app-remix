@@ -5,7 +5,6 @@ module.exports = {
   ignoredRouteFiles: ['**/.*'],
   appDirectory: 'src',
   tailwind: true,
-  server: process.env.NODE_ENV === 'development' ? undefined : './server.js',
   serverBuildPath: 'build/index.js',
   serverModuleFormat: 'cjs',
   serverDependenciesToBundle: [/^axios.*/],
