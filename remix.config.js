@@ -7,7 +7,7 @@ module.exports = {
   tailwind: true,
   serverBuildPath: 'build/index.js',
   serverModuleFormat: 'cjs',
-  serverDependenciesToBundle: [/^axios.*/],
+  serverDependenciesToBundle: [/^axios.*/, /^firebase.*/],
   future: {
     v2_meta: true,
     v2_errorBoundary: true,
