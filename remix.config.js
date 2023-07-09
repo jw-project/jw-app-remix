@@ -7,7 +7,8 @@ module.exports = {
   tailwind: true,
   serverBuildPath: 'build/index.js',
   serverModuleFormat: 'cjs',
-  serverDependenciesToBundle: 'all',
+  serverDependenciesToBundle:
+    process.env.NODE_ENV === 'development' ? undefined : 'all',
   future: {
     v2_meta: true,
     v2_errorBoundary: true,

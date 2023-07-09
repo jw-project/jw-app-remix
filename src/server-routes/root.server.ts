@@ -1,10 +1,6 @@
-import type { V2_MetaFunction } from '@remix-run/node';
-import type {
-  LinksFunction,
-  LoaderFunction,
-  TypedResponse,
-} from '@remix-run/server-runtime';
+import type { LoaderFunction, TypedResponse } from '@remix-run/server-runtime';
 import { json } from '@remix-run/server-runtime';
+import type { LinksFunction, V2_MetaFunction } from '@vercel/remix';
 import { log } from 'console';
 import { getMessaging } from 'firebase-admin/messaging';
 
