@@ -1,6 +1,7 @@
 import type { EntryContext } from '@remix-run/node';
 import { Response } from '@remix-run/node';
 import { RemixServer } from '@remix-run/react';
+import { error } from 'console';
 import isbot from 'isbot';
 import { renderToPipeableStream } from 'react-dom/server';
 import { PassThrough } from 'stream';
@@ -44,9 +45,9 @@ export default async function handleRequest(
         onShellError: (err: unknown) => {
           reject(err);
         },
-        onError: (error: unknown) => {
+        onError: (e: unknown) => {
           didError = true;
-          console.error(error);
+          error(e);
         },
       },
     );

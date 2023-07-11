@@ -3,11 +3,6 @@ import NodeCache from 'node-cache';
 let cacheConfigs: NodeCache;
 let cacheUser: NodeCache;
 
-declare global {
-  var cacheConfigs: NodeCache | undefined;
-  var cacheUser: NodeCache | undefined;
-}
-
 if (process.env.NODE_ENV === 'production') {
   cacheConfigs = new NodeCache();
   cacheUser = new NodeCache();
@@ -18,8 +13,8 @@ if (process.env.NODE_ENV === 'production') {
   if (!global.cacheUser) {
     global.cacheUser = new NodeCache({ stdTTL: 60 });
   }
-  cacheConfigs = global.cacheConfigs;
-  cacheUser = global.cacheUser;
+  ({ cacheConfigs } = global);
+  ({ cacheUser } = global);
 }
 
 export { cacheConfigs, cacheUser };

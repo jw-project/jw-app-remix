@@ -1,11 +1,7 @@
-import { useEffect } from 'react';
-
 import type { LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import { useActionData, useLoaderData } from '@remix-run/react';
-import { useAtomValue } from 'jotai';
+import { useLoaderData } from '@remix-run/react';
 
-import { savingData } from '~/atoms-global/saving';
 import { Card } from '~/components/commons/card';
 import { Form } from '~/components/commons/form/form';
 import { Input } from '~/components/commons/form/input';
@@ -21,13 +17,6 @@ import { getCongregation } from '~/services/api/congregation/congregation.server
 import { congregationFormSchema as schema } from '~/services/api/congregation/validations';
 import type { HttpError } from '~/services/api/throws-errors';
 import { getAuthenticatedUser } from '~/services/firebase-connection.server';
-
-type CongregationActionReturn =
-  | {
-      message: string;
-      messageType?: ToastType;
-    }
-  | undefined;
 
 type CongregationLoaderReturn = {
   congregation: CongregationEntity;
@@ -50,20 +39,8 @@ export const loader: LoaderFunction = async ({
 
 export default function Congregation() {
   const { translate } = useTranslation('routes.congregation');
-  const { translate: translateRoot } = useTranslation();
-  const a = useAtomValue(savingData);
   const { congregation } = useLoaderData<CongregationLoaderReturn>();
-  const dataAction = useActionData<CongregationActionReturn>();
   const { congregationId } = useUser();
-
-  // useEffect(() => {
-  //   if (dataAction?.message) {
-  //     notify({
-  //       message: translateRoot(dataAction.message),
-  //       type: dataAction.messageType,
-  //     });
-  //   }
-  // }, [dataAction]);
 
   return (
     <Card>

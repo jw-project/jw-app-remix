@@ -1,3 +1,4 @@
+import { error, info } from 'console';
 import type { FirebaseOptions } from 'firebase/app';
 import { getApps, initializeApp } from 'firebase/app';
 
@@ -18,8 +19,8 @@ export function firebaseClientConnection(firebaseConfig: FirebaseOptions) {
       // connectStorageEmulator(getStorage(), LOCALHOST, 9199);
       // connectFunctionsEmulator(getFunctions(), LOCALHOST, 5001);
     }
-    console.info('Firebase client connected');
-  } catch (error) {
-    console.error('Firebase client connect error:', error);
+    info('Firebase client connected');
+  } catch (e) {
+    error('Firebase client connect error:', e);
   }
 }

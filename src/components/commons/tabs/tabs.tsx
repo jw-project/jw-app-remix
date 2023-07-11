@@ -11,7 +11,7 @@ import {
 } from './tabs-styled';
 
 export function Tabs(props: React.PropsWithChildren) {
-  const scrollRef = useHorizontalScroll();
+  const scrollRef = useHorizontalScroll<HTMLUListElement>();
 
   return <TabsStyled {...props} ref={scrollRef} />;
 }

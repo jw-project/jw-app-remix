@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
-export function useHorizontalScroll() {
-  const elRef = useRef<HTMLElement>();
+export function useHorizontalScroll<Element extends HTMLElement>() {
+  const elRef = React.createRef<Element>();
 
   useEffect(() => {
     function handleWheel(event: WheelEvent) {
