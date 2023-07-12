@@ -43,16 +43,6 @@ export const loader: LoaderFunction = async ({
 }): Promise<TypedResponse<RootLoaderReturn>> => {
   firebaseAdminConnection();
 
-  // TODO test firebase messaging
-  getMessaging()
-    .subscribeToTopic('REMOTE_CONFIG_PUSH', 'REMOTE_CONFIG_PUSH')
-    .then((response) => {
-      log('Successfully subscribed to topic:', response);
-    })
-    .catch((error) => {
-      log('Error subscribing to topic:', error);
-    });
-
   let resources = cacheConfigs.get<Translations>('resources');
   if (!resources) {
     resources = await getTranslateResources();
