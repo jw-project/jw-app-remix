@@ -5,8 +5,6 @@ module.exports = {
   ignoredRouteFiles: ['**/.*'],
   appDirectory: 'src',
   tailwind: true,
-  server: process.env.NODE_ENV === 'development' ? undefined : './server.ts',
-  serverBuildPath: 'build/index.js',
   serverModuleFormat: 'cjs',
   serverDependenciesToBundle:
     process.env.NODE_ENV === 'development' ? undefined : 'all',
