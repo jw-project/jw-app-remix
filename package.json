@@ -7,7 +7,6 @@
     "format": "prettier --write ./src",
     "lint": "pnpm typecheck && eslint ./src",
     "lint:fix": "npm run format && npm run lint -- --fix",
-    "generate:css": "pnpm exec tailwindcss -i ./src/styles/global.css -o ./src/tailwind.css",
     "start": "remix-serve build",
     "find-deadcode": "ts-prune",
     "typecheck": "tsc -b"
@@ -33,7 +32,6 @@
     "react-data-grid": "7.0.0-beta.34",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.1",
-    "react-hot-toast": "^2.4.1",
     "react-is": "^18.2.0",
     "uuid": "^9.0.0",
     "windstitch": "^0.3.0",
