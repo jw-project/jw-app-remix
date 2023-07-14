@@ -1,8 +1,10 @@
-import { V2_MetaFunction } from '@remix-run/node';
-import type { LinksFunction, LoaderFunction, TypedResponse } from '@remix-run/server-runtime';
+import type { V2_MetaFunction } from '@remix-run/node';
+import type {
+  LinksFunction,
+  LoaderFunction,
+  TypedResponse,
+} from '@remix-run/server-runtime';
 import { json } from '@remix-run/server-runtime';
-import { log } from 'console';
-import { getMessaging } from 'firebase-admin/messaging';
 
 import type { Theme } from '~/atoms-global/theme';
 import type { TranslationConfig, Translations } from '~/i18n/i18n';
