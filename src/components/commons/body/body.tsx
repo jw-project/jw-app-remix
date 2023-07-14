@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import {
   Links,
   LiveReload,
@@ -9,11 +11,28 @@ import {
 import { useAtomValue } from 'jotai';
 
 import { languageAtom } from '~/atoms-global/language';
+import { isSavingAtom } from '~/atoms-global/saving';
 import { themeAtom } from '~/atoms-global/theme';
 
 export const Body = () => {
   const theme = useAtomValue(themeAtom);
   const language = useAtomValue(languageAtom);
+  const isSaving = useAtomValue(isSavingAtom);
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [isSaving]);
+
+  const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+    if (isSaving) {
+      event.preventDefault();
+      event.returnValue = '';
+    }
+  };
 
   return (
     <html
