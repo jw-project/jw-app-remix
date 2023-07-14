@@ -4,17 +4,15 @@ import { w } from 'windstitch';
 export const PublisherContainer = w.div(`
     grid
     md:grid-cols-12
+    grid-cols-1
     gap-4  
 `);
 
-export const PublisherListContainer = w.div(
-  `
+export const PublisherListContainer = w.div(`
     md:col-span-5
     lg:col-span-4
     xl:col-span-3
-`,
-  {},
-);
+`);
 
 export const PublisherDataContainer = w.div(`
     md:col-span-7

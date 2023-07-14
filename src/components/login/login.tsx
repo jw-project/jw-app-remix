@@ -26,7 +26,8 @@ export const LoadingTitle = w.h2(`
 `);
 
 export const LoadingSubtitle = w.p(`
-    w-1/3
+    md:w-1/3
+    w-4/6
     text-center
     text-white
 `);

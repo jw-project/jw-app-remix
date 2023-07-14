@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 export function useHorizontalScroll<Element extends HTMLElement>() {
-  const elRef = React.createRef<Element>();
+  const elRef = React.useRef<Element>(null);
 
   useEffect(() => {
     function handleWheel(event: WheelEvent) {

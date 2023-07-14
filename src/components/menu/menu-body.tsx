@@ -1,7 +1,9 @@
 import { Fragment } from 'react';
 
 import { useMatches } from '@remix-run/react';
+import { useSetAtom } from 'jotai';
 
+import { showMenuAtom } from '~/atoms-global/menu';
 import type { Permissions } from '~/entities/permissions';
 import { PermissionsEnum } from '~/entities/permissions';
 import { useTranslation } from '~/i18n/i18n';
@@ -17,6 +19,7 @@ import type { MenuListType, MenuType } from './types';
 
 function MenuLink({ list }: { list: MenuListType[] }) {
   const { translate } = useTranslation('menu');
+  const setShowMenu = useSetAtom(showMenuAtom);
   const match = useMatches();
 
   const checkPathname = (to: string) =>
@@ -26,7 +29,11 @@ function MenuLink({ list }: { list: MenuListType[] }) {
     <ul>
       {list.map(({ icon, label, to }) => (
         <li key={label}>
-          <LinkMenuStyled to={to} selected={checkPathname(to)}>
+          <LinkMenuStyled
+            to={to}
+            onClick={setShowMenu}
+            selected={checkPathname(to)}
+          >
             <IconMenuStyled>
               <Icon icon={icon} />
             </IconMenuStyled>
