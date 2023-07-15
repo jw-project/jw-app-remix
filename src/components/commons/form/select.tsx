@@ -52,6 +52,7 @@ export function Select({
         render={({ field: { ref, ...field } }) => (
           <div className="relative">
             <SelectStyled
+              id={name}
               {...field}
               ref={ref}
               error={Boolean(errors[name])}

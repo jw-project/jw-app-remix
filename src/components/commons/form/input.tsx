@@ -31,6 +31,7 @@ export function Input({
       <Controller
         render={({ field: { ref, ...field } }) => (
           <InputStyled
+            id={name}
             {...field}
             ref={ref}
             error={Boolean(errors[name])}

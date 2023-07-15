@@ -26,7 +26,7 @@ export const FieldArea = ({
 
   return (
     <FieldAreaWrapper>
-      <Label>{label}</Label>
+      <Label htmlFor={name}>{label}</Label>
       {children}
       <ErrorLabel>{error || errors[name]?.message?.toString()}</ErrorLabel>
     </FieldAreaWrapper>

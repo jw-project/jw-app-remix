@@ -4,27 +4,51 @@ import { error } from 'console';
 import type { Setter } from 'jotai';
 import { atom } from 'jotai';
 
+import type { InputError } from '~/services/api/errors';
+
 type SavingDataType = {
   url: string;
   formData: object;
+  id: string;
 };
 
 type SavingDataTypeInternal = SavingDataType & {
   timeout: NodeJS.Timeout;
 };
 
+function instanceOfInputError(object: any): object is InputError {
+  return 'message' in object && 'field' in object;
+}
+
 const instanceTimeout = (set: Setter, newData: SavingDataType) => {
   return setTimeout(async () => {
     try {
       await axios.post(newData.url, newData.formData);
     } catch (e) {
-      error('Error saving data:', (e as AxiosError).message);
+      const axiosError = e as AxiosError;
+
+      if (
+        axiosError.response &&
+        instanceOfInputError(axiosError.response.data)
+      ) {
+        const responseError = axiosError.response.data;
+        set(errorsList, (current) => [
+          ...current,
+          {
+            id: newData.id,
+            field: responseError.field,
+            message: responseError.message,
+          },
+        ]);
+      }
+      error('Error saving data:', axiosError.message);
     } finally {
       set(removeSavingDataAtom, newData);
     }
   }, 2000);
 };
 
+// saving data control
 export const savingData = atom<Array<SavingDataTypeInternal>>([]);
 
 export const isSavingAtom = atom((get) => Boolean(get(savingData).length));
@@ -32,27 +56,23 @@ export const isSavingAtom = atom((get) => Boolean(get(savingData).length));
 export const addSavingDataAtom = atom(
   null,
   (get, set, newData: SavingDataType) => {
-    const currentData: SavingDataTypeInternal | undefined = get(
-      savingData,
-    ).find(({ url }) => url === newData.url);
+    const currentData = get(savingData).find(({ id }) => id === newData.id);
 
     if (currentData) {
       clearTimeout(currentData.timeout);
-      const newObj = { ...currentData.formData, ...newData.formData };
 
       set(savingData, (current) =>
         current.map((data) =>
-          data.url === newData.url
+          data.id === newData.id
             ? {
                 ...data,
-                formData: newObj,
+                formData: newData.formData,
                 timeout: instanceTimeout(set, newData),
               }
             : data,
         ),
       );
     } else {
-      //
       set(savingData, (current) => [
         ...current,
         { ...newData, timeout: instanceTimeout(set, newData) },
@@ -63,9 +83,22 @@ export const addSavingDataAtom = atom(
 
 const removeSavingDataAtom = atom(
   null,
-  (_get, set, removeData: SavingDataType) => {
+  (get, set, removeData: SavingDataType) => {
     set(savingData, (current) =>
-      current.filter(({ url }) => url !== removeData.url),
+      current.filter(({ id }) => id !== removeData.id),
     );
   },
 );
+
+//
+
+// errors control
+const errorsList = atom<Array<InputError & { id: string }>>([]);
+
+export const errorsListAtom = atom(
+  (get) => get(errorsList),
+  (get, set, id: string) =>
+    set(errorsList, (current) => current.filter((c) => c.id !== id)),
+);
+
+//

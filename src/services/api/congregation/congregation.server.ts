@@ -6,7 +6,7 @@ import { PermissionsEnum } from '~/entities/permissions';
 import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
 import { getData } from '../common.server';
-import { InputError } from '../errors';
+import { throwInputError } from '../errors';
 import { canRead, canWrite } from '../permissions.server';
 
 export const getCongregation = async ({
@@ -50,14 +50,12 @@ const newCongregation = async ({
     publishers: PermissionsEnum.EDIT,
   };
 
-  await congregationSaved //
-    .collection('publishers') //
-    .add({
-      name: displayName,
-      displayName,
-      permissions: fullPermission,
-      email,
-    });
+  await congregationSaved.collection('publishers').add({
+    name: displayName,
+    displayName,
+    permissions: fullPermission,
+    email,
+  });
 
   // await getAuthenticatedUser(request, true);
 
@@ -88,10 +86,10 @@ export const saveCongregation = async ({
     .get();
 
   if (!empty && findedCongregation.id !== congregationId) {
-    throw new InputError(
-      'routes.congregation.congregation-already-exists',
-      'number',
-    );
+    return throwInputError({
+      field: 'number',
+      message: 'routes.congregation.congregation-already-exists',
+    });
   }
 
   if (!congregationId) {

@@ -1,5 +1,10 @@
-export class InputError extends Error {
-  constructor(public field: string, public message: string) {
-    super(message);
-  }
+import { json } from '@remix-run/server-runtime';
+
+export type InputError = {
+  field: string;
+  message: string;
+};
+
+export function throwInputError(inputError: InputError) {
+  return json(inputError, 400);
 }

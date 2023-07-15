@@ -31,6 +31,7 @@ export function TextArea({
       <Controller
         render={({ field: { ref, ...field } }) => (
           <TextAreaStyled
+            id={name}
             {...field}
             ref={ref}
             error={Boolean(errors[name])}
