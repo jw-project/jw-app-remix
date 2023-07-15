@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import { useMatches } from '@remix-run/react';
 import { useSetAtom } from 'jotai';
 
-import { showMenuAtom } from '~/atoms-global/menu';
+import { closeMenuAtom } from '~/atoms-global/menu';
 import type { Permissions } from '~/entities/permissions';
 import { PermissionsEnum } from '~/entities/permissions';
 import { useTranslation } from '~/i18n/i18n';
@@ -19,7 +19,7 @@ import type { MenuListType, MenuType } from './types';
 
 function MenuLink({ list }: { list: MenuListType[] }) {
   const { translate } = useTranslation('menu');
-  const setShowMenu = useSetAtom(showMenuAtom);
+  const closeMenu = useSetAtom(closeMenuAtom);
   const match = useMatches();
 
   const checkPathname = (to: string) =>
@@ -31,7 +31,7 @@ function MenuLink({ list }: { list: MenuListType[] }) {
         <li key={label}>
           <LinkMenuStyled
             to={to}
-            onClick={setShowMenu}
+            onClick={closeMenu}
             selected={checkPathname(to)}
           >
             <IconMenuStyled>
@@ -55,17 +55,16 @@ export function MenuBody({
   const { translate } = useTranslation('menu.categories');
 
   const filterMenu = () =>
-    menu //
+    menu
       .map((item) => ({
         ...item,
-        list: item.list //
-          .filter((listItem) =>
-            [PermissionsEnum.EDIT, PermissionsEnum.READ] //
-              .includes(
-                permissions[listItem.permissionKey] || PermissionsEnum.NOT,
-              ),
-          ),
-      })) //
+        list: item.list.filter((listItem) =>
+          [PermissionsEnum.EDIT, PermissionsEnum.READ] //
+            .includes(
+              permissions[listItem.permissionKey] || PermissionsEnum.NOT,
+            ),
+        ),
+      }))
       .filter((item) => item.list.length);
 
   return (
