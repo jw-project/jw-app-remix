@@ -1,3 +1,4 @@
+import { convertHtmlToReact } from '@hedgedoc/html-to-react';
 import { useMatches } from '@remix-run/react';
 import { get } from 'lodash';
 
@@ -18,10 +19,23 @@ function translateHigh(translations: Translation) {
     return get(translations, pKey)?.toString();
   }
 
-  function translate(
-    key: string,
-    values?: Record<string, string | number>,
-  ): string {
+  function formatText(text: string) {
+    const formatMap = {
+      '*': 'strong',
+      _: 'em',
+      '~': 'u',
+    };
+
+    let formattedText = text;
+    Object.entries(formatMap).forEach(([marker, tag]) => {
+      const regex = new RegExp(`\\${marker}([^${marker}]+)\\${marker}`, 'g');
+      formattedText = formattedText.replace(regex, `<${tag}>$1</${tag}>`);
+    });
+
+    return formattedText;
+  }
+
+  function translate(key: string, values?: Record<string, string | number>) {
     let message = getKey(key) || key;
 
     if (values) {
@@ -34,7 +48,7 @@ function translateHigh(translations: Translation) {
       }, message);
     }
 
-    return message;
+    return convertHtmlToReact(formatText(message));
   }
 
   return translate;

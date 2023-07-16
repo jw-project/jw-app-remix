@@ -25,8 +25,5 @@ export const Paragraph = w.p(`
   text-gray-600
   dark:text-gray-400
   mt-4
-  flex
-  flex-col
-  items-center
-  md:items-start
+  block
 `);

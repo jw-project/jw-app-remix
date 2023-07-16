@@ -64,7 +64,6 @@ export function Form<
   }, [apiErrors.length]);
 
   useEffect(() => {
-    //
     onFormStatusChange?.(methods.formState);
   }, [methods.formState]);
 

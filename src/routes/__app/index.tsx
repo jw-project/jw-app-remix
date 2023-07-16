@@ -49,7 +49,7 @@ export default function Index() {
               {translate('reload-button')}
             </Button>
           </Col>
-          <Col>
+          <Col className="md:justify-self-start justify-self-center">
             <Button onClick={goToCongregation} buttonStyle="secondary">
               {translate('access-congregation-button')}
             </Button>
