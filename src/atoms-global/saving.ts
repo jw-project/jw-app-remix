@@ -23,7 +23,8 @@ function instanceOfInputError(object: any): object is InputError {
 const instanceTimeout = (set: Setter, newData: SavingDataType) => {
   return setTimeout(async () => {
     try {
-      await axios.post(newData.url, newData.formData);
+      const response = await axios.post(newData.url, newData.formData);
+      set(addSuccessApiAtom, { ...response.data, formIntanceId: newData.id });
     } catch (e) {
       const axiosError = e as AxiosError;
 
@@ -35,7 +36,7 @@ const instanceTimeout = (set: Setter, newData: SavingDataType) => {
         set(errorsList, (current) => [
           ...current,
           {
-            id: newData.id,
+            formIntanceId: newData.id,
             field: responseError.field,
             message: responseError.message,
           },
@@ -92,13 +93,38 @@ const removeSavingDataAtom = atom(
 
 //
 
-// errors control
-const errorsList = atom<Array<InputError & { id: string }>>([]);
+// success control
+const successApiList = atom<Array<any>>([]);
 
-export const errorsListAtom = atom(
-  (get) => get(errorsList),
+export const removeSuccessApiAtom = atom(
+  (get) => get(successApiList),
   (get, set, id: string) =>
-    set(errorsList, (current) => current.filter((c) => c.id !== id)),
+    set(successApiList, (current) =>
+      current.filter((c) => c.formIntanceId !== id),
+    ),
+);
+
+export const addSuccessApiAtom = atom(
+  (get) => get(successApiList),
+  (get, set, obj: any) => set(successApiList, (current) => [...current, obj]),
+);
+
+//
+
+// errors control
+type FormInstance = {
+  formIntanceId: string;
+};
+
+export type ErrorsApiListType = InputError & FormInstance;
+const errorsList = atom<Array<ErrorsApiListType>>([]);
+
+export const errorsApiListAtom = atom(
+  (get) => get(errorsList),
+  (get, set, idToRemove: string) =>
+    set(errorsList, (current) =>
+      current.filter((c) => c.formIntanceId !== idToRemove),
+    ),
 );
 
 //

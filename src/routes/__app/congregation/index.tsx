@@ -1,6 +1,4 @@
-import type { LoaderFunction } from '@remix-run/node';
-import { json } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData, useNavigate } from '@remix-run/react';
 
 import { Card } from '~/components/commons/card';
 import { Form } from '~/components/commons/form/form';
@@ -9,38 +7,24 @@ import { Select } from '~/components/commons/form/select';
 import { TextArea } from '~/components/commons/form/text-area';
 import { Col, Grid } from '~/components/commons/grid';
 import { Subtitle } from '~/components/commons/typography';
-import type { CongregationEntity } from '~/entities/congregation';
 import { weekOptions } from '~/entities/week';
 import { useTranslation } from '~/i18n/i18n';
-import { useUser } from '~/matches/use-user';
-import { getCongregation } from '~/services/api/congregation/congregation.server';
+import type { CongregationActionSaveResponse } from '~/routes/api/congregation/save';
+import type { CongregationLoaderReturn } from '~/server-routes/__app/congregation';
 import { congregationFormSchema as schema } from '~/services/api/congregation/validations';
-import type { HttpError } from '~/services/api/throws-errors';
-import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
-type CongregationLoaderReturn = {
-  congregation: CongregationEntity;
-};
-
-export const loader: LoaderFunction = async ({
-  request,
-}): Promise<CongregationLoaderReturn> => {
-  try {
-    const { congregationId, permissions } = await getAuthenticatedUser(request);
-    const congregation = await getCongregation({ congregationId, permissions });
-
-    return { congregation };
-  } catch (error) {
-    const { message, status } = error as HttpError;
-
-    throw json({ message }, { status });
-  }
-};
+export { loader } from '~/server-routes/__app/congregation';
 
 export default function Congregation() {
   const { translate } = useTranslation('routes.congregation');
   const { congregation } = useLoaderData<CongregationLoaderReturn>();
-  const { congregationId } = useUser();
+  const navigate = useNavigate();
+
+  const onSuccess = (e: CongregationActionSaveResponse) => {
+    if (e.needReload) {
+      navigate('.', { replace: true });
+    }
+  };
 
   return (
     <Card>
@@ -48,15 +32,11 @@ export default function Congregation() {
         schema={schema}
         defaultValues={congregation}
         api="api/congregation/save"
+        onFormApiSuccess={onSuccess}
       >
         <Grid cols={2}>
           <Col>
-            <Input
-              name="id"
-              value={congregationId}
-              label={translate('id')}
-              disabled
-            />
+            <Input name="id" label={translate('id')} disabled />
           </Col>
           <Col>
             <Input name="name" label={translate('name')} />

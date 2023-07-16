@@ -1,5 +1,6 @@
 import React from 'react';
 
+import type { convertHtmlToReact } from '@hedgedoc/html-to-react';
 import { useFormContext } from 'react-hook-form';
 import { w } from 'windstitch';
 
@@ -17,7 +18,7 @@ export const FieldArea = ({
   name,
 }: React.PropsWithChildren<{
   name: string;
-  label: string;
+  label: ReturnType<typeof convertHtmlToReact>;
   error?: string;
 }>) => {
   const {

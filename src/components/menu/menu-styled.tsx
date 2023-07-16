@@ -63,6 +63,4 @@ export const LinkMenuStyled = w(Link, {
   transient: ['selected'],
 });
 
-export const LinkLabelMenuStyled = w.span(`
-    flex-grow
-`);
+export const LinkLabelMenuStyled = w.span(``);

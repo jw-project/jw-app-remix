@@ -1,3 +1,5 @@
+import { useUser } from '~/matches/use-user';
+
 import { Avatar } from './avatar';
 import { ChangeTheme } from './change-theme';
 import { MobileAsideButton } from './mobile-aside-button';
@@ -11,6 +13,8 @@ import { Notifications } from './notifications';
 import { SavingIndicator } from './saving-indicator';
 
 export function Navbar() {
+  const { congregationId } = useUser();
+
   return (
     <NavbarBase id="navbar-main">
       <NavbarStart>
@@ -24,17 +28,21 @@ export function Navbar() {
           <SavingIndicator />
         </NavbarItem>
 
-        <NavbarItem>
-          <ChangeTheme />
-        </NavbarItem>
+        {Boolean(congregationId) && (
+          <>
+            <NavbarItem>
+              <ChangeTheme />
+            </NavbarItem>
 
-        <NavbarItem divider>
-          <Notifications />
-        </NavbarItem>
+            <NavbarItem divider>
+              <Notifications />
+            </NavbarItem>
 
-        <NavbarItem>
-          <Avatar name="AB" />
-        </NavbarItem>
+            <NavbarItem>
+              <Avatar name="AB" />
+            </NavbarItem>
+          </>
+        )}
       </NavbarEnd>
     </NavbarBase>
   );

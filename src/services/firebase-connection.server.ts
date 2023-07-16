@@ -32,9 +32,13 @@ export function firebaseAdminConnection() {
   }
 }
 
+type GetAuthenticatedUserOptions = {
+  ignoreCache?: boolean;
+};
+
 export async function getAuthenticatedUser(
   request: Request,
-  ignoreCache = false,
+  options?: GetAuthenticatedUserOptions,
 ) {
   const session = await getSession(request.headers.get('Cookie'));
   const uidUser = session.get('uidUser');
@@ -44,7 +48,7 @@ export async function getAuthenticatedUser(
   }
 
   const cache = cacheUser?.get<PublisherEntity>(uidUser);
-  if (cache && !ignoreCache) {
+  if (cache && !options?.ignoreCache) {
     info(`Successfully load user data from cache: ${JSON.stringify(cache)}`);
 
     return cache;

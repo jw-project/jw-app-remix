@@ -12,7 +12,12 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { v4 as uuid } from 'uuid';
 import type { ZodType, ZodTypeDef } from 'zod';
 
-import { addSavingDataAtom, errorsListAtom } from '~/atoms-global/saving';
+import type { ErrorsApiListType } from '~/atoms-global/saving';
+import {
+  addSavingDataAtom,
+  errorsApiListAtom,
+  removeSuccessApiAtom,
+} from '~/atoms-global/saving';
 
 export function Form<
   TOutputField = any,
@@ -24,15 +29,20 @@ export function Form<
   defaultValues,
   api,
   onFormStatusChange,
+  onFormApiSuccess,
+  onFormApiErrors,
 }: React.PropsWithChildren<{
   schema: ZodType<TOutputField, TDef, TFieldValues>;
   defaultValues?: DefaultValues<TFieldValues>;
   api: string;
   onFormStatusChange?: (formState: FormState<TFieldValues>) => void;
+  onFormApiSuccess?: (success: any) => void;
+  onFormApiErrors?: (errors: ErrorsApiListType) => void;
 }>) {
   const idInstance = useMemo(() => uuid(), []);
   const save = useSetAtom(addSavingDataAtom);
-  const [apiErrors, removeApiError] = useAtom(errorsListAtom);
+  const [apiErrors, removeApiError] = useAtom(errorsApiListAtom);
+  const [apiSuccess, removeApiSuccess] = useAtom(removeSuccessApiAtom);
 
   const methods = useForm({
     mode: 'onChange',
@@ -50,8 +60,19 @@ export function Form<
   };
 
   useEffect(() => {
-    const error = apiErrors.find((error) => error.id === idInstance);
+    const success = apiSuccess.find(
+      (success) => success.formIntanceId === idInstance,
+    );
+    if (success) {
+      onFormApiSuccess?.(success);
+    }
+    removeApiSuccess(idInstance);
+  }, [apiSuccess.length]);
+
+  useEffect(() => {
+    const error = apiErrors.find((error) => error.formIntanceId === idInstance);
     if (error) {
+      onFormApiErrors?.(error);
       methods.setError(
         error.field as Path<TFieldValues>,
         {

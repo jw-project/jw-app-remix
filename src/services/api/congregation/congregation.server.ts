@@ -2,22 +2,14 @@ import { firestore } from 'firebase-admin';
 
 import type { CongregationEntity } from '~/entities/congregation';
 import type { Permissions } from '~/entities/permissions';
-import { PermissionsEnum } from '~/entities/permissions';
-import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
 import { getData } from '../common.server';
-import { throwInputError } from '../errors';
-import { canRead, canWrite } from '../permissions.server';
 
 export const getCongregation = async ({
   congregationId,
-  permissions,
 }: {
   congregationId: string;
-  permissions: Permissions;
 }): Promise<CongregationEntity> => {
-  canRead(permissions, 'congregation');
-
   if (!congregationId) {
     return {} as CongregationEntity;
   }
@@ -30,34 +22,27 @@ export const getCongregation = async ({
   return getData(congregationDoc);
 };
 
-const newCongregation = async ({
+export const newCongregation = async ({
   congregation,
   displayName,
   email,
+  permissions,
 }: {
   congregation: CongregationEntity;
   displayName?: string;
   email: string;
+  permissions: Permissions;
 }) => {
   const congregationSaved = await firestore()
     .collection('congregation')
     .add(congregation);
 
-  const fullPermission: Permissions = {
-    admin: true,
-    congregation: PermissionsEnum.EDIT,
-    groups: PermissionsEnum.EDIT,
-    publishers: PermissionsEnum.EDIT,
-  };
-
   await congregationSaved.collection('publishers').add({
     name: displayName,
     displayName,
-    permissions: fullPermission,
+    permissions,
     email,
   });
-
-  // await getAuthenticatedUser(request, true);
 
   return congregationSaved.get();
 };
@@ -65,39 +50,28 @@ const newCongregation = async ({
 export const saveCongregation = async ({
   congregation,
   congregationId,
-  permissions,
-  displayName,
-  email,
 }: {
   congregation: CongregationEntity;
   congregationId: string;
-  permissions: Permissions;
-  displayName?: string;
-  email: string;
 }) => {
-  canWrite(permissions, 'congregation');
+  return firestore()
+    .collection('congregation')
+    .doc(congregationId)
+    .set(congregation);
+};
 
+export const findCongregationByNumber = async ({
+  number,
+}: {
+  number: number;
+}) => {
   const {
     empty,
     docs: [findedCongregation],
   } = await firestore()
     .collection('congregation')
-    .where('number', '==', congregation.number)
+    .where('number', '==', number)
     .get();
 
-  if (!empty && findedCongregation.id !== congregationId) {
-    return throwInputError({
-      field: 'number',
-      message: 'routes.congregation.congregation-already-exists',
-    });
-  }
-
-  if (!congregationId) {
-    return newCongregation({ congregation, displayName, email });
-  }
-
-  return firestore()
-    .collection('congregation')
-    .doc(congregationId)
-    .set(congregation);
+  return !empty && findedCongregation;
 };
