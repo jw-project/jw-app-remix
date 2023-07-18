@@ -2,13 +2,10 @@ import { useLoaderData, useNavigate } from '@remix-run/react';
 
 import { Card } from '~/components/commons/card';
 import { Form } from '~/components/commons/form/form';
-import { Input } from '~/components/commons/form/input';
-import { Select } from '~/components/commons/form/select';
-import { TextArea } from '~/components/commons/form/text-area';
-import { Col, Grid } from '~/components/commons/grid';
-import { Subtitle } from '~/components/commons/typography';
+import { FormBuilder } from '~/components/commons/form/form-builder';
 import { weekOptions } from '~/entities/week';
 import { useTranslation } from '~/i18n/i18n';
+import { useUser } from '~/matches/use-user';
 import type { CongregationActionSaveResponse } from '~/routes/api/congregation/save';
 import type { CongregationLoaderReturn } from '~/server-routes/__app/congregation';
 import { congregationFormSchema as schema } from '~/services/api/congregation/validations';
@@ -17,6 +14,8 @@ export { loader } from '~/server-routes/__app/congregation';
 
 export default function Congregation() {
   const { translate } = useTranslation('routes.congregation');
+  const { congregationId } = useUser();
+  const congregationActive = Boolean(congregationId);
   const { congregation } = useLoaderData<CongregationLoaderReturn>();
   const navigate = useNavigate();
 
@@ -34,100 +33,121 @@ export default function Congregation() {
         api="api/congregation/save"
         onFormApiSuccess={onSuccess}
       >
-        <Grid cols={2}>
-          <Col>
-            <Input name="id" label={translate('id')} disabled />
-          </Col>
-          <Col>
-            <Input name="name" label={translate('name')} />
-          </Col>
-          <Col>
-            <Input name="number" label={translate('number')} type="number" />
-          </Col>
-          <Col>
-            <TextArea name="address" label={translate('address')} />
-          </Col>
-          <Col>
-            <Select
-              name="midweekMeetingDay"
-              label={translate('midweek-meeting-day')}
-              options={weekOptions()}
-            />
-          </Col>
-          <Col>
-            <Select
-              name="weekendMeetingDay"
-              label={translate('weekend-meeting-day')}
-              options={weekOptions()}
-            />
-          </Col>
-          <Col>
-            <Input
-              name="midweekMeetingTime"
-              label={translate('midweek-meeting-time')}
-              type="time"
-            />
-          </Col>
-          <Col>
-            <Input
-              name="weekendMeetingTime"
-              label={translate('weekend-meeting-time')}
-              type="time"
-            />
-          </Col>
-          <Col colSpan={2}>
-            <Subtitle>{translate('online-meeting-subtitle')}</Subtitle>
-          </Col>
-          <Col>
-            <Input
-              name="onlineMeetingSoftware"
-              label={translate('online-meeting-software')}
-            />
-          </Col>
-          <Col>
-            <Input
-              name="onlineMeetingId"
-              label={translate('online-meeting-id')}
-            />
-          </Col>
-          <Col>
-            <Input
-              name="onlineMeetingDialNumber"
-              label={translate('online-meeting-dial-number')}
-            />
-          </Col>
-          <Col>
-            <Input
-              name="onlineMeetingPassword"
-              label={translate('online-meeting-password')}
-            />
-          </Col>
-          <Col>
-            <Input
-              name="onlineMeetingLink"
-              label={translate('online-meeting-link')}
-            />
-          </Col>
-          <Col colSpan={2}>
-            <Subtitle>{translate('circuit-subtitle')}</Subtitle>
-          </Col>
-          <Col>
-            <Input name="circuitName" label={translate('circuit-name')} />
-          </Col>
-          <Col>
-            <Input
-              name="circuitOverseerName"
-              label={translate('circuit-overseer-name')}
-            />
-          </Col>
-          <Col>
-            <Input
-              name="circuitOverseerContact"
-              label={translate('circuit-overseer-contact')}
-            />
-          </Col>
-          <Col />
-        </Grid>
+        <FormBuilder
+          fields={[
+            {
+              name: 'id',
+              label: translate('id'),
+              type: 'text',
+              disabled: true,
+              visible: congregationActive,
+            },
+            {
+              name: 'name',
+              label: translate('name'),
+              type: 'text',
+              visible: true,
+            },
+            {
+              name: 'number',
+              label: translate('number'),
+              type: 'number',
+              visible: true,
+            },
+            {
+              name: 'address',
+              label: translate('address'),
+              type: 'textarea',
+              visible: congregationActive,
+            },
+            {
+              name: 'midweekMeetingDay',
+              label: translate('midweek-meeting-day'),
+              type: 'select',
+              options: weekOptions(),
+              visible: congregationActive,
+            },
+            {
+              name: 'weekendMeetingDay',
+              label: translate('weekend-meeting-day'),
+              type: 'select',
+              options: weekOptions(),
+              visible: congregationActive,
+            },
+            {
+              name: 'midweekMeetingTime',
+              label: translate('midweek-meeting-time'),
+              type: 'time',
+              visible: congregationActive,
+            },
+            {
+              name: 'weekendMeetingTime',
+              label: translate('weekend-meeting-time'),
+              type: 'time',
+              visible: congregationActive,
+            },
+            {
+              name: 'onlineMeetingSubtitle',
+              label: translate('online-meeting-subtitle'),
+              type: 'subtitle',
+              visible: congregationActive,
+            },
+            {
+              name: 'onlineMeetingSoftware',
+              label: translate('online-meeting-software'),
+              type: 'text',
+              visible: congregationActive,
+            },
+            {
+              name: 'onlineMeetingId',
+              label: translate('online-meeting-id'),
+              type: 'text',
+              visible: congregationActive,
+            },
+            {
+              name: 'onlineMeetingDialNumber',
+              label: translate('online-meeting-dial-number'),
+              type: 'text',
+              visible: congregationActive,
+            },
+            {
+              name: 'onlineMeetingPassword',
+              label: translate('online-meeting-password'),
+              type: 'text',
+              visible: congregationActive,
+            },
+            {
+              name: 'onlineMeetingLink',
+              label: translate('online-meeting-link'),
+              type: 'text',
+              visible: congregationActive,
+            },
+            {
+              name: 'circuitSubtitle',
+              label: translate('circuit-subtitle'),
+              type: 'subtitle',
+              visible: congregationActive,
+            },
+            {
+              name: 'circuitName',
+              label: translate('circuit-name'),
+              type: 'text',
+              visible: congregationActive,
+            },
+            {
+              name: 'circuitOverseerName',
+              label: translate('circuit-overseer-name'),
+              type: 'text',
+              visible: congregationActive,
+            },
+            {
+              name: 'circuitOverseerContact',
+              label: translate('circuit-overseer-contact'),
+              type: 'text',
+              visible: congregationActive,
+            },
+          ]}
+        />
       </Form>
     </Card>
   );
