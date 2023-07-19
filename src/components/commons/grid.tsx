@@ -1,3 +1,4 @@
+import type { W } from 'windstitch';
 import { w } from 'windstitch';
 
 export const Grid = w.div(
@@ -40,3 +41,7 @@ export const Col = w.div(
     },
   },
 );
+
+export type GridProps = W.Infer<typeof Grid>;
+
+export type ColProps = W.Infer<typeof Col>;

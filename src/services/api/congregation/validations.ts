@@ -9,7 +9,7 @@ import {
 export const congregationFormSchema = z.object({
   name: z.string({ required_error: REQUIRED_FIELD_I18N_KEY }),
   number: z.preprocess(
-    Number,
+    (val) => Number(val) || 0,
     z.number().gt(0, { message: REQUIRED_FIELD_I18N_KEY }),
   ),
   address: z.string().min(1, { message: REQUIRED_FIELD_I18N_KEY }).optional(),

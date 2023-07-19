@@ -18,7 +18,7 @@ export const Button = w.button(
 `,
   {
     variants: {
-      buttonStyle: {
+      buttonstyle: {
         primary: `
           bg-blue-500
           border-blue-500
@@ -38,7 +38,7 @@ export const Button = w.button(
       },
       bold: (bold: boolean) => (bold ? 'font-bold' : ''),
     },
-    defaultVariants: { buttonStyle: 'primary', bold: false },
+    defaultVariants: { buttonstyle: 'primary', bold: false },
     transient: ['bold'],
   },
 );

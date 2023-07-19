@@ -2,6 +2,8 @@ import type { HTMLAttributes } from 'react';
 
 import type { convertHtmlToReact } from '@hedgedoc/html-to-react';
 
+import { Button } from '../button';
+import type { ColProps, GridProps } from '../grid';
 import { Col, Grid } from '../grid';
 import { Subtitle } from '../typography';
 import { Input } from './input';
@@ -29,6 +31,7 @@ type CommonField = {
   name: string;
   label: ReturnType<typeof convertHtmlToReact>;
   visible?: boolean;
+  colSpan?: ColProps['colSpan'];
 };
 
 type TextField = CommonField & {
@@ -51,7 +54,17 @@ type SubtitleField = CommonField & {
   type: 'subtitle';
 };
 
-type AllFields = TextField | TextAreaField | SelectField | SubtitleField;
+type SubmitButton = CommonField & {
+  type: 'submit';
+  disabled?: boolean;
+};
+
+type AllFields =
+  | TextField
+  | TextAreaField
+  | SelectField
+  | SubtitleField
+  | SubmitButton;
 
 const isTextAreaField = (field: AllFields): field is TextAreaField =>
   field.type === 'textarea';
@@ -62,15 +75,23 @@ const isSelectField = (field: AllFields): field is SelectField =>
 const isSubtitleField = (field: AllFields): field is SubtitleField =>
   field.type === 'subtitle';
 
-export const FormBuilder = ({ fields }: { fields: Array<AllFields> }) => {
+const isSubmitButton = (field: AllFields): field is SubmitButton =>
+  field.type === 'submit';
+
+export type FormBuilderProps = {
+  fields: Array<AllFields>;
+  cols?: GridProps['cols'];
+};
+
+export const FormBuilder = ({ fields, cols = 2 }: FormBuilderProps) => {
   return (
-    <Grid cols={2}>
+    <Grid cols={cols}>
       {fields
         .filter(({ visible }) => visible !== false)
         .map((field) => {
           if (isSelectField(field)) {
             return (
-              <Col key={field.name}>
+              <Col colSpan={field.colSpan} key={field.name}>
                 <Select
                   key={field.name}
                   name={field.name}
@@ -83,7 +104,7 @@ export const FormBuilder = ({ fields }: { fields: Array<AllFields> }) => {
 
           if (isTextAreaField(field)) {
             return (
-              <Col key={field.name}>
+              <Col colSpan={field.colSpan} key={field.name}>
                 <TextArea name="address" label={field.label} />
               </Col>
             );
@@ -91,14 +112,24 @@ export const FormBuilder = ({ fields }: { fields: Array<AllFields> }) => {
 
           if (isSubtitleField(field)) {
             return (
-              <Col colSpan={2} key={field.name}>
+              <Col colSpan={field.colSpan || 2} key={field.name}>
                 <Subtitle>{field.label}</Subtitle>
               </Col>
             );
           }
 
+          if (isSubmitButton(field)) {
+            return (
+              <Col colSpan={field.colSpan} key={field.name}>
+                <Button type="submit" disabled={field.disabled}>
+                  {field.label}
+                </Button>
+              </Col>
+            );
+          }
+
           return (
-            <Col key={field.name}>
+            <Col colSpan={field.colSpan} key={field.name}>
               <Input
                 key={field.name}
                 name={field.name}

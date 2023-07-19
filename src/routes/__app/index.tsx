@@ -50,7 +50,7 @@ export default function Index() {
             </Button>
           </Col>
           <Col className="md:justify-self-start justify-self-center">
-            <Button onClick={goToCongregation} buttonStyle="secondary">
+            <Button onClick={goToCongregation} buttonstyle="secondary">
               {translate('access-congregation-button')}
             </Button>
           </Col>

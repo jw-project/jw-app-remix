@@ -19,6 +19,9 @@ import {
   removeSuccessApiAtom,
 } from '~/atoms-global/saving';
 
+import type { FormBuilderProps } from './form-builder';
+import { FormBuilder } from './form-builder';
+
 export function Form<
   TOutputField = any,
   TDef extends ZodTypeDef = ZodTypeDef,
@@ -28,6 +31,8 @@ export function Form<
   schema,
   defaultValues,
   api,
+  mode = 'onChange',
+  fields,
   onFormStatusChange,
   onFormApiSuccess,
   onFormApiErrors,
@@ -35,6 +40,8 @@ export function Form<
   schema: ZodType<TOutputField, TDef, TFieldValues>;
   defaultValues?: DefaultValues<TFieldValues>;
   api: string;
+  mode?: 'onChange' | 'onSubmit';
+  fields?: FormBuilderProps['fields'];
   onFormStatusChange?: (formState: FormState<TFieldValues>) => void;
   onFormApiSuccess?: (success: any) => void;
   onFormApiErrors?: (errors: ErrorsApiListType) => void;
@@ -45,7 +52,7 @@ export function Form<
   const [apiSuccess, removeApiSuccess] = useAtom(removeSuccessApiAtom);
 
   const methods = useForm({
-    mode: 'onChange',
+    mode,
     resolver: zodResolver(schema),
     shouldFocusError: false,
     defaultValues,
@@ -91,15 +98,27 @@ export function Form<
   useEffect(() => {
     const subscription = methods.watch(() => {
       removeApiError(idInstance);
-      methods.handleSubmit(onSubmit)();
+      if (mode === 'onChange') {
+        methods.handleSubmit(onSubmit)();
+      }
     });
 
     return () => subscription.unsubscribe();
   }, [methods]);
 
+  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (mode === 'onSubmit') {
+      methods.handleSubmit(onSubmit)();
+    }
+  };
+
   return (
     <FormProvider {...methods}>
-      <form id="form-context">{children}</form>
+      <form id="form-context" onSubmit={submitForm}>
+        {fields && <FormBuilder fields={fields} />}
+        {children}
+      </form>
     </FormProvider>
   );
 }
