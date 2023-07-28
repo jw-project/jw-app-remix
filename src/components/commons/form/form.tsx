@@ -19,6 +19,7 @@ import {
   removeSuccessApiAtom,
 } from '~/atoms-global/saving';
 
+import type { GridProps } from '../grid';
 import type { FormBuilderProps } from './form-builder';
 import { FormBuilder } from './form-builder';
 
@@ -33,6 +34,7 @@ export function Form<
   api,
   mode = 'onChange',
   fields,
+  builderCols,
   onFormStatusChange,
   onFormApiSuccess,
   onFormApiErrors,
@@ -42,6 +44,7 @@ export function Form<
   api: string;
   mode?: 'onChange' | 'onSubmit';
   fields?: FormBuilderProps['fields'];
+  builderCols?: GridProps['cols'];
   onFormStatusChange?: (formState: FormState<TFieldValues>) => void;
   onFormApiSuccess?: (success: any) => void;
   onFormApiErrors?: (errors: ErrorsApiListType) => void;
@@ -116,7 +119,7 @@ export function Form<
   return (
     <FormProvider {...methods}>
       <form id="form-context" onSubmit={submitForm}>
-        {fields && <FormBuilder fields={fields} />}
+        {fields && <FormBuilder fields={fields} cols={builderCols} />}
         {children}
       </form>
     </FormProvider>

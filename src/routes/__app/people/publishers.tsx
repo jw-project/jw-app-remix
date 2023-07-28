@@ -2,12 +2,12 @@ import { Outlet } from '@remix-run/react';
 import type { LoaderFunction } from '@remix-run/server-runtime';
 
 import { Card } from '~/components/commons/card';
-import { PublisherList } from '~/components/publishers/publisher-list';
 import {
-  PublisherContainer,
-  PublisherDataContainer,
-  PublisherListContainer,
-} from '~/components/publishers/publishers-styles';
+  DataContainer,
+  ListContainer,
+  RootListContainer,
+} from '~/components/commons/list-screen';
+import { PublisherList } from '~/components/publishers/publisher-list';
 import type { PublisherEntity } from '~/entities/publisher';
 import { listPublisher } from '~/services/api/publisher/publisher.server';
 
@@ -25,15 +25,15 @@ export const loader: LoaderFunction = async ({
 
 export default function Publishers() {
   return (
-    <PublisherContainer>
-      <PublisherListContainer>
+    <RootListContainer>
+      <ListContainer>
         <Card padded={0}>
           <PublisherList />
         </Card>
-      </PublisherListContainer>
-      <PublisherDataContainer>
+      </ListContainer>
+      <DataContainer>
         <Outlet />
-      </PublisherDataContainer>
-    </PublisherContainer>
+      </DataContainer>
+    </RootListContainer>
   );
 }

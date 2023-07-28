@@ -1,7 +1,7 @@
 import { useLoaderData, useMatches } from '@remix-run/react';
 
-import type { PublisherEntity } from '~/entities/publisher';
-import type { PublishersLoaderReturn } from '~/routes/__app/people/publishers';
+import type { EventEntity } from '~/entities/event';
+import type { EventsLoaderReturn } from '~/server-routes/__app/congregation/events';
 
 import { Icon } from '../commons/icon';
 import {
@@ -14,30 +14,31 @@ import {
   ListStyled,
 } from '../commons/list-screen';
 
-export function PublisherList() {
-  const { publishers } = useLoaderData<PublishersLoaderReturn>();
+export function EventList() {
+  const { events } = useLoaderData<EventsLoaderReturn>();
+
   const match = useMatches();
 
-  const checkPathname = (publisher: PublisherEntity) =>
-    Boolean(match.find((e) => e.pathname.includes(publisher.id)));
+  const checkPathname = (event: EventEntity) =>
+    Boolean(match.find((e) => e.pathname.includes(event.id)));
 
-  const navigateToPublisher = (publisher: PublisherEntity) =>
-    `/people/publishers/${publisher.id}`;
+  const navigateToEvent = (event: EventEntity) =>
+    `/congregation/events/${event.id}`;
 
   return (
     <ListStyled>
-      {publishers.map((publisher) => (
-        <li key={publisher.id}>
+      {events.map((event) => (
+        <li key={event.id}>
           <ItemStyled
-            to={navigateToPublisher(publisher)}
-            selected={checkPathname(publisher)}
+            to={navigateToEvent(event)}
+            selected={checkPathname(event)}
           >
             <ItemIconContainer>
               <Icon size="icon-x-large" icon="person" />
             </ItemIconContainer>
             <ItemTextContainer>
-              <ItemName>{publisher.displayName}</ItemName>
-              <ItemSubText>Developer</ItemSubText>
+              <ItemName>{event.name}</ItemName>
+              <ItemSubText>{event.type}</ItemSubText>
             </ItemTextContainer>
             <ItemArrowContainer>
               <Icon size="icon-x-large" icon="chevron_right" />

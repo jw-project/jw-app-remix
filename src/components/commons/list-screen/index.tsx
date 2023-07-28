@@ -1,30 +1,30 @@
 import { Link } from '@remix-run/react';
 import { w } from 'windstitch';
 
-export const PublisherContainer = w.div(`
+export const RootListContainer = w.div(`
     grid
     md:grid-cols-12
     grid-cols-1
     gap-4  
 `);
 
-export const PublisherListContainer = w.div(`
+export const ListContainer = w.div(`
     md:col-span-5
     lg:col-span-4
     xl:col-span-3
 `);
 
-export const PublisherDataContainer = w.div(`
+export const DataContainer = w.div(`
     md:col-span-7
     lg:col-span-8
     xl:col-span-9
 `);
 
-export const PublisherListStyled = w.ul(`
+export const ListStyled = w.ul(`
     divide-y
 `);
 
-export const PublisherItemStyled = w(Link, {
+export const ItemStyled = w(Link, {
   className: `
     cursor-pointer
     rounded-lg
@@ -39,27 +39,27 @@ export const PublisherItemStyled = w(Link, {
   transient: ['selected'],
 });
 
-export const PublisherItemIconContainer = w.div(`
+export const ItemIconContainer = w.div(`
     mr-4
     flex
     items-center
 `);
 
-export const PublisherItemTextContainer = w.div(`
+export const ItemTextContainer = w.div(`
     flex-1
     pl-1
 `);
 
-export const PublisherItemName = w.div(`
+export const ItemName = w.div(`
     font-medium
 `);
 
-export const PublisherItemSubText = w.div(`
+export const ItemSubText = w.div(`
     text-gray-600
     text-sm
 `);
 
-export const PublisherItemArrowContainer = w.div(`
+export const ItemArrowContainer = w.div(`
     flex
     flex-row
 `);

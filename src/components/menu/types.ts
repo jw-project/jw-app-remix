@@ -1,4 +1,4 @@
-import type { PermissionsWithoutAdmin } from '~/entities/permissions';
+import type { AllPermissions } from '~/entities/permissions';
 
 import type { IconOpts } from '../commons/icon';
 
@@ -6,7 +6,7 @@ export type MenuListType = {
   label: string;
   icon: IconOpts;
   to: string;
-  permissionKey: PermissionsWithoutAdmin;
+  permissionKey: AllPermissions;
 };
 
 export type MenuType = {

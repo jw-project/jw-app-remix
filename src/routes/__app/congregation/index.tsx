@@ -9,7 +9,7 @@ import { useTranslation } from '~/i18n/i18n';
 import { useUser } from '~/matches/use-user';
 import type { CongregationActionSaveResponse } from '~/routes/api/congregation/save';
 import type { CongregationLoaderReturn } from '~/server-routes/__app/congregation';
-import { congregationFormSchema as schema } from '~/services/api/congregation/validations';
+import { congregationFormSchema } from '~/services/api/congregation/validations';
 
 export { loader } from '~/server-routes/__app/congregation';
 
@@ -30,7 +30,7 @@ export default function Congregation() {
   return (
     <Card>
       <Form
-        schema={schema}
+        schema={congregationFormSchema}
         defaultValues={congregation}
         api="api/congregation/save"
         onFormApiSuccess={onSuccess}
