@@ -4,17 +4,20 @@ import type {
   LoaderFunction,
   TypedResponse,
 } from '@remix-run/server-runtime';
-import { json } from '@remix-run/server-runtime';
+import { json, redirect } from '@remix-run/server-runtime';
+import { error } from 'console';
 
 import type { Theme } from '~/atoms-global/theme';
 import type { TranslationConfig, Translations } from '~/i18n/i18n';
 import { getTranslateResources } from '~/i18n/i18next.server';
-import {
-  firebaseAdminConnection,
-  getAuthenticatedUser,
-} from '~/services/firebase-connection.server';
+import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 import styles from '~/styles/global.css';
 import { cacheConfigs } from '~/utils/cache.server';
+
+import type { MenuType } from './components/menu/types';
+import type { PublisherEntity } from './entities/publisher';
+import { getMenu } from './services/api/menu.server';
+import { getPath } from './utils/get-path.server';
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -38,13 +41,13 @@ export const links: LinksFunction = () => [
 export type RootLoaderReturn = {
   locale: TranslationConfig;
   themeMode: 'dark' | 'light';
+  menu: MenuType[];
+  user?: PublisherEntity;
 };
 
 export const loader: LoaderFunction = async ({
   request,
 }): Promise<TypedResponse<RootLoaderReturn>> => {
-  firebaseAdminConnection();
-
   let resources = cacheConfigs.get<Translations>('resources');
   if (!resources) {
     resources = await getTranslateResources();
@@ -52,14 +55,30 @@ export const loader: LoaderFunction = async ({
   }
   let theme: Theme = 'light';
   let language = request.headers.get('accept-language')?.split(',')[0] || 'en';
+  let user: PublisherEntity | undefined = undefined;
+  let menu = cacheConfigs.get<MenuType[]>('menu') || [];
 
-  try {
-    const { theme: userTheme, language: userLanguage } =
-      await getAuthenticatedUser(request);
+  if (getPath(request) !== '/login') {
+    try {
+      user = await getAuthenticatedUser(request);
 
-    theme = userTheme || 'light';
-    language = userLanguage;
-  } catch (error) {}
+      if (user.theme) {
+        ({ theme } = user);
+      }
+      if (user.language) {
+        ({ language } = user);
+      }
+
+      if (!menu.length) {
+        menu = await getMenu();
+        cacheConfigs.set('menu', menu);
+      }
+    } catch (e) {
+      error(e);
+
+      return redirect('/login');
+    }
+  }
 
   const locale: TranslationConfig = {
     defaultLanguage: language,
@@ -70,5 +89,7 @@ export const loader: LoaderFunction = async ({
   return json({
     locale,
     themeMode: theme,
+    user,
+    menu,
   });
 };

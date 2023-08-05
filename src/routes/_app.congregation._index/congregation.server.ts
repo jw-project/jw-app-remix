@@ -24,6 +24,6 @@ export const loader: LoaderFunction = async ({
   } catch (error) {
     const { message, status } = error as HttpError;
 
-    throw json({ message }, { status });
+    throw json({ message }, { status: status || 400 });
   }
 };

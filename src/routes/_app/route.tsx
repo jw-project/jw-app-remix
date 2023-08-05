@@ -1,22 +1,17 @@
-import { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 
 import { Transition } from '@headlessui/react';
 import { Outlet, useNavigation } from '@remix-run/react';
 
 import { BodyMargin } from '~/components/commons/body/body-margin';
+import { ErrorScreen } from '~/components/error-screen';
 import { Menu } from '~/components/menu/menu';
 import { Navbar } from '~/components/navbar/navbar';
 
-export { loader } from './_app.server';
-
-export default function Layout() {
-  const [show, setShow] = useState(false);
-  const { state } = useNavigation();
-
-  useEffect(() => {
-    setShow(state === 'idle');
-  }, [state]);
-
+function BaseLayout({
+  show,
+  children,
+}: React.PropsWithChildren<{ show: boolean }>) {
   return (
     <>
       <Navbar />
@@ -31,8 +26,31 @@ export default function Layout() {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <Outlet />
+        {children}
       </Transition>
     </>
+  );
+}
+
+export default function Layout() {
+  const [show, setShow] = useState(false);
+  const { state } = useNavigation();
+
+  useEffect(() => {
+    setShow(state === 'idle');
+  }, [state]);
+
+  return (
+    <BaseLayout show={show}>
+      <Outlet />
+    </BaseLayout>
+  );
+}
+
+export function ErrorBoundary() {
+  return (
+    <BaseLayout show>
+      <ErrorScreen />
+    </BaseLayout>
   );
 }

@@ -4,7 +4,6 @@ import type { PublisherEntity } from '~/entities/publisher';
 
 export function useUser(): PublisherEntity {
   const [
-    ,
     {
       data: { user },
     },

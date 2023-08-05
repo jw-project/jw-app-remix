@@ -7,6 +7,7 @@ import { PermissionsEnum } from '~/entities/permissions';
 import type { PublisherEntity } from '~/entities/publisher';
 import { cacheUser } from '~/utils/cache.server';
 
+import { UnauthorizedError } from './api/throws-errors';
 import { commitSession, getSession } from './session.server';
 
 export function firebaseAdminConnection() {
@@ -44,7 +45,7 @@ export async function getAuthenticatedUser(
   const uidUser = session.get('uidUser');
 
   if (!uidUser) {
-    throw Error('No session');
+    throw new UnauthorizedError('No session');
   }
 
   const cache = cacheUser?.get<PublisherEntity>(uidUser);
@@ -58,7 +59,7 @@ export async function getAuthenticatedUser(
 
   if (!userRecord) {
     info('Error fetching auth user data');
-    throw Error('No session');
+    throw new UnauthorizedError('No session');
   }
 
   const {
