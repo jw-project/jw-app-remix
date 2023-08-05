@@ -13,12 +13,11 @@ import { EventList } from '~/components/events/event-list';
 import { weekOptions } from '~/entities/week';
 import { useTranslation } from '~/i18n/i18n';
 import { useUser } from '~/matches/use-user';
-import type { CongregationActionSaveResponse } from '~/routes/api/congregation/save';
-import type { CongregationLoaderReturn } from '~/server-routes/__app/congregation';
-import type { EventsLoaderReturn } from '~/server-routes/__app/congregation/events';
 import { congregationFormSchema as schema } from '~/services/api/congregation/validations';
 
-export { loader } from '~/server-routes/__app/congregation/events';
+import type { EventsLoaderReturn } from './events.server';
+
+export { loader } from './events.server';
 
 export default function Events() {
   const { translate } = useTranslation('routes.congregation');

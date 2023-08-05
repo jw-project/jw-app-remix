@@ -19,9 +19,9 @@ import {
 import { useTranslation } from '~/i18n/i18n';
 import { firebaseClientConnection } from '~/services/firebase-connection.client';
 
-import type { LoginLoaderReturn } from '../server-routes/login.server';
+import type { LoginLoaderReturn } from './login.server';
 
-export { loader, action } from '../server-routes/login.server';
+export { loader, action } from './login.server';
 
 export default function Login() {
   const fetcher = useFetcher();

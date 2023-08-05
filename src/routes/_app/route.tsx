@@ -7,7 +7,7 @@ import { BodyMargin } from '~/components/commons/body/body-margin';
 import { Menu } from '~/components/menu/menu';
 import { Navbar } from '~/components/navbar/navbar';
 
-export { loader } from '../server-routes/__app.server';
+export { loader } from './_app.server';
 
 export default function Layout() {
   const [show, setShow] = useState(false);

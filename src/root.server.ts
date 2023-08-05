@@ -51,17 +51,14 @@ export const loader: LoaderFunction = async ({
     cacheConfigs.set('resources', resources);
   }
   let theme: Theme = 'light';
-  let language = '';
+  let language = request.headers.get('accept-language')?.split(',')[0] || 'en';
 
   try {
     const { theme: userTheme, language: userLanguage } =
       await getAuthenticatedUser(request);
 
     theme = userTheme || 'light';
-    language =
-      userLanguage ||
-      request.headers.get('accept-language')?.split(',')[0] ||
-      'en';
+    language = userLanguage;
   } catch (error) {}
 
   const locale: TranslationConfig = {
