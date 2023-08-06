@@ -1,4 +1,4 @@
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData, useNavigate } from '@remix-run/react';
 import { useAtomValue } from 'jotai';
 
 import { isSavingAtom } from '~/atoms-global/saving';
@@ -21,16 +21,18 @@ export default function Congregation() {
   const isSaving = useAtomValue(isSavingAtom);
   const congregationActive = Boolean(congregationId);
   const { congregation } = useLoaderData<CongregationLoaderReturn>();
+  const navigate = useNavigate();
 
   const onSuccess = (e: CongregationActionSaveResponse) => {
     if (e.needReload) {
-      window.location.reload();
+      navigate('.', { replace: true });
     }
   };
 
   return (
     <Card>
       <Form
+        key={congregationId}
         schema={congregationFormSchema}
         defaultValues={congregation}
         api="api/congregation/save"
