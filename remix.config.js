@@ -4,8 +4,6 @@ module.exports = {
   appDirectory: 'src',
   tailwind: true,
   serverModuleFormat: 'cjs',
-  serverDependenciesToBundle:
-    process.env.NODE_ENV === 'development' ? undefined : 'all',
   future: {
     v2_dev: true,
     v2_meta: true,

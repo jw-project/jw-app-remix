@@ -6,7 +6,7 @@
     "dev": "remix dev",
     "format": "prettier --write ./src",
     "lint": "pnpm typecheck && eslint ./src",
-    "lint:fix": "pnpm run format && pnpm run lint --fix",
+    "lint:fix": "pnpm format && pnpm lint --fix",
     "start": "remix-serve build",
     "find-deadcode": "ts-prune",
     "typecheck": "tsc -b"

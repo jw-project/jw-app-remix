@@ -10,6 +10,8 @@ import { firebaseAdminConnection } from './services/firebase-connection.server';
 
 const ABORT_DELAY = 5000;
 
+firebaseAdminConnection();
+
 export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
@@ -19,8 +21,6 @@ export default async function handleRequest(
   const callbackName = isbot(request.headers.get('user-agent'))
     ? 'onAllReady'
     : 'onShellReady';
-
-  firebaseAdminConnection();
 
   let didError = false;
 
