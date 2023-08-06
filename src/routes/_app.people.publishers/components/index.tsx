@@ -1,9 +1,6 @@
 import { useLoaderData, useMatches } from '@remix-run/react';
 
-import type { PublisherEntity } from '~/entities/publisher';
-import type { PublishersLoaderReturn } from '~/routes/__app/people/publishers';
-
-import { Icon } from '../commons/icon';
+import { Icon } from '~/components/commons/icon';
 import {
   ItemArrowContainer,
   ItemIconContainer,
@@ -12,7 +9,10 @@ import {
   ItemSubText,
   ItemTextContainer,
   ListStyled,
-} from '../commons/list-screen';
+} from '~/components/commons/list-screen';
+import type { PublisherEntity } from '~/entities/publisher';
+
+import type { PublishersLoaderReturn } from '../publisher.server';
 
 export function PublisherList() {
   const { publishers } = useLoaderData<PublishersLoaderReturn>();

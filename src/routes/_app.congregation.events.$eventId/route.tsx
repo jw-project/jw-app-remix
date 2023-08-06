@@ -33,50 +33,52 @@ export default function EventEdit() {
         schema={eventFormSchema}
         defaultValues={event}
         api={`api/congregation/event/${eventId}/save`}
-        builderCols={1}
-        fields={[
-          {
-            name: 'type',
-            label: translate('type'),
-            type: 'select',
-            options: eventOptions(),
-          },
-          {
-            name: 'name',
-            label: translate('name'),
-            type: 'text',
-          },
-          {
-            name: 'description',
-            label: translate('description'),
-            type: 'textarea',
-          },
-          {
-            name: 'link',
-            label: translate('link'),
-            type: 'text',
-          },
-          {
-            name: 'startDate',
-            label: translate('startDate'),
-            type: 'date',
-          },
-          {
-            name: 'startTime',
-            label: translate('startTime'),
-            type: 'time',
-          },
-          {
-            name: 'endDate',
-            label: translate('endDate'),
-            type: 'date',
-          },
-          {
-            name: 'endTime',
-            label: translate('endTime'),
-            type: 'time',
-          },
-        ]}
+        builder={{
+          cols: 1,
+          fields: [
+            {
+              name: 'type',
+              label: translate('type'),
+              type: 'select',
+              options: eventOptions(),
+            },
+            {
+              name: 'name',
+              label: translate('name'),
+              type: 'text',
+            },
+            {
+              name: 'description',
+              label: translate('description'),
+              type: 'textarea',
+            },
+            {
+              name: 'link',
+              label: translate('link'),
+              type: 'text',
+            },
+            {
+              name: 'startDate',
+              label: translate('startDate'),
+              type: 'date',
+            },
+            {
+              name: 'startTime',
+              label: translate('startTime'),
+              type: 'time',
+            },
+            {
+              name: 'endDate',
+              label: translate('endDate'),
+              type: 'date',
+            },
+            {
+              name: 'endTime',
+              label: translate('endTime'),
+              type: 'time',
+            },
+          ],
+        }}
       />
     </Card>
   );

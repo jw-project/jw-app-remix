@@ -6,7 +6,8 @@ import {
   ListContainer,
   RootListContainer,
 } from '~/components/commons/list-screen';
-import { EventList } from '~/components/events/event-list';
+
+import { EventList } from './components';
 
 export { loader } from './events.server';
 

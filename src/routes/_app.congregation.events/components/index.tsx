@@ -1,9 +1,6 @@
 import { useLoaderData, useMatches } from '@remix-run/react';
 
-import type { EventEntity } from '~/entities/event';
-import type { EventsLoaderReturn } from '~/server-routes/__app/congregation/events';
-
-import { Icon } from '../commons/icon';
+import { Icon } from '~/components/commons/icon';
 import {
   ItemArrowContainer,
   ItemIconContainer,
@@ -12,7 +9,10 @@ import {
   ItemSubText,
   ItemTextContainer,
   ListStyled,
-} from '../commons/list-screen';
+} from '~/components/commons/list-screen';
+import type { EventEntity } from '~/entities/event';
+
+import type { EventsLoaderReturn } from '../events.server';
 
 export function EventList() {
   const { events } = useLoaderData<EventsLoaderReturn>();

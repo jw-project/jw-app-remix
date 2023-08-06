@@ -1,5 +1,4 @@
 import { Outlet } from '@remix-run/react';
-import type { LoaderFunction } from '@remix-run/server-runtime';
 
 import { Card } from '~/components/commons/card';
 import {
@@ -7,21 +6,10 @@ import {
   ListContainer,
   RootListContainer,
 } from '~/components/commons/list-screen';
-import { PublisherList } from '~/components/publishers/publisher-list';
-import type { PublisherEntity } from '~/entities/publisher';
-import { listPublisher } from '~/services/api/publisher/publisher.server';
 
-export type PublishersLoaderReturn = {
-  publishers: PublisherEntity[];
-};
+import { PublisherList } from './components';
 
-export const loader: LoaderFunction = async ({
-  request,
-}): Promise<PublishersLoaderReturn> => {
-  const publishers = await listPublisher(request);
-
-  return { publishers };
-};
+export { loader } from './publisher.server';
 
 export default function Publishers() {
   return (

@@ -10,15 +10,10 @@ import {
   signInWithRedirect,
 } from 'firebase/auth';
 
-import {
-  LoadingSubtitle,
-  LoadingTitle,
-  Overlay,
-  Spinner,
-} from '~/components/login/login';
 import { useTranslation } from '~/i18n/i18n';
 import { firebaseClientConnection } from '~/services/firebase-connection.client';
 
+import { LoadingSubtitle, LoadingTitle, Overlay, Spinner } from './components';
 import type { LoginLoaderReturn } from './login.server';
 
 export { loader, action } from './login.server';
