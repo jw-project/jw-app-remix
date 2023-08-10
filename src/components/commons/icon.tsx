@@ -4665,31 +4665,32 @@ export type IconOpts =
   | 'zoom_out_map'
   | 'zoom_out_map';
 
-export const Icon = React.forwardRef<
-  HTMLSpanElement,
-  {
-    className?: string;
-    icon: IconOpts;
-    size?:
-      | 'icon-x-small'
-      | 'icon-small'
-      | 'icon-medium'
-      | 'icon-large'
-      | 'icon-x-large';
-    onClick?: () => void;
-  }
->(({ icon, className, size, onClick }, forwardedRef) => {
-  return (
-    <span
-      ref={forwardedRef}
-      onClick={onClick}
-      className={`transition-colors ${size} ${className} ${
-        onClick ? 'cursor-pointer' : ''
-      } material-symbols-rounded`}
-    >
-      {icon}
-    </span>
-  );
-});
+export type IconProps = {
+  className?: string;
+  icon: IconOpts;
+  size?:
+    | 'icon-x-small'
+    | 'icon-small'
+    | 'icon-medium'
+    | 'icon-large'
+    | 'icon-x-large';
+  onClick?: () => void;
+};
+
+export const Icon = React.forwardRef<HTMLSpanElement, IconProps>(
+  ({ icon, className, size, onClick }, forwardedRef) => {
+    return (
+      <span
+        ref={forwardedRef}
+        onClick={onClick}
+        className={`transition-colors ${size} ${className} ${
+          onClick ? 'cursor-pointer' : ''
+        } material-symbols-rounded`}
+      >
+        {icon}
+      </span>
+    );
+  },
+);
 
 Icon.displayName = 'Icon';

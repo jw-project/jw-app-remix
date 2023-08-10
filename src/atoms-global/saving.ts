@@ -3,8 +3,10 @@ import axios from 'axios';
 import { error } from 'console';
 import type { Setter } from 'jotai';
 import { atom } from 'jotai';
+import { toast } from 'react-hot-toast';
 
 import type { InputError } from '~/services/api/errors';
+import type { HttpError } from '~/services/api/throws-errors';
 
 type SavingDataType = {
   url: string;
@@ -26,7 +28,7 @@ const instanceTimeout = (set: Setter, newData: SavingDataType) => {
       const response = await axios.post(newData.url, newData.formData);
       set(addSuccessApiAtom, { ...response.data, formIntanceId: newData.id });
     } catch (e) {
-      const axiosError = e as AxiosError;
+      const axiosError = e as AxiosError<HttpError>;
 
       if (
         axiosError.response &&
@@ -42,6 +44,11 @@ const instanceTimeout = (set: Setter, newData: SavingDataType) => {
           },
         ]);
       }
+
+      if (axiosError.response?.data.feedback) {
+        toast.error(axiosError.response?.data.message);
+      }
+
       error('Error saving data:', axiosError.message);
     } finally {
       set(removeSavingDataAtom, newData);

@@ -13,6 +13,18 @@ export const Label = w.label(`
   mb-2
 `);
 
+export const InputIconWrapper = w.div(`
+  pointer-events-none
+  absolute
+  inset-y-0
+  right-0
+  flex
+  items-center
+  px-2
+  transition-colors
+  dark:text-gray-300
+`);
+
 type InputType = 'input' | 'select' | 'textarea';
 
 type ComponentReturn<Type extends InputType> = Component<
@@ -43,6 +55,7 @@ export function inputBaseFactory(
 export function inputBaseFactory(inputType: InputType, className = '') {
   return w[inputType](
     `
+    block
     disabled:bg-gray-200
     disabled:cursor-not-allowed
     w-full
@@ -55,7 +68,8 @@ export function inputBaseFactory(inputType: InputType, className = '') {
     dark:border-gray-700
     rounded
     py-3
-    px-4
+    pl-4
+    pr-2
     mb-3
     ${className}
   `,

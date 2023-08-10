@@ -2,13 +2,12 @@ import React from 'react';
 
 import { useAtomValue } from 'jotai';
 import { Controller, useFormContext } from 'react-hook-form';
-import { w } from 'windstitch';
 
 import { themeAtom } from '~/atoms-global/theme';
 
 import { Icon } from '../icon';
 import { FieldArea } from './field-area';
-import { inputBaseFactory } from './style-base';
+import { InputIconWrapper, inputBaseFactory } from './style-base';
 import type { InputType } from './types';
 
 export type SelectOptionsType = {
@@ -16,19 +15,7 @@ export type SelectOptionsType = {
   value: string;
 };
 
-const SelectStyled = inputBaseFactory('select', 'block appearance-none');
-
-const SelectorStyled = w.div(`
-  pointer-events-none
-  absolute
-  inset-y-0
-  right-0
-  flex
-  items-center
-  px-2
-  transition-colors
-  dark:text-gray-300
-`);
+const SelectStyled = inputBaseFactory('select', 'appearance-none');
 
 export function Select({
   name,
@@ -65,9 +52,9 @@ export function Select({
                 </option>
               ))}
             </SelectStyled>
-            <SelectorStyled>
+            <InputIconWrapper>
               <Icon icon="expand_more" />
-            </SelectorStyled>
+            </InputIconWrapper>
           </div>
         )}
         control={control}

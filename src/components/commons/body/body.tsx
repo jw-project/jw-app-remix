@@ -14,6 +14,8 @@ import { languageAtom } from '~/atoms-global/language';
 import { isSavingAtom } from '~/atoms-global/saving';
 import { themeAtom } from '~/atoms-global/theme';
 
+import { Toast } from '../toast/toast';
+
 export const Body = () => {
   const theme = useAtomValue(themeAtom);
   const language = useAtomValue(languageAtom);
@@ -46,6 +48,7 @@ export const Body = () => {
       </head>
       <body>
         <Outlet />
+        <Toast />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
