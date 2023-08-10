@@ -9,12 +9,12 @@ import {
   newCongregation,
   saveCongregation,
 } from '~/services/api/congregation/congregation.server';
-import { canWrite } from '~/services/api/permissions.server';
 import {
   sendReturnMessage,
   throwInputError,
 } from '~/services/api/throws-errors';
 import type { ActionResponse } from '~/services/api/types';
+import { ValidatePermissionsServer } from '~/services/api/validate-permissions/permissions.server';
 import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
 export type CongregationActionSaveResponse = {
@@ -64,7 +64,7 @@ export const action: ActionFunction = async ({
       return { congregation, needReload: true };
     }
 
-    canWrite(permissions, 'congregation');
+    new ValidatePermissionsServer(permissions, 'congregation').canRead();
 
     await saveCongregation({
       congregation: congregationReq,

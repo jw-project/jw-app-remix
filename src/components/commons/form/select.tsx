@@ -15,12 +15,13 @@ export type SelectOptionsType = {
   value: string;
 };
 
-const SelectStyled = inputBaseFactory('select', 'appearance-none');
+const SelectStyled = inputBaseFactory('select', 'appearance-none opacity-100');
 
 export function Select({
   name,
   label,
   options,
+  disabled,
   ...props
 }: React.DetailedHTMLProps<
   React.SelectHTMLAttributes<HTMLSelectElement>,
@@ -45,6 +46,7 @@ export function Select({
               error={Boolean(errors[name])}
               {...props}
               style={{ colorScheme: theme }}
+              disabled={disabled}
             >
               {options.map(({ label: labelOpt, value }) => (
                 <option key={value} value={value}>
@@ -52,7 +54,7 @@ export function Select({
                 </option>
               ))}
             </SelectStyled>
-            <InputIconWrapper>
+            <InputIconWrapper disabled={disabled}>
               <Icon icon="expand_more" />
             </InputIconWrapper>
           </div>

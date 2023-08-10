@@ -2,9 +2,9 @@ import { type LoaderFunction } from '@remix-run/server-runtime';
 
 import type { CongregationEntity } from '~/entities/congregation';
 import { getCongregation } from '~/services/api/congregation/congregation.server';
-import { canRead } from '~/services/api/permissions.server';
 import { sendReturnMessage } from '~/services/api/throws-errors';
 import type { ActionResponse } from '~/services/api/types';
+import { ValidatePermissionsServer } from '~/services/api/validate-permissions/permissions.server';
 import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
 export type CongregationLoaderReturn = {
@@ -17,7 +17,7 @@ export const loader: LoaderFunction = async ({
   try {
     const { congregationId, permissions } = await getAuthenticatedUser(request);
 
-    canRead(permissions, 'congregation');
+    new ValidatePermissionsServer(permissions, 'congregation').canRead();
 
     const congregation = await getCongregation({ congregationId });
 

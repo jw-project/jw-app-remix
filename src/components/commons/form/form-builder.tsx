@@ -32,17 +32,16 @@ type CommonField = {
   label: ReturnType<typeof convertHtmlToReact>;
   visible?: boolean;
   colSpan?: ColProps['colSpan'];
+  disabled?: boolean;
 };
 
 type TextField = CommonField & {
   type: InputTypeAttribute;
   inputMode?: HTMLAttributes<HTMLInputElement>['inputMode'];
-  disabled?: boolean;
 };
 
 type TextAreaField = CommonField & {
   type: 'textarea';
-  disabled?: boolean;
 };
 
 type SelectField = CommonField & {
@@ -56,7 +55,6 @@ type SubtitleField = CommonField & {
 
 type SubmitButton = CommonField & {
   type: 'submit';
-  disabled?: boolean;
 };
 
 type AllFields =
@@ -81,9 +79,14 @@ const isSubmitButton = (field: AllFields): field is SubmitButton =>
 export type FormBuilderProps = {
   fields: Array<AllFields>;
   cols?: GridProps['cols'];
+  disabled?: boolean;
 };
 
-export const FormBuilder = ({ fields, cols = 2 }: FormBuilderProps) => {
+export const FormBuilder = ({
+  fields,
+  cols = 2,
+  disabled = false,
+}: FormBuilderProps) => {
   return (
     <Grid cols={cols}>
       {fields
@@ -97,6 +100,7 @@ export const FormBuilder = ({ fields, cols = 2 }: FormBuilderProps) => {
                   name={field.name}
                   label={field.label}
                   options={field.options}
+                  disabled={disabled || field.disabled}
                 />
               </Col>
             );
@@ -105,7 +109,11 @@ export const FormBuilder = ({ fields, cols = 2 }: FormBuilderProps) => {
           if (isTextAreaField(field)) {
             return (
               <Col colSpan={field.colSpan} key={field.name}>
-                <TextArea name="address" label={field.label} />
+                <TextArea
+                  name="address"
+                  label={field.label}
+                  disabled={disabled || field.disabled}
+                />
               </Col>
             );
           }
@@ -121,7 +129,7 @@ export const FormBuilder = ({ fields, cols = 2 }: FormBuilderProps) => {
           if (isSubmitButton(field)) {
             return (
               <Col colSpan={field.colSpan} key={field.name}>
-                <Button type="submit" disabled={field.disabled}>
+                <Button type="submit" disabled={disabled || field.disabled}>
                   {field.label}
                 </Button>
               </Col>
@@ -135,7 +143,7 @@ export const FormBuilder = ({ fields, cols = 2 }: FormBuilderProps) => {
                 name={field.name}
                 label={field.label}
                 type={field.type}
-                disabled={field.disabled}
+                disabled={disabled || field.disabled}
               />
             </Col>
           );

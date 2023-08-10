@@ -31,6 +31,7 @@ export function Input({
   name,
   label,
   type,
+  disabled,
   ...props
 }: React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -56,10 +57,11 @@ export function Input({
               error={Boolean(errors[name])}
               {...props}
               type={type}
+              disabled={disabled}
               style={{ colorScheme: theme }}
             />
             {icon && (
-              <InputIconWrapper>
+              <InputIconWrapper disabled={disabled}>
                 <Icon {...icon} />
               </InputIconWrapper>
             )}

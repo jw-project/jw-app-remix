@@ -8,6 +8,7 @@ import { weekOptions } from '~/entities/week';
 import { useTranslation } from '~/i18n/i18n';
 import { useUser } from '~/matches/use-user';
 import { congregationFormSchema } from '~/services/api/congregation/validations';
+import { ValidatePermissionsClient } from '~/services/api/validate-permissions/permissions.client';
 
 import type { CongregationActionSaveResponse } from '../api.congregation.save/route';
 import type { CongregationLoaderReturn } from './congregation.server';
@@ -17,7 +18,11 @@ export { loader } from './congregation.server';
 export default function Congregation() {
   const { translate } = useTranslation('routes.congregation');
   const { translate: commonTranslate } = useTranslation('common');
-  const { congregationId } = useUser();
+  const { congregationId, permissions } = useUser();
+  const formDisabled = !new ValidatePermissionsClient(
+    permissions,
+    'congregation',
+  ).canWrite();
   const isSaving = useAtomValue(isSavingAtom);
   const congregationActive = Boolean(congregationId);
   const { congregation } = useLoaderData<CongregationLoaderReturn>();
@@ -39,6 +44,7 @@ export default function Congregation() {
         onFormApiSuccess={onSuccess}
         mode={congregationActive ? 'onChange' : 'onSubmit'}
         builder={{
+          disabled: formDisabled,
           fields: [
             {
               name: 'id',

@@ -116,7 +116,7 @@ export function Form<
   return (
     <FormProvider {...methods}>
       <form id="form-context" onSubmit={submitForm}>
-        {builder && <FormBuilder fields={builder.fields} cols={builder.cols} />}
+        {builder && <FormBuilder {...builder} />}
         {children}
       </form>
     </FormProvider>

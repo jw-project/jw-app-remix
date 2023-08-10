@@ -13,7 +13,8 @@ export const Label = w.label(`
   mb-2
 `);
 
-export const InputIconWrapper = w.div(`
+export const InputIconWrapper = w.div(
+  `
   pointer-events-none
   absolute
   inset-y-0
@@ -23,7 +24,17 @@ export const InputIconWrapper = w.div(`
   px-2
   transition-colors
   dark:text-gray-300
-`);
+`,
+  {
+    variants: {
+      disabled: (disabled?: boolean) => (disabled ? 'text-gray-500' : ''),
+    },
+    defaultVariants: {
+      disabled: false,
+    },
+    transient: ['disabled'],
+  },
+);
 
 type InputType = 'input' | 'select' | 'textarea';
 
@@ -58,6 +69,7 @@ export function inputBaseFactory(inputType: InputType, className = '') {
     block
     disabled:bg-gray-200
     disabled:cursor-not-allowed
+    disabled:text-gray-500
     w-full
     transition-colors
     bg-gray-50
