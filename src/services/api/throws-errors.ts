@@ -1,3 +1,5 @@
+import { json } from '@remix-run/server-runtime';
+
 export class HttpError extends Error {
   status: number;
 
@@ -33,4 +35,19 @@ export class NotFoundError extends HttpError {
   constructor(message = 'common.not-found-request') {
     super(message, 404);
   }
+}
+
+export function sendReturnMessage(error: unknown) {
+  const { message, status, feedback } = error as HttpError;
+
+  return json({ message, feedback }, { status });
+}
+
+export type InputError = {
+  field: string;
+  message: string;
+};
+
+export function throwInputError(inputError: InputError) {
+  return json(inputError, 400);
 }

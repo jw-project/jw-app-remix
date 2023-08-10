@@ -1,9 +1,10 @@
-import { type LoaderFunction, json } from '@remix-run/server-runtime';
+import { type LoaderFunction } from '@remix-run/server-runtime';
 
 import type { EventEntity } from '~/entities/event';
 import { listEvents } from '~/services/api/congregation/events/events.server';
 import { canRead } from '~/services/api/permissions.server';
-import type { HttpError } from '~/services/api/throws-errors';
+import { sendReturnMessage } from '~/services/api/throws-errors';
+import type { ActionResponse } from '~/services/api/types';
 import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
 export type EventsLoaderReturn = {
@@ -12,7 +13,7 @@ export type EventsLoaderReturn = {
 
 export const loader: LoaderFunction = async ({
   request,
-}): Promise<EventsLoaderReturn> => {
+}): ActionResponse<EventsLoaderReturn> => {
   try {
     const { congregationId, permissions } = await getAuthenticatedUser(request);
 
@@ -22,8 +23,6 @@ export const loader: LoaderFunction = async ({
 
     return { events };
   } catch (error) {
-    const { message, status } = error as HttpError;
-
-    throw json({ message }, { status });
+    return sendReturnMessage(error);
   }
 };

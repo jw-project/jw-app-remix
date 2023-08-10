@@ -1,8 +1,4 @@
-import {
-  type ActionFunction,
-  type TypedResponse,
-  json,
-} from '@remix-run/server-runtime';
+import { type ActionFunction } from '@remix-run/server-runtime';
 
 import type { CongregationEntity } from '~/entities/congregation';
 import type { Permissions } from '~/entities/permissions';
@@ -13,10 +9,12 @@ import {
   newCongregation,
   saveCongregation,
 } from '~/services/api/congregation/congregation.server';
-import type { InputError } from '~/services/api/errors';
-import { throwInputError } from '~/services/api/errors';
 import { canWrite } from '~/services/api/permissions.server';
-import type { HttpError } from '~/services/api/throws-errors';
+import {
+  sendReturnMessage,
+  throwInputError,
+} from '~/services/api/throws-errors';
+import type { ActionResponse } from '~/services/api/types';
 import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
 export type CongregationActionSaveResponse = {
@@ -26,7 +24,7 @@ export type CongregationActionSaveResponse = {
 
 export const action: ActionFunction = async ({
   request,
-}): Promise<TypedResponse<InputError> | CongregationActionSaveResponse> => {
+}): ActionResponse<CongregationActionSaveResponse> => {
   try {
     const congregationReq: CongregationEntity = await request.json();
     const { congregationId, permissions, displayName, email } =
@@ -79,8 +77,6 @@ export const action: ActionFunction = async ({
 
     return { congregation, needReload: false };
   } catch (error) {
-    const { message, status, feedback } = error as HttpError;
-
-    throw json({ message, feedback }, { status });
+    return sendReturnMessage(error);
   }
 };
