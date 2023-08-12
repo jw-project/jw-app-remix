@@ -14,7 +14,7 @@ import {
   throwInputError,
 } from '~/services/api/throws-errors';
 import type { ActionResponse } from '~/services/api/types';
-import { ValidatePermissionsServer } from '~/services/api/validate-permissions/permissions.server';
+import { ValidatePermissions } from '~/services/api/validate-permissions';
 import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
 export type CongregationActionSaveResponse = {
@@ -64,7 +64,7 @@ export const action: ActionFunction = async ({
       return { congregation, needReload: true };
     }
 
-    new ValidatePermissionsServer(permissions, 'congregation').canRead();
+    new ValidatePermissions(permissions, 'congregation').canRead();
 
     await saveCongregation({
       congregation: congregationReq,
@@ -77,6 +77,6 @@ export const action: ActionFunction = async ({
 
     return { congregation, needReload: false };
   } catch (error) {
-    return sendReturnMessage(error);
+    throw sendReturnMessage(error);
   }
 };

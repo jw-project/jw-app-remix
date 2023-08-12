@@ -1,11 +1,9 @@
 import type { AllPermissions, Permissions } from '~/entities/permissions';
 import { PermissionsEnum } from '~/entities/permissions';
 
-import type { ForbiddenError } from '../throws-errors';
+import { ForbiddenError } from './throws-errors';
 
-export abstract class ValidatePermissions<T extends boolean | ForbiddenError> {
-  abstract returnValidate(): T;
-
+export class ValidatePermissions {
   protected permissions: Permissions;
 
   protected permission: AllPermissions;
@@ -15,11 +13,15 @@ export abstract class ValidatePermissions<T extends boolean | ForbiddenError> {
     this.permission = permission;
   }
 
+  private returnValidate() {
+    throw new ForbiddenError();
+  }
+
   private findPermission() {
     return this.permissions[this.permission] || PermissionsEnum.NOT;
   }
 
-  canRead(): T | true {
+  canRead() {
     const permissionFinded = this.findPermission();
     if (
       ![PermissionsEnum.READ, PermissionsEnum.EDIT].includes(permissionFinded)
@@ -30,7 +32,7 @@ export abstract class ValidatePermissions<T extends boolean | ForbiddenError> {
     return true;
   }
 
-  canWrite(): T | true {
+  canWrite() {
     const permissionFinded = this.findPermission();
 
     if (PermissionsEnum.EDIT !== permissionFinded) {

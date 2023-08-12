@@ -4,7 +4,7 @@ import type { EventEntity } from '~/entities/event';
 import { listEvents } from '~/services/api/congregation/events/events.server';
 import { sendReturnMessage } from '~/services/api/throws-errors';
 import type { ActionResponse } from '~/services/api/types';
-import { ValidatePermissionsServer } from '~/services/api/validate-permissions/permissions.server';
+import { ValidatePermissions } from '~/services/api/validate-permissions';
 import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
 export type EventsLoaderReturn = {
@@ -17,12 +17,12 @@ export const loader: LoaderFunction = async ({
   try {
     const { congregationId, permissions } = await getAuthenticatedUser(request);
 
-    new ValidatePermissionsServer(permissions, 'events').canRead();
+    new ValidatePermissions(permissions, 'events').canRead();
 
     const events = await listEvents({ congregationId });
 
     return { events };
   } catch (error) {
-    return sendReturnMessage(error);
+    throw sendReturnMessage(error);
   }
 };

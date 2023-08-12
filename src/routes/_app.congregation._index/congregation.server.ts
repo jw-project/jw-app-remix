@@ -4,7 +4,7 @@ import type { CongregationEntity } from '~/entities/congregation';
 import { getCongregation } from '~/services/api/congregation/congregation.server';
 import { sendReturnMessage } from '~/services/api/throws-errors';
 import type { ActionResponse } from '~/services/api/types';
-import { ValidatePermissionsServer } from '~/services/api/validate-permissions/permissions.server';
+import { ValidatePermissions } from '~/services/api/validate-permissions';
 import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
 export type CongregationLoaderReturn = {
@@ -17,12 +17,12 @@ export const loader: LoaderFunction = async ({
   try {
     const { congregationId, permissions } = await getAuthenticatedUser(request);
 
-    new ValidatePermissionsServer(permissions, 'congregation').canRead();
+    new ValidatePermissions(permissions, 'congregation').canRead();
 
     const congregation = await getCongregation({ congregationId });
 
     return { congregation };
   } catch (error) {
-    return sendReturnMessage(error);
+    throw sendReturnMessage(error);
   }
 };

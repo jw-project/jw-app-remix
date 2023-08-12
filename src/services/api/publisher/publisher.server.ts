@@ -4,14 +4,14 @@ import type { PublisherEntity } from '~/entities/publisher';
 import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
 import { getAllData } from '../common.server';
-import { ValidatePermissionsServer } from '../validate-permissions/permissions.server';
+import { ValidatePermissions } from '../validate-permissions';
 
 export const listPublisher = async (
   request: Request,
 ): Promise<Array<PublisherEntity>> => {
   const { congregationId, permissions } = await getAuthenticatedUser(request);
 
-  new ValidatePermissionsServer(permissions, 'publishers').canRead();
+  new ValidatePermissions(permissions, 'publishers').canRead();
 
   const publisherList = await firestore()
     .collection('congregation')

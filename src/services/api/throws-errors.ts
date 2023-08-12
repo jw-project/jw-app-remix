@@ -40,7 +40,7 @@ export class NotFoundError extends HttpError {
 export function sendReturnMessage(error: unknown) {
   const { message, status, feedback } = error as HttpError;
 
-  return json({ message, feedback }, { status });
+  return json({ message, feedback }, { status: status || 400 });
 }
 
 export type InputError = {
