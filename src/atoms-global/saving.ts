@@ -5,8 +5,7 @@ import type { Setter } from 'jotai';
 import { atom } from 'jotai';
 import { toast } from 'react-hot-toast';
 
-import type { InputError } from '~/services/api/errors';
-import type { HttpError } from '~/services/api/throws-errors';
+import type { HttpError, InputError } from '~/services/api/throws-errors';
 
 type SavingDataType = {
   url: string;
