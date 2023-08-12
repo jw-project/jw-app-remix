@@ -1,6 +1,7 @@
 import { firestore } from 'firebase-admin';
 
 import { getAuthenticatedUser } from '~/services/firebase-connection.server';
+import { cacheUser } from '~/utils/cache.server';
 
 export const saveTheme = async (request: Request) => {
   const { theme } = await request.json();
