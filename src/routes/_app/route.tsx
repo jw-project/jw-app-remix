@@ -33,11 +33,14 @@ function BaseLayout({
 }
 
 export default function Layout() {
-  const [show, setShow] = useState(false);
-  const { state } = useNavigation();
+  const [show, setShow] = useState(true);
+  const { state, location } = useNavigation();
 
   useEffect(() => {
-    setShow(state === 'idle');
+    // only happens effect when the routes are base routes
+    if ((location?.pathname || '').split('/').length < 4) {
+      setShow(state === 'idle');
+    }
   }, [state]);
 
   return (
