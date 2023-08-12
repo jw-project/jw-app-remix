@@ -1,20 +1,10 @@
 import NodeCache from 'node-cache';
 
-let cacheConfigs: NodeCache;
-let cacheUser: NodeCache;
+const config: NodeCache.Options = {
+  stdTTL: process.env.NODE_ENV === 'production' ? 0 : 60,
+};
 
-if (process.env.NODE_ENV === 'production') {
-  cacheConfigs = new NodeCache();
-  cacheUser = new NodeCache();
-} else {
-  if (!global.cacheConfigs) {
-    global.cacheConfigs = new NodeCache({ stdTTL: 60 });
-  }
-  if (!global.cacheUser) {
-    global.cacheUser = new NodeCache({ stdTTL: 60 });
-  }
-  ({ cacheConfigs } = global);
-  ({ cacheUser } = global);
-}
+const cacheConfigs = new NodeCache(config);
+const cacheUser = new NodeCache(config);
 
 export { cacheConfigs, cacheUser };
