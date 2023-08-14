@@ -36,7 +36,7 @@ export const action: ActionFunction = async ({
     if (findedCongregation && findedCongregation.id !== congregationId) {
       return throwInputError({
         field: 'number',
-        message: 'routes.congregation.congregation-already-exists',
+        message: 'routes.congregation.errors.congregation-already-exists',
       });
     }
     if (!congregationId) {

@@ -84,12 +84,12 @@ const BaseErrorScreen = ({
             <ErrorStatusCode>{status}</ErrorStatusCode>
             <ErrorTitle>
               <span className="text-red-500 dark:text-red-400">
-                {translate('common.error-title')}
+                {translate('common.errors.error-title')}
               </span>{' '}
               {translate(message)}
             </ErrorTitle>
             <ErrorParagraph>
-              {translate(`common.${status}-description`)}
+              {translate(`common.errors.${status}-description`)}
             </ErrorParagraph>
             <Button onClick={handleGoBack}>
               {translate('common.go-back')}
@@ -117,5 +117,5 @@ export function ErrorScreen() {
     );
   }
 
-  return <BaseErrorScreen status={400} message={'common.bad-request'} />;
+  return <BaseErrorScreen status={400} message={'common.errors.bad-request'} />;
 }
