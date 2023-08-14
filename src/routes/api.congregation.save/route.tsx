@@ -9,11 +9,13 @@ import {
   newCongregation,
   saveCongregation,
 } from '~/services/api/congregation/congregation.server';
+import { congregationFormSchema } from '~/services/api/congregation/validations';
 import {
   sendReturnMessage,
   throwInputError,
 } from '~/services/api/throws-errors';
 import type { ActionResponse } from '~/services/api/types';
+import { validateData } from '~/services/api/validate-data';
 import { ValidatePermissions } from '~/services/api/validate-permissions';
 import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
@@ -29,6 +31,8 @@ export const action: ActionFunction = async ({
     const congregationReq: CongregationEntity = await request.json();
     const { congregationId, permissions, displayName, email } =
       await getAuthenticatedUser(request);
+
+    validateData(congregationFormSchema, congregationReq);
 
     const findedCongregation = await findCongregationByNumber({
       number: congregationReq.number,
