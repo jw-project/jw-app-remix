@@ -1,5 +1,4 @@
-import type { ActionFunction } from '@remix-run/server-runtime';
-import { json } from '@remix-run/server-runtime';
+import { json, type ActionFunction } from '@remix-run/server-runtime';
 
 import { cacheConfigs, cacheUser } from '~/utils/cache.server';
 

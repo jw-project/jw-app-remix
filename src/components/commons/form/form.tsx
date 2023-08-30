@@ -1,21 +1,20 @@
 import { useEffect, useMemo } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import type {
-  DefaultValues,
-  FieldValues,
-  FormState,
-  Path,
+import {
+  FormProvider,
+  useForm,
+  type DefaultValues,
+  type FieldValues,
+  type FormState,
+  type Path,
 } from 'react-hook-form';
-import { FormProvider, useForm } from 'react-hook-form';
 import { v4 as uuid } from 'uuid';
 import type { ZodType, ZodTypeDef } from 'zod';
 
-import type { ErrorsApiListType } from '~/hooks/saving';
-import { useSave } from '~/hooks/saving';
+import { useSave, type ErrorsApiListType } from '~/hooks/saving';
 
-import type { FormBuilderProps } from './form-builder';
-import { FormBuilder } from './form-builder';
+import { FormBuilder, type FormBuilderProps } from './form-builder';
 
 export function Form<
   TOutputField = any,

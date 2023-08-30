@@ -1,5 +1,4 @@
-import type { W } from 'windstitch';
-import { w } from 'windstitch';
+import { w, type W } from 'windstitch';
 
 export const Grid = w.div(
   `

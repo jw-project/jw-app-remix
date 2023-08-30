@@ -1,8 +1,7 @@
+import { error } from 'console';
 import { createContext, useContext, useState } from 'react';
 
-import type { AxiosError } from 'axios';
-import axios from 'axios';
-import { error } from 'console';
+import axios, { type AxiosError } from 'axios';
 import { toast } from 'react-hot-toast';
 
 import type { HttpError, InputError } from '~/services/api/throws-errors';

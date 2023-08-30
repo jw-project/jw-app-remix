@@ -1,11 +1,7 @@
 /** @type {import('eslint').Linter.Config} */
 
 module.exports = {
-  extends: [
-    '@remix-run/eslint-config',
-    '@remix-run/eslint-config/node',
-    'eslint-config-prettier',
-  ],
+  extends: ['eslint-config-prettier'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     parser: '@typescript-eslint/parser',
@@ -44,6 +40,7 @@ module.exports = {
     'sonarjs/no-duplicate-string': 'error',
     'sonarjs/prefer-immediate-return': 'error',
     //typescript-eslint rules
+    '@typescript-eslint/consistent-type-imports': 'error',
     '@typescript-eslint/no-non-null-assertion': 'error',
     '@typescript-eslint/no-inferrable-types': 'error',
     '@typescript-eslint/ban-types': 'error',

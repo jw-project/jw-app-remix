@@ -2,8 +2,7 @@ import { Fragment } from 'react';
 
 import { useMatches } from '@remix-run/react';
 
-import type { Permissions } from '~/entities/permissions';
-import { PermissionsEnum } from '~/entities/permissions';
+import { PermissionsEnum, type Permissions } from '~/entities/permissions';
 import { useMenu } from '~/hooks/menu';
 import { useTranslation } from '~/i18n/i18n';
 

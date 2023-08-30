@@ -1,7 +1,7 @@
 import {
+  redirect,
   type ActionFunction,
   type LoaderFunction,
-  redirect,
 } from '@remix-run/server-runtime';
 import type { FirebaseOptions } from 'firebase/app';
 

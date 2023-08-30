@@ -1,10 +1,8 @@
-import type { ToastType } from 'react-hot-toast';
-import { ToastBar, Toaster } from 'react-hot-toast';
+import { ToastBar, Toaster, type ToastType } from 'react-hot-toast';
 
 import { useTranslation } from '~/i18n/i18n';
 
-import type { IconProps } from '../icon';
-import { Icon } from '../icon';
+import { Icon, type IconProps } from '../icon';
 
 export const Toast = () => {
   const { translate } = useTranslation();

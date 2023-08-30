@@ -1,8 +1,7 @@
 import { type ActionFunction } from '@remix-run/server-runtime';
 
 import type { CongregationEntity } from '~/entities/congregation';
-import type { Permissions } from '~/entities/permissions';
-import { PermissionsEnum } from '~/entities/permissions';
+import { PermissionsEnum, type Permissions } from '~/entities/permissions';
 import {
   findCongregationByNumber,
   getCongregation,

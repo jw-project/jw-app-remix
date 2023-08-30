@@ -1,6 +1,6 @@
 import { error, info } from 'console';
-import type { FirebaseOptions } from 'firebase/app';
-import { getApps, initializeApp } from 'firebase/app';
+
+import { getApps, initializeApp, type FirebaseOptions } from 'firebase/app';
 
 export function firebaseClientConnection(firebaseConfig: FirebaseOptions) {
   try {

@@ -1,8 +1,7 @@
 import { Link } from '@remix-run/react';
 import { w } from 'windstitch';
 
-import type { IconOpts } from '../icon';
-import { Icon } from '../icon';
+import { Icon, type IconOpts } from '../icon';
 
 export type TabProp = {
   title: string;

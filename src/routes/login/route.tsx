@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 
 import { useFetcher, useLoaderData } from '@remix-run/react';
-import type { User } from 'firebase/auth';
 import {
-  GoogleAuthProvider,
   getAuth,
+  GoogleAuthProvider,
   onAuthStateChanged,
   signInWithPopup,
   signInWithRedirect,
+  type User,
 } from 'firebase/auth';
 
 import { useTranslation } from '~/i18n/i18n';
