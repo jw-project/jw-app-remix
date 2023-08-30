@@ -8,16 +8,15 @@ import {
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react';
-import { useAtomValue } from 'jotai';
 
-import { themeAtom } from '~/atoms-global/theme';
 import { useLanguage } from '~/global-context/language';
+import { useTheme } from '~/global-context/theme';
 import { useSave } from '~/hooks/saving';
 
 import { Toast } from '../toast/toast';
 
 export const Body = () => {
-  const theme = useAtomValue(themeAtom);
+  const { theme } = useTheme();
   const { defaultLanguage } = useLanguage();
   const { isSaving } = useSave();
 

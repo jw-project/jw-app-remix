@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { useAtomValue } from 'jotai';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { themeAtom } from '~/atoms-global/theme';
+import { useTheme } from '~/global-context/theme';
 
 import type { IconProps } from '../icon';
 import { Icon } from '../icon';
@@ -42,7 +41,7 @@ export function Input({
     formState: { errors },
     control,
   } = useFormContext();
-  const theme = useAtomValue(themeAtom);
+  const { theme } = useTheme();
   const icon = type && inputTypes[type];
 
   return (

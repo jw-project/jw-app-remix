@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { useAtomValue } from 'jotai';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { themeAtom } from '~/atoms-global/theme';
+import { useTheme } from '~/global-context/theme';
 
 import { FieldArea } from './field-area';
 import { inputBaseFactory } from './style-base';
@@ -24,7 +23,7 @@ export function TextArea({
     formState: { errors },
     control,
   } = useFormContext();
-  const theme = useAtomValue(themeAtom);
+  const { theme } = useTheme();
 
   return (
     <FieldArea name={name} label={label}>

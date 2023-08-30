@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { useAtomValue } from 'jotai';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { themeAtom } from '~/atoms-global/theme';
+import { useTheme } from '~/global-context/theme';
 
 import { Icon } from '../icon';
 import { FieldArea } from './field-area';
@@ -32,7 +31,7 @@ export function Select({
     formState: { errors },
     control,
   } = useFormContext();
-  const theme = useAtomValue(themeAtom);
+  const { theme } = useTheme();
 
   return (
     <FieldArea name={name} label={label}>
