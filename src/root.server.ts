@@ -7,7 +7,6 @@ import type {
 import { json, redirect } from '@remix-run/server-runtime';
 import { error } from 'console';
 
-import type { Theme } from '~/atoms-global/theme';
 import type { TranslationConfig, Translations } from '~/i18n/i18n';
 import { getTranslateResources } from '~/i18n/i18next.server';
 import { getAuthenticatedUser } from '~/services/firebase-connection.server';
@@ -16,6 +15,7 @@ import { cacheConfigs } from '~/utils/cache.server';
 
 import type { MenuType } from './components/menu/types';
 import type { PublisherEntity } from './entities/publisher';
+import type { Theme } from './global-context/theme';
 import { getMenu } from './services/api/menu.server';
 import { getPath } from './utils/get-path.server';
 

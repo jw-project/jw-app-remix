@@ -1,4 +1,4 @@
-import type { Theme } from '~/atoms-global/theme';
+import type { Theme } from '~/global-context/theme';
 
 import type { Permissions } from './permissions';
 
