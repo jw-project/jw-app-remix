@@ -8,7 +8,9 @@ import {
 } from '~/services/consts';
 
 export const congregationFormSchema = z.object({
-  name: z.string({ required_error: REQUIRED_FIELD_I18N_KEY }),
+  name: z
+    .string({ required_error: REQUIRED_FIELD_I18N_KEY })
+    .min(1, REQUIRED_FIELD_I18N_KEY),
   number: z.preprocess(
     (val) => Number(val) || 0,
     z.number().gt(0, { message: REQUIRED_FIELD_I18N_KEY }),

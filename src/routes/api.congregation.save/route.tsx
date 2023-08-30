@@ -15,8 +15,8 @@ import {
   throwInputError,
 } from '~/services/api/throws-errors';
 import type { ActionResponse } from '~/services/api/types';
-import { validateData } from '~/services/api/validate-data';
 import { ValidatePermissions } from '~/services/api/validate-permissions';
+import { validateSchema } from '~/services/api/validate-schema';
 import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
 export type CongregationActionSaveResponse = {
@@ -32,7 +32,7 @@ export const action: ActionFunction = async ({
     const { congregationId, permissions, displayName, email } =
       await getAuthenticatedUser(request);
 
-    validateData(congregationFormSchema, congregationReq);
+    validateSchema(congregationFormSchema, congregationReq);
 
     const findedCongregation = await findCongregationByNumber({
       number: congregationReq.number,

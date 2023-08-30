@@ -1,9 +1,9 @@
 import { firestore } from 'firebase-admin';
 
-import type { CongregationEntity } from '~/entities/congregation';
 import type { EventEntity } from '~/entities/event';
 
 import { getAllData, getData } from '../../common.server';
+import { NotFoundError } from '../../throws-errors';
 
 export const listEvents = async ({
   congregationId,
@@ -25,7 +25,7 @@ export const getEvent = async ({
 }: {
   congregationId: string;
   eventId: string;
-}): Promise<CongregationEntity> => {
+}): Promise<EventEntity> => {
   const eventDoc = await firestore()
     .collection('congregation')
     .doc(congregationId)
@@ -33,59 +33,26 @@ export const getEvent = async ({
     .doc(eventId)
     .get();
 
+  if (!eventDoc.exists) {
+    throw new NotFoundError();
+  }
+
   return getData(eventDoc);
 };
 
-// export const newCongregation = async ({
-//   congregation,
-//   displayName,
-//   email,
-//   permissions,
-// }: {
-//   congregation: CongregationEntity;
-//   displayName?: string;
-//   email: string;
-//   permissions: Permissions;
-// }) => {
-//   const congregationSaved = await firestore()
-//     .collection('congregation')
-//     .add(congregation);
-
-//   await congregationSaved.collection('publishers').add({
-//     name: displayName,
-//     displayName,
-//     permissions,
-//     email,
-//   });
-
-//   return congregationSaved.get();
-// };
-
-// export const saveCongregation = async ({
-//   congregation,
-//   congregationId,
-// }: {
-//   congregation: CongregationEntity;
-//   congregationId: string;
-// }) => {
-//   return firestore()
-//     .collection('congregation')
-//     .doc(congregationId)
-//     .set(congregation);
-// };
-
-// export const findCongregationByNumber = async ({
-//   number,
-// }: {
-//   number: number;
-// }) => {
-//   const {
-//     empty,
-//     docs: [findedCongregation],
-//   } = await firestore()
-//     .collection('congregation')
-//     .where('number', '==', number)
-//     .get();
-
-//   return !empty && findedCongregation;
-// };
+export const saveEvent = async ({
+  event,
+  eventId,
+  congregationId,
+}: {
+  event: EventEntity;
+  eventId: string;
+  congregationId: string;
+}) => {
+  return firestore()
+    .collection('congregation')
+    .doc(congregationId)
+    .collection('events')
+    .doc(eventId)
+    .set(event);
+};

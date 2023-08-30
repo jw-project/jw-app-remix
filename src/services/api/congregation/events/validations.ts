@@ -12,9 +12,10 @@ export const eventFormSchema = z.object({
     .nativeEnum(EventType, {
       errorMap: () => ({ message: INVALID_FIELD_I18N_KEY }),
     })
-    .default(EventType.CIRCUIT_OVERSEER)
-    .optional(),
-  name: z.string({ required_error: REQUIRED_FIELD_I18N_KEY }),
+    .default(EventType.CIRCUIT_OVERSEER),
+  name: z
+    .string({ required_error: REQUIRED_FIELD_I18N_KEY })
+    .min(1, REQUIRED_FIELD_I18N_KEY),
   description: z.string().optional(),
   link: z.string().url().optional().or(z.literal('')),
   startDate: z.string().optional(),

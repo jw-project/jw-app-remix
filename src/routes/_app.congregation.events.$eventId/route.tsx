@@ -1,30 +1,27 @@
-import { useLoaderData } from '@remix-run/react';
-import type { LoaderArgs } from '@remix-run/server-runtime';
+import { useLoaderData, useNavigate } from '@remix-run/react';
 
 import { Card } from '~/components/commons/card';
 import { Form } from '~/components/commons/form/form';
-import { type EventEntity, eventOptions } from '~/entities/event';
+import { eventOptions } from '~/entities/event';
+import { useValidatePermissions } from '~/hooks/use-validate-permissions';
 import { useTranslation } from '~/i18n/i18n';
-import { getEvent } from '~/services/api/congregation/events/events.server';
+import { useUser } from '~/matches/use-user';
 import { eventFormSchema } from '~/services/api/congregation/events/validations';
-import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
-type EventEditLoaderReturn = {
-  event: EventEntity;
-  eventId: string;
-};
+import type { EventEditLoaderReturn } from './event-id.server';
 
-export const loader = async ({ request, params }: LoaderArgs) => {
-  const { congregationId, permissions } = await getAuthenticatedUser(request);
-  const { eventId } = params;
-  const event = await getEvent({ congregationId, eventId });
-
-  return { event, eventId };
-};
+export { loader } from './event-id.server';
 
 export default function EventEdit() {
   const { event, eventId } = useLoaderData<EventEditLoaderReturn>();
+  const { permissions } = useUser();
   const { translate } = useTranslation('routes.congregation.events');
+  const { canWrite } = useValidatePermissions(permissions, 'events');
+  const navigate = useNavigate();
+
+  const onSuccess = () => {
+    navigate('.', { replace: true });
+  };
 
   return (
     <Card>
@@ -32,8 +29,10 @@ export default function EventEdit() {
         key={eventId}
         schema={eventFormSchema}
         defaultValues={event}
-        api={`api/congregation/event/${eventId}/save`}
+        api={`api/congregation/events/${eventId}/save`}
+        onFormApiSuccess={onSuccess}
         builder={{
+          disabled: !canWrite,
           cols: 1,
           fields: [
             {
