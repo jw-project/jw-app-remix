@@ -2,9 +2,7 @@
 
 module.exports = {
   extends: [
-    '@remix-run/eslint-config',
-    '@remix-run/eslint-config/node',
-    'eslint-config-prettier',
+    // 'eslint-config-prettier',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -37,7 +35,7 @@ module.exports = {
       { blankLine: 'always', prev: '*', next: 'function' },
     ],
     //prettier rules
-    'prettier/prettier': 'error',
+    // 'prettier/prettier': 'error',
     //sonarjs rules
     'sonarjs/cognitive-complexity': 'error',
     'sonarjs/no-identical-functions': 'error',
@@ -70,7 +68,7 @@ module.exports = {
     'etc/no-commented-out-code': 'error',
   },
   plugins: [
-    'eslint-plugin-prettier',
+    // 'eslint-plugin-prettier',
     'sonarjs',
     '@typescript-eslint',
     'etc',
