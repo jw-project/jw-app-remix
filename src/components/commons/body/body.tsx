@@ -10,15 +10,15 @@ import {
 } from '@remix-run/react';
 import { useAtomValue } from 'jotai';
 
-import { languageAtom } from '~/atoms-global/language';
 import { themeAtom } from '~/atoms-global/theme';
+import { useLanguage } from '~/global-context/language';
 import { useSave } from '~/hooks/saving';
 
 import { Toast } from '../toast/toast';
 
 export const Body = () => {
   const theme = useAtomValue(themeAtom);
-  const language = useAtomValue(languageAtom);
+  const { defaultLanguage } = useLanguage();
   const { isSaving } = useSave();
 
   useEffect(() => {
@@ -37,11 +37,7 @@ export const Body = () => {
   };
 
   return (
-    <html
-      lang={language.defaultLanguage}
-      dir={language.defaultLanguage}
-      className={theme}
-    >
+    <html lang={defaultLanguage} dir={defaultLanguage} className={theme}>
       <head>
         <Meta />
         <Links />
