@@ -4,10 +4,9 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { useTheme } from '~/global-context/theme';
 
-import type { IconProps } from '../icon';
-import { Icon } from '../icon';
+import { Icon, type IconProps } from '../icon';
 import { FieldArea } from './field-area';
-import { InputIconWrapper, inputBaseFactory } from './style-base';
+import { inputBaseFactory, InputIconWrapper } from './style-base';
 import type { InputType } from './types';
 
 const InputStyled = inputBaseFactory(

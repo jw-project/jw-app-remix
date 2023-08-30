@@ -3,8 +3,7 @@ import type { HTMLAttributes } from 'react';
 import type { convertHtmlToReact } from '@hedgedoc/html-to-react';
 
 import { Button } from '../button';
-import type { ColProps, GridProps } from '../grid';
-import { Col, Grid } from '../grid';
+import { Col, Grid, type ColProps, type GridProps } from '../grid';
 import { Subtitle } from '../typography';
 import { Input } from './input';
 import { Select, type SelectOptionsType } from './select';

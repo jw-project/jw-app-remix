@@ -1,5 +1,8 @@
-import type { AllPermissions, Permissions } from '~/entities/permissions';
-import { PermissionsEnum } from '~/entities/permissions';
+import {
+  PermissionsEnum,
+  type AllPermissions,
+  type Permissions,
+} from '~/entities/permissions';
 
 import { ForbiddenError } from './throws-errors';
 

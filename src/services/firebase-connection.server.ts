@@ -1,4 +1,5 @@
 import { error, info } from 'console';
+
 import { firestore } from 'firebase-admin';
 import { cert, getApps, initializeApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';

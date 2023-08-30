@@ -2,12 +2,12 @@ import React from 'react';
 
 import { useHorizontalScroll } from '~/hooks/horizontal-scroll';
 
-import type { TabProp } from './tabs-styled';
 import {
   TabIconStyled,
   TabLinkStyled,
-  TabStyled,
   TabsStyled,
+  TabStyled,
+  type TabProp,
 } from './tabs-styled';
 
 export function Tabs(props: React.PropsWithChildren) {

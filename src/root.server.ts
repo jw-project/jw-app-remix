@@ -1,11 +1,13 @@
-import type { V2_MetaFunction } from '@remix-run/node';
-import type {
-  LinksFunction,
-  LoaderFunction,
-  TypedResponse,
-} from '@remix-run/server-runtime';
-import { json, redirect } from '@remix-run/server-runtime';
 import { error } from 'console';
+
+import type { V2_MetaFunction } from '@remix-run/node';
+import {
+  json,
+  redirect,
+  type LinksFunction,
+  type LoaderFunction,
+  type TypedResponse,
+} from '@remix-run/server-runtime';
 
 import type { TranslationConfig, Translations } from '~/i18n/i18n';
 import { getTranslateResources } from '~/i18n/i18next.server';
