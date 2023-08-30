@@ -1,9 +1,7 @@
 /** @type {import('eslint').Linter.Config} */
 
 module.exports = {
-  extends: [
-    // 'eslint-config-prettier',
-  ],
+  extends: ['eslint-config-prettier'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     parser: '@typescript-eslint/parser',
@@ -35,7 +33,7 @@ module.exports = {
       { blankLine: 'always', prev: '*', next: 'function' },
     ],
     //prettier rules
-    // 'prettier/prettier': 'error',
+    'prettier/prettier': 'error',
     //sonarjs rules
     'sonarjs/cognitive-complexity': 'error',
     'sonarjs/no-identical-functions': 'error',
@@ -68,7 +66,7 @@ module.exports = {
     'etc/no-commented-out-code': 'error',
   },
   plugins: [
-    // 'eslint-plugin-prettier',
+    'eslint-plugin-prettier',
     'sonarjs',
     '@typescript-eslint',
     'etc',

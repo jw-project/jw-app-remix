@@ -18,4 +18,4 @@ export const getAllData = <T>(
   }) as T;
 
 export const getData = <T>(snap: DocumentSnapshot<DocumentData>) =>
-  ({ ...snap.data(), id: snap.id } as T);
+  ({ ...snap.data(), id: snap.id }) as T;
