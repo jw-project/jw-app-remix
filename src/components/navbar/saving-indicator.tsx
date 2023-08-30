@@ -1,13 +1,13 @@
-import { Fragment, useContext } from 'react';
+import { Fragment } from 'react';
 
 import { Transition } from '@headlessui/react';
 
-import { SavingContext } from '~/hooks/saving';
+import { useSave } from '~/hooks/saving';
 
 import { Icon } from '../commons/icon';
 
 export function SavingIndicator() {
-  const { isSaving } = useContext(SavingContext);
+  const { isSaving } = useSave();
 
   return (
     <Transition

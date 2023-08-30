@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import {
   Links,
@@ -12,14 +12,14 @@ import { useAtomValue } from 'jotai';
 
 import { languageAtom } from '~/atoms-global/language';
 import { themeAtom } from '~/atoms-global/theme';
-import { SavingContext } from '~/hooks/saving';
+import { useSave } from '~/hooks/saving';
 
 import { Toast } from '../toast/toast';
 
 export const Body = () => {
   const theme = useAtomValue(themeAtom);
   const language = useAtomValue(languageAtom);
-  const { isSaving } = useContext(SavingContext);
+  const { isSaving } = useSave();
 
   useEffect(() => {
     window.addEventListener('beforeunload', handleBeforeUnload);

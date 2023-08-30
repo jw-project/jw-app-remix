@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 import type { AxiosError } from 'axios';
 import axios from 'axios';
@@ -39,7 +39,7 @@ type NewType = {
 
 //
 
-export const SavingContext = createContext({} as NewType);
+const SavingContext = createContext({} as NewType);
 
 export const SavingProvider = ({ children }: { children: React.ReactNode }) => {
   const [savingData, setSavingData] = useState<Array<SavingDataTypeInternal>>(
@@ -155,3 +155,5 @@ export const SavingProvider = ({ children }: { children: React.ReactNode }) => {
     </SavingContext.Provider>
   );
 };
+
+export const useSave = () => useContext(SavingContext);

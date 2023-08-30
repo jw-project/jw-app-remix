@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import type {
@@ -12,7 +12,7 @@ import { v4 as uuid } from 'uuid';
 import type { ZodType, ZodTypeDef } from 'zod';
 
 import type { ErrorsApiListType } from '~/hooks/saving';
-import { SavingContext } from '~/hooks/saving';
+import { useSave } from '~/hooks/saving';
 
 import type { FormBuilderProps } from './form-builder';
 import { FormBuilder } from './form-builder';
@@ -48,7 +48,7 @@ export function Form<
     removeErrorsApi,
     successApiList,
     removeSuccessApi,
-  } = useContext(SavingContext);
+  } = useSave();
 
   const methods = useForm({
     mode,

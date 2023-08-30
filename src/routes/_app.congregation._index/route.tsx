@@ -1,11 +1,9 @@
-import { useContext } from 'react';
-
 import { useLoaderData, useNavigate } from '@remix-run/react';
 
 import { Card } from '~/components/commons/card';
 import { Form } from '~/components/commons/form/form';
 import { weekOptions } from '~/entities/week';
-import { SavingContext } from '~/hooks/saving';
+import { useSave } from '~/hooks/saving';
 import { useValidatePermissions } from '~/hooks/use-validate-permissions';
 import { useTranslation } from '~/i18n/i18n';
 import { useUser } from '~/matches/use-user';
@@ -21,7 +19,7 @@ export default function Congregation() {
   const { translate: commonTranslate } = useTranslation('common');
   const { congregationId, permissions } = useUser();
   const { canWrite } = useValidatePermissions(permissions, 'congregation');
-  const { isSaving } = useContext(SavingContext);
+  const { isSaving } = useSave();
   const congregationActive = Boolean(congregationId);
   const { congregation } = useLoaderData<CongregationLoaderReturn>();
   const navigate = useNavigate();
