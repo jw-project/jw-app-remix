@@ -6,6 +6,7 @@ import { Provider, createStore } from 'jotai';
 import { languageAtom } from './atoms-global/language';
 import { themeAtom } from './atoms-global/theme';
 import { Body } from './components/commons/body/body';
+import { SavingProvider } from './hooks/saving';
 import type { RootLoaderReturn } from './root.server';
 
 export { loader, links, meta } from './root.server';
@@ -22,7 +23,9 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <Body />
+      <SavingProvider>
+        <Body />
+      </SavingProvider>
     </Provider>
   );
 }

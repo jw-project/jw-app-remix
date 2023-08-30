@@ -1,7 +1,6 @@
-import { useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAtom, useSetAtom } from 'jotai';
 import type {
   DefaultValues,
   FieldValues,
@@ -12,12 +11,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { v4 as uuid } from 'uuid';
 import type { ZodType, ZodTypeDef } from 'zod';
 
-import type { ErrorsApiListType } from '~/atoms-global/saving';
-import {
-  addSavingDataAtom,
-  errorsApiListAtom,
-  removeSuccessApiAtom,
-} from '~/atoms-global/saving';
+import type { ErrorsApiListType } from '~/hooks/saving';
+import { SavingContext } from '~/hooks/saving';
 
 import type { FormBuilderProps } from './form-builder';
 import { FormBuilder } from './form-builder';
@@ -47,9 +42,13 @@ export function Form<
   onFormApiErrors?: (errors: ErrorsApiListType) => void;
 }>) {
   const idInstance = useMemo(() => uuid(), []);
-  const save = useSetAtom(addSavingDataAtom);
-  const [apiErrors, removeApiError] = useAtom(errorsApiListAtom);
-  const [apiSuccess, removeApiSuccess] = useAtom(removeSuccessApiAtom);
+  const {
+    addSavingData,
+    errorsList,
+    removeErrorsApi,
+    successApiList,
+    removeSuccessApi,
+  } = useContext(SavingContext);
 
   const methods = useForm({
     mode,
@@ -59,7 +58,7 @@ export function Form<
   });
 
   const onSubmit = (data: TFieldValues): void => {
-    save({
+    addSavingData({
       url: api,
       formData: data,
       id: idInstance,
@@ -67,17 +66,19 @@ export function Form<
   };
 
   useEffect(() => {
-    const success = apiSuccess.find(
+    const success = successApiList.find(
       (success) => success.formIntanceId === idInstance,
     );
     if (success) {
       onFormApiSuccess?.(success);
     }
-    removeApiSuccess(idInstance);
-  }, [apiSuccess.length]);
+    removeSuccessApi(idInstance);
+  }, [successApiList.length]);
 
   useEffect(() => {
-    const error = apiErrors.find((error) => error.formIntanceId === idInstance);
+    const error = errorsList.find(
+      (error) => error.formIntanceId === idInstance,
+    );
     if (error) {
       onFormApiErrors?.(error);
       methods.setError(
@@ -89,7 +90,7 @@ export function Form<
         { shouldFocus: true },
       );
     }
-  }, [apiErrors.length]);
+  }, [errorsList.length]);
 
   useEffect(() => {
     onFormStatusChange?.(methods.formState);
@@ -97,7 +98,7 @@ export function Form<
 
   useEffect(() => {
     const subscription = methods.watch(() => {
-      removeApiError(idInstance);
+      removeErrorsApi(idInstance);
       if (mode === 'onChange') {
         methods.handleSubmit(onSubmit)();
       }

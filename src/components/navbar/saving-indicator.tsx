@@ -1,14 +1,13 @@
-import { Fragment } from 'react';
+import { Fragment, useContext } from 'react';
 
 import { Transition } from '@headlessui/react';
-import { useAtomValue } from 'jotai';
 
-import { isSavingAtom } from '~/atoms-global/saving';
+import { SavingContext } from '~/hooks/saving';
 
 import { Icon } from '../commons/icon';
 
 export function SavingIndicator() {
-  const isSaving = useAtomValue(isSavingAtom);
+  const { isSaving } = useContext(SavingContext);
 
   return (
     <Transition
