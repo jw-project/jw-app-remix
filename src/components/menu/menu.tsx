@@ -1,7 +1,6 @@
 import { useMatches } from '@remix-run/react';
-import { useAtom } from 'jotai';
 
-import { showMenuAtom } from '~/atoms-global/menu';
+import { useMenu } from '~/hooks/menu';
 import { useUser } from '~/matches/use-user';
 
 import { Backdrop } from '../commons/backdrop';
@@ -15,7 +14,7 @@ export function Menu() {
     },
   ] = useMatches();
   const { permissions } = useUser();
-  const [showMenu, setShowMenu] = useAtom(showMenuAtom);
+  const { showMenu, closeMenu } = useMenu();
 
   return (
     <>
@@ -26,7 +25,7 @@ export function Menu() {
         </MenuHeader>
         <MenuBody menu={menu} permissions={permissions} />
       </Aside>
-      <Backdrop onClick={() => setShowMenu()} visible={!showMenu} />
+      <Backdrop onClick={closeMenu} visible={!showMenu} />
     </>
   );
 }

@@ -1,7 +1,6 @@
-import { useSetAtom } from 'jotai';
 import { w } from 'windstitch';
 
-import { showMenuAtom } from '~/atoms-global/menu';
+import { useMenu } from '~/hooks/menu';
 
 import { Icon } from '../commons/icon';
 
@@ -13,10 +12,10 @@ const MobileAsideButtonStyled = w.div(`
 `);
 
 export function MobileAsideButton() {
-  const setShowMenu = useSetAtom(showMenuAtom);
+  const { toggleMenu } = useMenu();
 
   return (
-    <MobileAsideButtonStyled onClick={setShowMenu}>
+    <MobileAsideButtonStyled onClick={toggleMenu}>
       <Icon icon="menu_open" />
     </MobileAsideButtonStyled>
   );

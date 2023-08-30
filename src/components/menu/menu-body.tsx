@@ -1,11 +1,10 @@
 import { Fragment } from 'react';
 
 import { useMatches } from '@remix-run/react';
-import { useSetAtom } from 'jotai';
 
-import { closeMenuAtom } from '~/atoms-global/menu';
 import type { Permissions } from '~/entities/permissions';
 import { PermissionsEnum } from '~/entities/permissions';
+import { useMenu } from '~/hooks/menu';
 import { useTranslation } from '~/i18n/i18n';
 
 import { Icon } from '../commons/icon';
@@ -19,7 +18,7 @@ import type { MenuListType, MenuType } from './types';
 
 function MenuLink({ list }: { list: MenuListType[] }) {
   const { translate } = useTranslation('menu');
-  const closeMenu = useSetAtom(closeMenuAtom);
+  const { closeMenu } = useMenu();
   const match = useMatches();
 
   const checkPathname = (to: string) =>

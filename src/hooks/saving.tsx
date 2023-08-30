@@ -23,7 +23,7 @@ type FormInstance = {
 
 export type ErrorsApiListType = InputError & FormInstance;
 
-type NewType = {
+type SavingContextType = {
   savingData: Array<SavingDataTypeInternal>;
   isSaving: boolean;
   addSavingData: (newData: SavingDataType) => void;
@@ -39,9 +39,9 @@ type NewType = {
 
 //
 
-const SavingContext = createContext({} as NewType);
+const SavingContext = createContext({} as SavingContextType);
 
-export const SavingProvider = ({ children }: { children: React.ReactNode }) => {
+export const SavingProvider = ({ children }: React.PropsWithChildren) => {
   const [savingData, setSavingData] = useState<Array<SavingDataTypeInternal>>(
     [],
   );
