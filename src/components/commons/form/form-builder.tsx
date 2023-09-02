@@ -109,7 +109,7 @@ export const FormBuilder = ({
             return (
               <Col colSpan={field.colSpan} key={field.name}>
                 <TextArea
-                  name="address"
+                  name={field.name}
                   label={field.label}
                   disabled={disabled || field.disabled}
                 />

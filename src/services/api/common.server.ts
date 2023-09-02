@@ -19,3 +19,11 @@ export const getAllData = <T>(
 
 export const getData = <T>(snap: DocumentSnapshot<DocumentData>) =>
   ({ ...snap.data(), id: snap.id }) as T;
+
+export function checkIfValuesChanged<T>(
+  oldEvent: T,
+  newEvent: T,
+  fieldsToCheck: (keyof T)[],
+) {
+  return fieldsToCheck.some((field) => oldEvent[field] !== newEvent[field]);
+}

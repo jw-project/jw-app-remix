@@ -1,6 +1,7 @@
 import { type ActionFunction } from '@remix-run/server-runtime';
 
 import type { EventEntity } from '~/entities/event';
+import { checkIfValuesChanged } from '~/services/api/common.server';
 import {
   getEvent,
   saveEvent,
@@ -14,6 +15,7 @@ import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
 export type EventActionSaveResponse = {
   event: EventEntity;
+  needReload: boolean;
 };
 
 export const action: ActionFunction = async ({
@@ -33,7 +35,7 @@ export const action: ActionFunction = async ({
       throw new NotFoundError();
     }
 
-    await getEvent({ eventId, congregationId });
+    const oldEvent = await getEvent({ eventId, congregationId });
 
     await saveEvent({
       event: eventReq,
@@ -43,7 +45,10 @@ export const action: ActionFunction = async ({
 
     const event = await getEvent({ eventId, congregationId });
 
-    return { event };
+    return {
+      event,
+      needReload: checkIfValuesChanged(oldEvent, event, ['name', 'type']),
+    };
   } catch (error) {
     throw sendReturnMessage(error);
   }

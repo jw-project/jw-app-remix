@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { Week } from '~/entities/week';
 import {
   INVALID_FIELD_I18N_KEY,
+  INVALID_FIELD_LINK_I18N_KEY,
   REGEX_TIME,
   REQUIRED_FIELD_I18N_KEY,
 } from '~/services/consts';
@@ -40,7 +41,11 @@ export const congregationFormSchema = z.object({
   onlineMeetingId: z.string().optional(),
   onlineMeetingDialNumber: z.string().optional(),
   onlineMeetingPassword: z.string().optional(),
-  onlineMeetingLink: z.string().optional(),
+  onlineMeetingLink: z
+    .string()
+    .url(INVALID_FIELD_LINK_I18N_KEY)
+    .optional()
+    .or(z.literal('')),
   circuitName: z.string().optional(),
   circuitOverseerName: z.string().optional(),
   circuitOverseerContact: z.string().optional(),

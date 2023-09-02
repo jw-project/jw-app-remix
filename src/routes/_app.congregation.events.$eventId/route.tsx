@@ -8,6 +8,7 @@ import { useTranslation } from '~/i18n/i18n';
 import { useUser } from '~/matches/use-user';
 import { eventFormSchema } from '~/services/api/congregation/events/validations';
 
+import type { EventActionSaveResponse } from '../api.congregation.events.$eventId.save/route';
 import type { EventEditLoaderReturn } from './event-id.server';
 
 export { loader } from './event-id.server';
@@ -19,8 +20,10 @@ export default function EventEdit() {
   const { canWrite } = useValidatePermissions(permissions, 'events');
   const navigate = useNavigate();
 
-  const onSuccess = () => {
-    navigate('.', { replace: true });
+  const onSuccess = (response: EventActionSaveResponse) => {
+    if (response.needReload) {
+      navigate('.', { replace: true });
+    }
   };
 
   return (
@@ -58,22 +61,22 @@ export default function EventEdit() {
             },
             {
               name: 'startDate',
-              label: translate('startDate'),
+              label: translate('start_date'),
               type: 'date',
             },
             {
               name: 'startTime',
-              label: translate('startTime'),
+              label: translate('start_time'),
               type: 'time',
             },
             {
               name: 'endDate',
-              label: translate('endDate'),
+              label: translate('end_date'),
               type: 'date',
             },
             {
               name: 'endTime',
-              label: translate('endTime'),
+              label: translate('end_time'),
               type: 'time',
             },
           ],

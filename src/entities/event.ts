@@ -13,42 +13,12 @@ export enum EventType {
 }
 
 export const eventOptions = (): SelectOptionsType[] => {
-  const { translate } = translation('enum.event_type');
+  const { translate } = translation('enum.event-type');
 
-  return [
-    {
-      label: translate(EventType.CIRCUIT_OVERSEER).toString(),
-      value: EventType.CIRCUIT_OVERSEER,
-    },
-    {
-      label: translate(EventType.CIRCUIT_ASSEMBLY).toString(),
-      value: EventType.CIRCUIT_ASSEMBLY,
-    },
-    {
-      label: translate(EventType.CONVENTION).toString(),
-      value: EventType.CONVENTION,
-    },
-    {
-      label: translate(EventType.MEMORIAL).toString(),
-      value: EventType.MEMORIAL,
-    },
-    {
-      label: translate(EventType.MEETING_DAY_CHANGE).toString(),
-      value: EventType.MEETING_DAY_CHANGE,
-    },
-    {
-      label: translate(EventType.NO_MEETING).toString(),
-      value: EventType.NO_MEETING,
-    },
-    {
-      label: translate(EventType.SERVICE_OVERSEER_VISIT).toString(),
-      value: EventType.SERVICE_OVERSEER_VISIT,
-    },
-    {
-      label: translate(EventType.OTHER).toString(),
-      value: EventType.OTHER,
-    },
-  ];
+  return Object.values(EventType).map((day) => ({
+    label: translate(day).toString(),
+    value: day,
+  }));
 };
 
 export type EventEntity = {

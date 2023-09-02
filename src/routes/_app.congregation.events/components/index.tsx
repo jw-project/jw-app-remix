@@ -11,11 +11,13 @@ import {
   ListStyled,
 } from '~/components/commons/list-screen';
 import type { EventEntity } from '~/entities/event';
+import { useTranslation } from '~/i18n/i18n';
 
 import type { EventsLoaderReturn } from '../events.server';
 
 export function EventList() {
   const { events } = useLoaderData<EventsLoaderReturn>();
+  const { translate } = useTranslation('enum.event-type');
 
   const match = useMatches();
 
@@ -38,7 +40,7 @@ export function EventList() {
             </ItemIconContainer>
             <ItemTextContainer>
               <ItemName>{event.name}</ItemName>
-              <ItemSubText>{event.type}</ItemSubText>
+              <ItemSubText>{translate(event.type)}</ItemSubText>
             </ItemTextContainer>
             <ItemArrowContainer>
               <Icon size="icon-x-large" icon="chevron_right" />

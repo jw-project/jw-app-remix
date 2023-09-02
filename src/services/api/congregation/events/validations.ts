@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { EventType } from '~/entities/event';
 import {
   INVALID_FIELD_I18N_KEY,
+  INVALID_FIELD_LINK_I18N_KEY,
   REGEX_TIME,
   REQUIRED_FIELD_I18N_KEY,
 } from '~/services/consts';
@@ -17,7 +18,11 @@ export const eventFormSchema = z.object({
     .string({ required_error: REQUIRED_FIELD_I18N_KEY })
     .min(1, REQUIRED_FIELD_I18N_KEY),
   description: z.string().optional(),
-  link: z.string().url().optional().or(z.literal('')),
+  link: z
+    .string()
+    .url(INVALID_FIELD_LINK_I18N_KEY)
+    .optional()
+    .or(z.literal('')),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
   startTime: z
