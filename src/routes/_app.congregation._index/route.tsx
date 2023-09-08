@@ -1,8 +1,9 @@
-import { useLoaderData, useNavigate } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 
 import { Card } from '~/components/commons/card';
 import { Form } from '~/components/commons/form/form';
 import { weekOptions } from '~/entities/week';
+import { useRevalidator } from '~/hooks/revalidate';
 import { useSave } from '~/hooks/saving';
 import { useValidatePermissions } from '~/hooks/use-validate-permissions';
 import { useTranslation } from '~/i18n/i18n';
@@ -22,11 +23,11 @@ export default function Congregation() {
   const { isSaving } = useSave();
   const congregationActive = Boolean(congregationId);
   const { congregation } = useLoaderData<CongregationLoaderReturn>();
-  const navigate = useNavigate();
+  const { revalidate } = useRevalidator();
 
   const onSuccess = (e: CongregationActionSaveResponse) => {
-    if (e.needReload) {
-      navigate('.', { replace: true });
+    if (e.needRevalidate) {
+      revalidate();
     }
   };
 

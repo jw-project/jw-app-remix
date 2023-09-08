@@ -4673,7 +4673,10 @@ export type IconProps = {
     | 'icon-small'
     | 'icon-medium'
     | 'icon-large'
-    | 'icon-x-large';
+    | 'icon-x-large'
+    | 'icon-xx-large'
+    | 'icon-xxx-large'
+    | 'icon-xxxx-large';
   onClick?: () => void;
 };
 

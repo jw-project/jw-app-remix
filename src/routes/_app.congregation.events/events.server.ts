@@ -1,3 +1,4 @@
+import type { ShouldRevalidateFunction } from '@remix-run/react';
 import { type LoaderFunction } from '@remix-run/server-runtime';
 
 import type { EventEntity } from '~/entities/event';
@@ -25,4 +26,15 @@ export const loader: LoaderFunction = async ({
   } catch (error) {
     throw sendReturnMessage(error);
   }
+};
+
+export const shouldRevalidate: ShouldRevalidateFunction = ({
+  currentParams,
+  defaultShouldRevalidate,
+}) => {
+  if (currentParams?.eventId === 'new') {
+    return true;
+  }
+
+  return defaultShouldRevalidate;
 };

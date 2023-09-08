@@ -20,7 +20,7 @@ import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
 export type CongregationActionSaveResponse = {
   congregation: CongregationEntity;
-  needReload: boolean;
+  needRevalidate: boolean;
 };
 
 export const action: ActionFunction = async ({
@@ -64,7 +64,7 @@ export const action: ActionFunction = async ({
         congregationId: savedCongregation.id,
       });
 
-      return { congregation, needReload: true };
+      return { congregation, needRevalidate: true };
     }
 
     new ValidatePermissions(permissions, 'congregation').canRead();
@@ -78,7 +78,7 @@ export const action: ActionFunction = async ({
       congregationId,
     });
 
-    return { congregation, needReload: false };
+    return { congregation, needRevalidate: false };
   } catch (error) {
     throw sendReturnMessage(error);
   }

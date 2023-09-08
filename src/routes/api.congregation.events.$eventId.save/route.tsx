@@ -15,7 +15,7 @@ import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 
 export type EventActionSaveResponse = {
   event: EventEntity;
-  needReload: boolean;
+  needRevalidate: boolean;
 };
 
 export const action: ActionFunction = async ({
@@ -35,6 +35,19 @@ export const action: ActionFunction = async ({
       throw new NotFoundError();
     }
 
+    if (eventId === 'new') {
+      const newEvent = await saveEvent({
+        event: eventReq,
+        eventId,
+        congregationId,
+      });
+
+      return {
+        event: await getEvent({ eventId: newEvent.id, congregationId }),
+        needRevalidate: true,
+      };
+    }
+
     const oldEvent = await getEvent({ eventId, congregationId });
 
     await saveEvent({
@@ -47,7 +60,7 @@ export const action: ActionFunction = async ({
 
     return {
       event,
-      needReload: checkIfValuesChanged(oldEvent, event, ['name', 'type']),
+      needRevalidate: checkIfValuesChanged(oldEvent, event, ['name', 'type']),
     };
   } catch (error) {
     throw sendReturnMessage(error);

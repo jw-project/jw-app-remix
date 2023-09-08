@@ -9,11 +9,9 @@ import {
 } from '~/services/consts';
 
 export const eventFormSchema = z.object({
-  type: z
-    .nativeEnum(EventType, {
-      errorMap: () => ({ message: INVALID_FIELD_I18N_KEY }),
-    })
-    .default(EventType.CIRCUIT_OVERSEER),
+  type: z.nativeEnum(EventType, {
+    errorMap: () => ({ message: INVALID_FIELD_I18N_KEY }),
+  }),
   name: z
     .string({ required_error: REQUIRED_FIELD_I18N_KEY })
     .min(1, REQUIRED_FIELD_I18N_KEY),

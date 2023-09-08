@@ -12,6 +12,8 @@ import type { InputType } from './types';
 export type SelectOptionsType = {
   label: string;
   value: string;
+  disabled?: boolean;
+  selected?: boolean;
 };
 
 const SelectStyled = inputBaseFactory('select', 'appearance-none opacity-100');
@@ -47,8 +49,13 @@ export function Select({
               style={{ colorScheme: theme }}
               disabled={disabled}
             >
-              {options.map(({ label: labelOpt, value }) => (
-                <option key={value} value={value}>
+              {options.map(({ label: labelOpt, value, disabled, selected }) => (
+                <option
+                  key={value}
+                  value={value}
+                  disabled={disabled}
+                  selected={selected}
+                >
                   {labelOpt}
                 </option>
               ))}

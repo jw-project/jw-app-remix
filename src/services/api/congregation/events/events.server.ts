@@ -1,15 +1,20 @@
 import { firestore } from 'firebase-admin';
+import type {
+  DocumentData,
+  DocumentReference,
+  WriteResult,
+} from 'firebase-admin/firestore';
 
 import type { EventEntity } from '~/entities/event';
 
 import { getAllData, getData } from '../../common.server';
 import { NotFoundError } from '../../throws-errors';
 
-export const listEvents = async ({
+export async function listEvents({
   congregationId,
 }: {
   congregationId: string;
-}): Promise<Array<EventEntity>> => {
+}): Promise<Array<EventEntity>> {
   const eventList = await firestore()
     .collection('congregation')
     .doc(congregationId)
@@ -17,15 +22,15 @@ export const listEvents = async ({
     .get();
 
   return getAllData(eventList, { includeId: true });
-};
+}
 
-export const getEvent = async ({
+export async function getEvent({
   congregationId,
   eventId,
 }: {
   congregationId: string;
   eventId: string;
-}): Promise<EventEntity> => {
+}): Promise<EventEntity> {
   const eventDoc = await firestore()
     .collection('congregation')
     .doc(congregationId)
@@ -38,9 +43,21 @@ export const getEvent = async ({
   }
 
   return getData(eventDoc);
-};
+}
 
-export const saveEvent = async ({
+export async function saveEvent(data: {
+  event: EventEntity;
+  eventId: 'new';
+  congregationId: string;
+}): Promise<DocumentReference<DocumentData>>;
+
+export async function saveEvent(data: {
+  event: EventEntity;
+  eventId: string;
+  congregationId: string;
+}): Promise<DocumentReference<WriteResult>>;
+
+export async function saveEvent({
   event,
   eventId,
   congregationId,
@@ -48,11 +65,15 @@ export const saveEvent = async ({
   event: EventEntity;
   eventId: string;
   congregationId: string;
-}) => {
-  return firestore()
+}) {
+  const colection = firestore()
     .collection('congregation')
     .doc(congregationId)
-    .collection('events')
-    .doc(eventId)
-    .set(event);
-};
+    .collection('events');
+
+  if (eventId === 'new') {
+    return colection.add(event);
+  }
+
+  return colection.doc(eventId).set(event);
+}

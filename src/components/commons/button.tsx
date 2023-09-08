@@ -1,6 +1,10 @@
-import { w } from 'windstitch';
+import type { ComponentProps, PropsWithChildren } from 'react';
 
-export const Button = w.button(
+import { w, type W } from 'windstitch';
+
+import { Icon, type IconOpts } from './icon';
+
+const ButtonStyled = w.button(
   `
     leading-normal
     flex
@@ -20,20 +24,30 @@ export const Button = w.button(
     variants: {
       buttonstyle: {
         primary: `
-          bg-blue-500
-          border-blue-500
+          bg-blue-600
+          dark:bg-blue-500
+          border-blue-600
+          dark:border-blue-500
           text-white
-          enabled:hover:border-gray-500
-          enabled:hover:bg-blue-600
-          enabled:active:bg-blue-700
+          enabled:hover:bg-blue-700
+          enabled:hover:border-blue-700
+          enabled:active:bg-blue-800
+          enabled:hover:dark:bg-blue-600
+          enabled:hover:dark:border-blue-600
+          enabled:active:dark:bg-blue-500
         `,
         secondary: `
           bg-gray-100
+          dark:bg-gray-200
           border-gray-100
+          dark:border-gray-200
           text-gray-700
+          enabled:hover:bg-gray-300
           enabled:hover:border-gray-300
-          enabled:hover:bg-gray-200
-          enabled:active:bg-gray-300
+          enabled:active:bg-gray-400
+          enabled:hover:dark:bg-gray-400
+          enabled:hover:dark:border-gray-400
+          enabled:active:dark:bg-gray-500
         `,
       },
       bold: (bold: boolean) => (bold ? 'font-bold' : ''),
@@ -42,3 +56,26 @@ export const Button = w.button(
     transient: ['bold'],
   },
 );
+
+type ButtonStyledType = W.Infer<typeof ButtonStyled>;
+
+export const Button = ({
+  buttonstyle = 'primary',
+  icon,
+  children,
+  ...props
+}: PropsWithChildren<
+  ComponentProps<'button'> & ButtonStyledType & { icon?: IconOpts }
+>) => {
+  const iconColors = {
+    primary: 'mr-1 text-white dark:text-black',
+    secondary: 'mr-1 text-gray-700 dark:text-gray-300',
+  };
+
+  return (
+    <ButtonStyled buttonstyle={buttonstyle} {...props}>
+      {icon && <Icon icon={icon} className={iconColors[buttonstyle]} />}
+      {children}
+    </ButtonStyled>
+  );
+};

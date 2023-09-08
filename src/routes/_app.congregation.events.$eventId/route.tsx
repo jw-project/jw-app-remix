@@ -1,8 +1,10 @@
-import { useLoaderData, useNavigate } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 
 import { Card } from '~/components/commons/card';
 import { Form } from '~/components/commons/form/form';
+import { setVoidOptionWhenNew } from '~/components/commons/form/utils';
 import { eventOptions } from '~/entities/event';
+import { useRevalidator } from '~/hooks/revalidate';
 import { useValidatePermissions } from '~/hooks/use-validate-permissions';
 import { useTranslation } from '~/i18n/i18n';
 import { useUser } from '~/matches/use-user';
@@ -18,11 +20,13 @@ export default function EventEdit() {
   const { permissions } = useUser();
   const { translate } = useTranslation('routes.congregation.events');
   const { canWrite } = useValidatePermissions(permissions, 'events');
-  const navigate = useNavigate();
+  const { revalidate, navigate } = useRevalidator();
 
   const onSuccess = (response: EventActionSaveResponse) => {
-    if (response.needReload) {
-      navigate('.', { replace: true });
+    if (eventId === 'new') {
+      navigate(`../${response.event.id}`);
+    } else if (response.needRevalidate) {
+      revalidate();
     }
   };
 
@@ -42,7 +46,7 @@ export default function EventEdit() {
               name: 'type',
               label: translate('type'),
               type: 'select',
-              options: eventOptions(),
+              options: setVoidOptionWhenNew(eventOptions(), eventId),
             },
             {
               name: 'name',

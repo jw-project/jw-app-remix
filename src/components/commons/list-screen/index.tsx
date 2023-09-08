@@ -8,17 +8,33 @@ export const RootListContainer = w.div(`
     gap-4  
 `);
 
-export const ListContainer = w.div(`
+export const ListContainer = w.div(
+  `
     md:col-span-5
     lg:col-span-4
     xl:col-span-3
-`);
+`,
+  {
+    variants: {
+      show: (show: boolean) => (show ? 'block' : 'hidden'),
+    },
+    transient: ['show'],
+  },
+);
 
-export const DataContainer = w.div(`
-    md:col-span-7
-    lg:col-span-8
-    xl:col-span-9
-`);
+export const DataContainer = w.div(``, {
+  variants: {
+    full: (full: boolean) =>
+      full
+        ? 'col-span-full'
+        : `
+      md:col-span-7
+      lg:col-span-8
+      xl:col-span-9
+  `,
+  },
+  transient: ['full'],
+});
 
 export const ListStyled = w.ul(`
     divide-y
