@@ -1,4 +1,4 @@
-import type { LoaderArgs } from '@remix-run/server-runtime';
+import type { LoaderFunctionArgs } from '@remix-run/server-runtime';
 
 import { type EventEntity } from '~/entities/event';
 import { getEvent } from '~/services/api/congregation/events/events.server';
@@ -15,7 +15,7 @@ export type EventEditLoaderReturn = {
 export const loader = async ({
   request,
   params,
-}: LoaderArgs): ActionResponse<EventEditLoaderReturn> => {
+}: LoaderFunctionArgs): ActionResponse<EventEditLoaderReturn> => {
   try {
     const { congregationId, permissions } = await getAuthenticatedUser(request);
     const { eventId } = params;

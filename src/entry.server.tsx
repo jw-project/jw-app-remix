@@ -1,7 +1,10 @@
 import { error } from 'console';
-import { PassThrough } from 'stream';
+import { PassThrough } from 'node:stream';
 
-import { Response, type EntryContext } from '@remix-run/node';
+import {
+  createReadableStreamFromReadable,
+  type EntryContext,
+} from '@remix-run/node';
 import { RemixServer } from '@remix-run/react';
 import isbot from 'isbot';
 import { renderToPipeableStream } from 'react-dom/server';
@@ -12,7 +15,7 @@ const ABORT_DELAY = 5000;
 
 firebaseAdminConnection();
 
-export default async function handleRequest(
+export default function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
@@ -22,25 +25,30 @@ export default async function handleRequest(
     ? 'onAllReady'
     : 'onShellReady';
 
-  let didError = false;
-
   return new Promise((resolve, reject) => {
+    let didError = false;
+
     const { pipe, abort } = renderToPipeableStream(
-      <RemixServer context={remixContext} url={request.url} />,
+      <RemixServer
+        context={remixContext}
+        url={request.url}
+        abortDelay={ABORT_DELAY}
+      />,
       {
         [callbackName]: () => {
+          const body = new PassThrough();
+          const stream = createReadableStreamFromReadable(body);
+
           responseHeaders.set('Content-Type', 'text/html');
 
-          const body = new PassThrough();
-
-          pipe(body);
-
           resolve(
-            new Response(body, {
+            new Response(stream, {
               headers: responseHeaders,
               status: didError ? 500 : responseStatusCode,
             }),
           );
+
+          pipe(body);
         },
         onShellError: (err: unknown) => {
           reject(err);

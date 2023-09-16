@@ -1,7 +1,8 @@
-import { useMatches } from '@remix-run/react';
+import { useMatches, type UIMatch } from '@remix-run/react';
 
 import { useMenu } from '~/hooks/menu';
 import { useUser } from '~/matches/use-user';
+import type { RootLoaderReturn } from '~/root.server';
 
 import { Backdrop } from '../commons/backdrop';
 import { MenuBody } from './menu-body';
@@ -12,7 +13,7 @@ export function Menu() {
     {
       data: { menu },
     },
-  ] = useMatches();
+  ] = useMatches() as UIMatch<RootLoaderReturn>[];
   const { permissions } = useUser();
   const { showMenu, closeMenu } = useMenu();
 

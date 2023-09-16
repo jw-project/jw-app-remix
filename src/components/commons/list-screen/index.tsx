@@ -1,5 +1,5 @@
 import type React from 'react';
-import { ReactNode, type ComponentProps } from 'react';
+import { type ComponentProps } from 'react';
 
 import { Link } from '@remix-run/react';
 import { w } from 'windstitch';

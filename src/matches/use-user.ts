@@ -1,13 +1,14 @@
-import { useMatches } from '@remix-run/react';
+import { useMatches, type UIMatch } from '@remix-run/react';
 
 import type { PublisherEntity } from '~/entities/publisher';
+import type { RootLoaderReturn } from '~/root.server';
 
 export function useUser(): PublisherEntity {
   const [
     {
       data: { user },
     },
-  ] = useMatches();
+  ] = useMatches() as UIMatch<RootLoaderReturn>[];
 
   return user;
 }

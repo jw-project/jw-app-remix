@@ -1,6 +1,6 @@
 import { error } from 'console';
 
-import type { V2_MetaFunction } from '@remix-run/node';
+import type { MetaFunction } from '@remix-run/node';
 import {
   json,
   redirect,
@@ -21,7 +21,7 @@ import type { Theme } from './global-context/theme';
 import { getMenu } from './services/api/menu.server';
 import { getPath } from './utils/get-path.server';
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     { title: 'New Remix App' },
     { charset: 'utf-8' },
@@ -44,7 +44,7 @@ export type RootLoaderReturn = {
   locale: TranslationConfig;
   themeMode: 'dark' | 'light';
   menu: MenuType[];
-  user?: PublisherEntity;
+  user: PublisherEntity;
 };
 
 export const loader: LoaderFunction = async ({
@@ -84,14 +84,13 @@ export const loader: LoaderFunction = async ({
 
   const locale: TranslationConfig = {
     defaultLanguage: language,
-    fallbackLanguage: language,
     translations: resources,
   };
 
   return json({
     locale,
     themeMode: theme,
-    user,
+    user: user as PublisherEntity,
     menu,
   });
 };

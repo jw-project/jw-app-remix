@@ -1,6 +1,8 @@
 import { convertHtmlToReact } from '@hedgedoc/html-to-react';
-import { useMatches } from '@remix-run/react';
+import { useMatches, type UIMatch } from '@remix-run/react';
 import { get } from 'lodash';
+
+import type { RootLoaderReturn } from '~/root.server';
 
 type Translation = Record<string, string | Record<string, string>>;
 
@@ -9,10 +11,9 @@ export type Translations = Record<string, Translation>;
 export type TranslationConfig = {
   translations: Translations;
   defaultLanguage: string;
-  fallbackLanguage: string;
 };
 
-function translateHigh(translations: Translation) {
+function translateHigh(translations: Translation | string) {
   function getKey(key: string, plural = false) {
     const pKey = `${key}${plural ? '_plural' : ''}`;
 
@@ -55,11 +56,10 @@ function translateHigh(translations: Translation) {
 }
 
 export function useTranslation(prefixKey?: string) {
-  const [{ data }] = useMatches();
+  const [{ data }] = useMatches() as UIMatch<RootLoaderReturn>[];
 
-  const translations =
-    data.locale.translations[data.locale.defaultLanguage] ||
-    data.locale.translations[data.locale.fallbackLanguage];
+  const translations: Translation =
+    data.locale.translations[data.locale.defaultLanguage];
 
   const filtredTranslations = prefixKey
     ? get(translations, prefixKey || '')
