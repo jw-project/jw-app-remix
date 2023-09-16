@@ -1,19 +1,23 @@
+import type React from 'react';
+import { ReactNode, type ComponentProps } from 'react';
+
 import { Link } from '@remix-run/react';
 import { w } from 'windstitch';
 
 export const RootListContainer = w.div(`
-    grid
-    md:grid-cols-12
-    grid-cols-1
-    gap-4  
+  grid
+  md:grid-cols-12
+  grid-cols-1
+  gap-4  
 `);
 
 export const ListContainer = w.div(
   `
-    md:col-span-5
-    lg:col-span-4
-    xl:col-span-3
-`,
+  h-[calc(100vh-1.5rem-1.5rem-3.5rem-1rem-42px)]
+  md:col-span-5
+  lg:col-span-4
+  xl:col-span-3
+  `,
   {
     variants: {
       show: (show: boolean) => (show ? 'block' : 'hidden'),
@@ -21,6 +25,29 @@ export const ListContainer = w.div(
     transient: ['show'],
   },
 );
+
+const Flex: typeof RootListContainer & {
+  Item: typeof ListContainer;
+} = () => RootListContainer;
+
+Flex.Item = ListContainer;
+
+export const ButtonContainer = w.div(`
+  flex
+  flex-row
+  mb-4
+`);
+
+export const ScrollContainer = w.div(`
+  h-full
+  overflow-auto
+  scrollbar
+  scrollbar-w-[2px]
+  scrollbar-thumb-rounded-full
+  scrollbar-thumb-slate-300
+  scrollbar-track-white
+  pr-4
+`);
 
 export const DataContainer = w.div(``, {
   variants: {
@@ -79,3 +106,20 @@ export const ItemArrowContainer = w.div(`
     flex
     flex-row
 `);
+
+const SubComponent = w.div(`
+  // Adicione seus estilos aqui
+`);
+
+interface MyComponentType extends React.FC<ComponentProps<'div'>> {
+  Sub: typeof SubComponent;
+}
+
+const Component: MyComponentType = w.div(`
+  grid
+  md:grid-cols-12
+  grid-cols-1
+  gap-4  
+`) as MyComponentType;
+
+Component.Sub = SubComponent;

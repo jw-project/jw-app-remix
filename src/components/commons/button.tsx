@@ -1,6 +1,9 @@
 import type { ComponentProps, PropsWithChildren } from 'react';
 
+import { useNavigate } from '@remix-run/react';
 import { w, type W } from 'windstitch';
+
+import { useTranslation } from '~/i18n/i18n';
 
 import { Icon, type IconOpts } from './icon';
 
@@ -24,17 +27,17 @@ const ButtonStyled = w.button(
     variants: {
       buttonstyle: {
         primary: `
-          bg-blue-600
-          dark:bg-blue-500
-          border-blue-600
-          dark:border-blue-500
+          bg-blue-500
+          dark:bg-blue-400
+          border-blue-500
+          dark:border-blue-400
           text-white
-          enabled:hover:bg-blue-700
-          enabled:hover:border-blue-700
-          enabled:active:bg-blue-800
-          enabled:hover:dark:bg-blue-600
-          enabled:hover:dark:border-blue-600
-          enabled:active:dark:bg-blue-500
+          enabled:hover:bg-blue-600
+          enabled:hover:border-blue-600
+          enabled:active:bg-blue-700
+          enabled:hover:dark:bg-blue-500
+          enabled:hover:dark:border-blue-500
+          enabled:active:dark:bg-blue-400
         `,
         secondary: `
           bg-gray-100
@@ -49,6 +52,19 @@ const ButtonStyled = w.button(
           enabled:hover:dark:border-gray-400
           enabled:active:dark:bg-gray-500
         `,
+        danger: `
+          bg-red-500
+          dark:bg-red-400
+          border-red-500
+          dark:border-red-400
+          text-white
+          enabled:hover:bg-red-600
+          enabled:hover:border-red-600
+          enabled:active:bg-red-700
+          enabled:hover:dark:bg-red-500
+          enabled:hover:dark:border-red-500
+          enabled:active:dark:bg-red-400
+`,
       },
       bold: (bold: boolean) => (bold ? 'font-bold' : ''),
     },
@@ -70,6 +86,7 @@ export const Button = ({
   const iconColors = {
     primary: 'mr-1 text-white dark:text-black',
     secondary: 'mr-1 text-gray-700 dark:text-gray-300',
+    danger: 'mr-1 text-white dark:text-black',
   };
 
   return (
@@ -79,3 +96,42 @@ export const Button = ({
     </ButtonStyled>
   );
 };
+
+export function NewButton({
+  button = 'common.empty-state.button',
+  icon = 'add',
+}: {
+  button?: string;
+  icon?: IconOpts;
+}) {
+  const { translate } = useTranslation();
+  const navigate = useNavigate();
+
+  const goTo = () => {
+    navigate('./new');
+  };
+
+  return (
+    <Button onClick={goTo} icon={icon}>
+      {translate(button)}
+    </Button>
+  );
+}
+
+export function DeleteButton({
+  button = 'common.delete',
+  icon = 'delete',
+  onClick,
+}: {
+  button?: string;
+  icon?: IconOpts;
+  onClick: () => void;
+}) {
+  const { translate } = useTranslation();
+
+  return (
+    <Button buttonstyle="danger" onClick={onClick} icon={icon}>
+      {translate(button)}
+    </Button>
+  );
+}

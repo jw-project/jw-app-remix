@@ -1,10 +1,13 @@
 import { Outlet, useLoaderData } from '@remix-run/react';
 
+import { DeleteButton, NewButton } from '~/components/commons/button';
 import { Card } from '~/components/commons/card';
 import {
+  ButtonContainer,
   DataContainer,
   ListContainer,
   RootListContainer,
+  ScrollContainer,
 } from '~/components/commons/list-screen';
 
 import { EventList } from './components';
@@ -19,13 +22,20 @@ export default function Events() {
   return (
     <RootListContainer>
       <ListContainer show={hasData}>
-        <Card padded={0}>
-          <EventList />
-        </Card>
+        <ButtonContainer>
+          <NewButton />
+        </ButtonContainer>
+        <ScrollContainer>
+          <Card padded={0}>
+            <EventList />
+          </Card>
+        </ScrollContainer>
       </ListContainer>
-      <DataContainer full={!hasData}>
-        <Outlet />
-      </DataContainer>
+      <ScrollContainer>
+        <DataContainer full={!hasData}>
+          <Outlet />
+        </DataContainer>
+      </ScrollContainer>
     </RootListContainer>
   );
 }

@@ -1,7 +1,6 @@
-import { useNavigate } from '@remix-run/react';
 import { w } from 'windstitch';
 
-import { Button } from '~/components/commons/button';
+import { NewButton } from '~/components/commons/button';
 import { Icon, type IconOpts } from '~/components/commons/icon';
 import { useTranslation } from '~/i18n/i18n';
 
@@ -38,11 +37,6 @@ export function EmptyState({
   icon?: IconOpts;
 }) {
   const { translate } = useTranslation();
-  const navigate = useNavigate();
-
-  const goTo = () => {
-    navigate('./new');
-  };
 
   return (
     <EmptyStateContainer>
@@ -53,9 +47,7 @@ export function EmptyState({
       />
       <EmptyStateTitle>{translate(title)}</EmptyStateTitle>
       <EmptyStateParagraph>{translate(paragraph)}</EmptyStateParagraph>
-      <Button onClick={goTo} icon={icon}>
-        {translate(button)}
-      </Button>
+      <NewButton button={button} icon={icon} />
     </EmptyStateContainer>
   );
 }

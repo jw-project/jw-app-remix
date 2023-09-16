@@ -36,7 +36,7 @@ export function EventList() {
             selected={checkPathname(event)}
           >
             <ItemIconContainer>
-              <Icon size="icon-x-large" icon="person" />
+              <Icon size="icon-x-large" icon="calendar_month" />
             </ItemIconContainer>
             <ItemTextContainer>
               <ItemName>{event.name}</ItemName>
