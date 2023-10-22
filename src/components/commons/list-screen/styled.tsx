@@ -1,6 +1,3 @@
-import type React from 'react';
-import { type ComponentProps } from 'react';
-
 import { Link } from '@remix-run/react';
 import { w } from 'windstitch';
 
@@ -8,7 +5,7 @@ export const RootListContainer = w.div(`
   grid
   md:grid-cols-12
   grid-cols-1
-  gap-4  
+  gap-4
 `);
 
 export const ListContainer = w.div(
@@ -26,15 +23,10 @@ export const ListContainer = w.div(
   },
 );
 
-const Flex: typeof RootListContainer & {
-  Item: typeof ListContainer;
-} = () => RootListContainer;
-
-Flex.Item = ListContainer;
-
 export const ButtonContainer = w.div(`
   flex
   flex-row
+  justify-between
   mb-4
 `);
 
@@ -46,22 +38,36 @@ export const ScrollContainer = w.div(`
   scrollbar-thumb-rounded-full
   scrollbar-thumb-slate-300
   scrollbar-track-white
+  p-1
   pr-4
 `);
 
-export const DataContainer = w.div(``, {
-  variants: {
-    full: (full: boolean) =>
-      full
-        ? 'col-span-full'
-        : `
+export const DataContainer = w.div(
+  `
+  h-[calc(100vh-1.5rem-1.5rem-3.5rem)]
+  overflow-auto
+  scrollbar
+  scrollbar-w-[2px]
+  scrollbar-thumb-rounded-full
+  scrollbar-thumb-slate-300
+  scrollbar-track-white
+  p-1
+  pr-4
+`,
+  {
+    variants: {
+      full: (full: boolean) =>
+        full
+          ? 'col-span-full'
+          : `
       md:col-span-7
       lg:col-span-8
       xl:col-span-9
   `,
+    },
+    transient: ['full'],
   },
-  transient: ['full'],
-});
+);
 
 export const ListStyled = w.ul(`
     divide-y
@@ -106,20 +112,3 @@ export const ItemArrowContainer = w.div(`
     flex
     flex-row
 `);
-
-const SubComponent = w.div(`
-  // Adicione seus estilos aqui
-`);
-
-interface MyComponentType extends React.FC<ComponentProps<'div'>> {
-  Sub: typeof SubComponent;
-}
-
-const Component: MyComponentType = w.div(`
-  grid
-  md:grid-cols-12
-  grid-cols-1
-  gap-4  
-`) as MyComponentType;
-
-Component.Sub = SubComponent;

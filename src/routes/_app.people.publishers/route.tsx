@@ -5,7 +5,7 @@ import {
   DataContainer,
   ListContainer,
   RootListContainer,
-} from '~/components/commons/list-screen';
+} from '~/components/commons/list-screen/styled';
 
 import { PublisherList } from './components';
 
@@ -14,12 +14,12 @@ export { loader } from './publisher.server';
 export default function Publishers() {
   return (
     <RootListContainer>
-      <ListContainer>
+      <ListContainer show>
         <Card padded={0}>
           <PublisherList />
         </Card>
       </ListContainer>
-      <DataContainer>
+      <DataContainer full={false}>
         <Outlet />
       </DataContainer>
     </RootListContainer>

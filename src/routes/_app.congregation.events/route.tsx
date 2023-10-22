@@ -1,41 +1,25 @@
-import { Outlet, useLoaderData } from '@remix-run/react';
+import { useMemo } from 'react';
 
-import { DeleteButton, NewButton } from '~/components/commons/button';
-import { Card } from '~/components/commons/card';
-import {
-  ButtonContainer,
-  DataContainer,
-  ListContainer,
-  RootListContainer,
-  ScrollContainer,
-} from '~/components/commons/list-screen';
+import { useLoaderData } from '@remix-run/react';
 
-import { EventList } from './components';
+import { ListScreen } from '~/components/commons/list-screen';
+import { useTranslation } from '~/i18n/i18n';
+
 import type { EventsLoaderReturn } from './events.server';
 
 export { loader, shouldRevalidate } from './events.server';
 
 export default function Events() {
   const { events } = useLoaderData<EventsLoaderReturn>();
-  const hasData = Boolean(events.length);
+  const { translate } = useTranslation('enum.event-type');
 
-  return (
-    <RootListContainer>
-      <ListContainer show={hasData}>
-        <ButtonContainer>
-          <NewButton />
-        </ButtonContainer>
-        <ScrollContainer>
-          <Card padded={0}>
-            <EventList />
-          </Card>
-        </ScrollContainer>
-      </ListContainer>
-      <ScrollContainer>
-        <DataContainer full={!hasData}>
-          <Outlet />
-        </DataContainer>
-      </ScrollContainer>
-    </RootListContainer>
-  );
+  const dataMapped = useMemo(() => {
+    return events.map((event) => ({
+      id: event.id,
+      name: event.name,
+      subName: `${translate(event.type)}`,
+    }));
+  }, [events]);
+
+  return <ListScreen data={dataMapped} />;
 }

@@ -9,7 +9,7 @@ import {
   ItemSubText,
   ItemTextContainer,
   ListStyled,
-} from '~/components/commons/list-screen';
+} from '~/components/commons/list-screen/styled';
 import type { PublisherEntity } from '~/entities/publisher';
 
 import type { PublishersLoaderReturn } from '../publisher.server';
