@@ -78,7 +78,7 @@ export const loader: LoaderFunction = async ({
     } catch (e) {
       error(e);
 
-      return redirect('/login');
+      return redirect(`/login?redirect=${request.url}`);
     }
   }
 

@@ -23,9 +23,13 @@ export const loader: LoaderFunction = (): LoginLoaderReturn => ({
   },
 });
 
-export const action: ActionFunction = async ({ request }) =>
-  redirect('/', {
+export const action: ActionFunction = async ({ request }) => {
+  const url = new URL(request.url);
+  const redirectUrl = url.searchParams.get('redirect');
+
+  return redirect(redirectUrl || '/', {
     headers: {
       'Set-Cookie': await sessionLogin(request),
     },
   });
+};
