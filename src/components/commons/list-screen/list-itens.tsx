@@ -17,12 +17,14 @@ export type ListItensProps<Data extends Array<EntityGeneric>> = {
   data: Data;
   navigateTo: string;
   icon: IconOpts;
+  dataContainerRef: React.RefObject<HTMLDivElement>;
 };
 
 export function ListItens<Data extends Array<EntityGeneric>>({
   data,
   navigateTo,
   icon,
+  dataContainerRef,
 }: ListItensProps<Data>) {
   const match = useMatches();
 
@@ -39,16 +41,19 @@ export function ListItens<Data extends Array<EntityGeneric>>({
           <ItemStyled
             to={navigateToEvent(event)}
             selected={checkPathname(event)}
+            onClick={() =>
+              dataContainerRef.current?.scroll({ top: 0, behavior: 'smooth' })
+            }
           >
             <ItemIconContainer>
-              <Icon size="icon-x-large" icon="calendar_month" />
+              <Icon size="icon-x-large" icon={icon} />
             </ItemIconContainer>
             <ItemTextContainer>
               <ItemName>{event.name}</ItemName>
               <ItemSubText>{event.subName}</ItemSubText>
             </ItemTextContainer>
             <ItemArrowContainer>
-              <Icon size="icon-x-large" icon={icon} />
+              <Icon size="icon-x-large" icon="chevron_right" />
             </ItemArrowContainer>
           </ItemStyled>
         </li>

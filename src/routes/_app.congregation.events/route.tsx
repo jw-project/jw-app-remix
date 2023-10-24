@@ -21,5 +21,11 @@ export default function Events() {
     }));
   }, [events]);
 
-  return <ListScreen data={dataMapped} />;
+  return (
+    <ListScreen
+      data={dataMapped}
+      icon="calendar_month"
+      navigateTo="/congregation/events/"
+    />
+  );
 }

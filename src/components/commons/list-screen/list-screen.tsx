@@ -1,8 +1,10 @@
+import { useMemo, useRef } from 'react';
+
 import { Outlet } from '@remix-run/react';
 
 import { DeleteButton, NewButton } from '../button';
 import { Card } from '../card';
-import { ListItens } from './list-itens';
+import { ListItens, type ListItensProps } from './list-itens';
 import {
   ButtonContainer,
   DataContainer,
@@ -23,8 +25,11 @@ export type ListScreenProps<Data extends Array<EntityGeneric>> = {
 
 export const ListScreen = <Data extends Array<EntityGeneric>>({
   data,
-}: ListScreenProps<Data>) => {
-  const hasData = Boolean(data.length);
+  icon,
+  navigateTo,
+}: ListScreenProps<Data> & ListItensProps<Data>) => {
+  const myRef = useRef<HTMLDivElement>(null);
+  const hasData = useMemo(() => Boolean(data.length), [data]);
 
   return (
     <RootListContainer>
@@ -37,13 +42,14 @@ export const ListScreen = <Data extends Array<EntityGeneric>>({
           <Card padded={0}>
             <ListItens
               data={data}
-              icon="chevron_right"
-              navigateTo="/congregation/events/"
+              icon={icon}
+              navigateTo={navigateTo}
+              dataContainerRef={myRef}
             />
           </Card>
         </ScrollContainer>
       </ListContainer>
-      <DataContainer full={!hasData}>
+      <DataContainer full={!hasData} ref={myRef}>
         <Outlet />
       </DataContainer>
     </RootListContainer>
