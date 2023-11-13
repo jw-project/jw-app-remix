@@ -5,7 +5,7 @@ export const DrawerWrapper = w.div(
     fixed
     top-0
     right-0
-    z-40
+    z-50
     h-screen
     p-4
     overflow-y-auto

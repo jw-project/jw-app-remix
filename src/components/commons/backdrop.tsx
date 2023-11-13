@@ -8,7 +8,7 @@ const BackdropStyled = w.div(`
   inset-0
   bg-black/60
   dark:bg-white/20
-  z-20
+  z-40
 `);
 
 export function Backdrop({

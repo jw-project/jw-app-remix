@@ -7,7 +7,7 @@ export const Aside = w.aside(
     -left-60
     fixed
     top-0
-    z-40
+    z-30
     h-screen
     bg-gray-800
     dark:bg-gray-900
