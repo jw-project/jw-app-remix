@@ -11,14 +11,17 @@ import {
 
 import { useLanguage } from '~/global-context/language';
 import { useTheme } from '~/global-context/theme';
+import { useDrawer } from '~/hooks/drawer';
 import { useSave } from '~/hooks/saving';
 
+import { Backdrop } from '../backdrop';
 import { Toast } from '../toast/toast';
 
 export const Body = () => {
   const { theme } = useTheme();
   const { defaultLanguage } = useLanguage();
   const { isSaving } = useSave();
+  const { drawerIsOpen, closeDrawer } = useDrawer();
 
   useEffect(() => {
     window.addEventListener('beforeunload', handleBeforeUnload);
@@ -41,7 +44,8 @@ export const Body = () => {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body style={{ overflow: drawerIsOpen ? 'hidden' : 'auto' }}>
+        <Backdrop visible={!drawerIsOpen} onClick={closeDrawer} />
         <Outlet />
         <Toast />
         <ScrollRestoration />

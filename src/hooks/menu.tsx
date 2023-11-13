@@ -6,7 +6,7 @@ type MenuContextType = {
   closeMenu: () => void;
 };
 
-export const MenuContext = createContext({} as MenuContextType);
+const MenuContext = createContext({} as MenuContextType);
 
 export const MenuProvider = ({ children }: React.PropsWithChildren) => {
   const [showMenu, setShowMenu] = useState(false);

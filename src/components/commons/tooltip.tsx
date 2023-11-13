@@ -72,7 +72,7 @@ export function Tooltip({
   direction = 'down',
   children,
 }: React.PropsWithChildren<{
-  message: string;
+  message?: string;
   direction?: Diretion;
 }>) {
   const [targetSize, setTargetSize] = useState({
@@ -94,7 +94,7 @@ export function Tooltip({
   return (
     <TooltipWrapper role="tooltip" onMouseOver={mouseOver}>
       {children}
-      <TooltipStyled style={style}>{message}</TooltipStyled>
+      {message && <TooltipStyled style={style}>{message}</TooltipStyled>}
     </TooltipWrapper>
   );
 }

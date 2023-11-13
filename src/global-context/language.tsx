@@ -2,7 +2,7 @@ import React, { createContext, useContext } from 'react';
 
 import type { TranslationConfig } from '~/i18n/i18n';
 
-export const LanguageContext = createContext<TranslationConfig>({
+const LanguageContext = createContext<TranslationConfig>({
   translations: {},
   defaultLanguage: 'en',
 });

@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
+
 import { useLoaderData } from '@remix-run/react';
 
-import { Card } from '~/components/commons/card';
 import { Form } from '~/components/commons/form/form';
 import { setVoidOptionWhenNew } from '~/components/commons/form/utils';
 import { eventOptions } from '~/entities/event';
+import { useDrawer } from '~/hooks/drawer';
 import { useRevalidator } from '~/hooks/revalidate';
 import { useValidatePermissions } from '~/hooks/use-validate-permissions';
 import { useTranslation } from '~/i18n/i18n';
@@ -21,71 +23,79 @@ export default function EventEdit() {
   const { translate } = useTranslation('routes.congregation.events');
   const { canWrite } = useValidatePermissions(permissions, 'events');
   const { revalidate, navigate } = useRevalidator();
+  const { openDrawer } = useDrawer();
 
   const onSuccess = (response: EventActionSaveResponse) => {
-    if (eventId === 'new') {
-      navigate(`../${response.event.id}`);
-    } else if (response.needRevalidate) {
-      revalidate();
-    }
+    // if (eventId === 'new') {
+    //   navigate(`../${response.event.id}`);
+    // } else if (response.needRevalidate) {
+    //   revalidate();
+    // }
   };
 
+  useEffect(() => {
+    openDrawer({
+      onClose: () => {
+        navigate('../');
+        // revalidate();
+      },
+    });
+  }, []);
+
   return (
-    <Card>
-      <Form
-        key={eventId}
-        schema={eventFormSchema}
-        defaultValues={event}
-        api={`api/congregation/events/${eventId}/save`}
-        onFormApiSuccess={onSuccess}
-        builder={{
-          disabled: !canWrite,
-          cols: 1,
-          fields: [
-            {
-              name: 'type',
-              label: translate('type'),
-              type: 'select',
-              options: setVoidOptionWhenNew(eventOptions(), eventId),
-            },
-            {
-              name: 'name',
-              label: translate('name'),
-              type: 'text',
-            },
-            {
-              name: 'description',
-              label: translate('description'),
-              type: 'textarea',
-            },
-            {
-              name: 'link',
-              label: translate('link'),
-              type: 'text',
-            },
-            {
-              name: 'startDate',
-              label: translate('start_date'),
-              type: 'date',
-            },
-            {
-              name: 'startTime',
-              label: translate('start_time'),
-              type: 'time',
-            },
-            {
-              name: 'endDate',
-              label: translate('end_date'),
-              type: 'date',
-            },
-            {
-              name: 'endTime',
-              label: translate('end_time'),
-              type: 'time',
-            },
-          ],
-        }}
-      />
-    </Card>
+    <Form
+      key={eventId}
+      schema={eventFormSchema}
+      defaultValues={event}
+      api={`api/congregation/events/${eventId}/save`}
+      onFormApiSuccess={onSuccess}
+      builder={{
+        disabled: !canWrite,
+        cols: 1,
+        fields: [
+          {
+            name: 'type',
+            label: translate('type'),
+            type: 'select',
+            options: setVoidOptionWhenNew(eventOptions(), eventId),
+          },
+          {
+            name: 'name',
+            label: translate('name'),
+            type: 'text',
+          },
+          {
+            name: 'description',
+            label: translate('description'),
+            type: 'textarea',
+          },
+          {
+            name: 'link',
+            label: translate('link'),
+            type: 'text',
+          },
+          {
+            name: 'startDate',
+            label: translate('start_date'),
+            type: 'date',
+          },
+          {
+            name: 'startTime',
+            label: translate('start_time'),
+            type: 'time',
+          },
+          {
+            name: 'endDate',
+            label: translate('end_date'),
+            type: 'date',
+          },
+          {
+            name: 'endTime',
+            label: translate('end_time'),
+            type: 'time',
+          },
+        ],
+      }}
+    />
   );
 }

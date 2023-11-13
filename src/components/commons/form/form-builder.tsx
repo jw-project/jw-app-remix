@@ -9,8 +9,6 @@ import { Input } from './input';
 import { Select, type SelectOptionsType } from './select';
 import { TextArea } from './text-area';
 
-export type InputTypes = 'text' | 'select' | 'textarea';
-
 type InputTypeAttribute =
   | 'date'
   | 'datetime-local'
