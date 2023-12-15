@@ -11,22 +11,23 @@ const ButtonGroupStyled = w.button(
   py-2
   text-sm
   font-medium
-  text-gray-900
-  bg-white
   border-gray-200
-  hover:bg-gray-100
-  hover:text-blue-700
-  focus:z-10
-  focus:ring-2
-  focus:ring-blue-700
-  focus:text-blue-700
-  dark:bg-gray-700
   dark:border-gray-600
-  dark:text-white
-  dark:hover:text-white
-  dark:hover:bg-gray-600
-  dark:focus:ring-blue-500
-  dark:focus:text-white
+  disabled:bg-gray-300
+  disabled:text-gray-500
+  disabled:cursor-not-allowed
+  dark:disabled:bg-gray-800
+  dark:disabled:text-gray-600
+  enabled:bg-white
+  enabled:text-black
+  enabled:hover:bg-gray-100
+  enabled:active:bg-gray-200
+  dark:enabled:bg-gray-700
+  dark:enabled:text-white
+  dark:enabled:hover:text-white
+  dark:enabled:hover:bg-gray-600
+  dark:enabled:active:bg-gray-700
+
 `,
   {
     variants: {
@@ -52,16 +53,30 @@ const ButtonGroupStyled = w.button(
 
 type ButtonGroupStyledType = W.Infer<typeof ButtonGroupStyled>;
 
-export type ButtonGroupProps = Array<{
-  text?: string;
-  icon?: IconOpts;
-  tooltip?: string;
-}>;
+export type ButtonGroupProps =
+  | {
+      text?: string;
+      icon: IconOpts;
+      tooltip: string;
+      disabled?: boolean;
+      onClick?: () => void;
+    }
+  | {
+      text: string;
+      icon?: IconOpts;
+      tooltip?: string;
+      disabled?: boolean;
+      onClick?: () => void;
+    };
 
-export const ButtonGroup = ({ buttons }: { buttons: ButtonGroupProps }) => {
+export const ButtonGroup = ({
+  buttons,
+}: {
+  buttons: Array<ButtonGroupProps>;
+}) => {
   return (
     <div className="relative inline-flex rounded-md shadow-sm" role="group">
-      {buttons.map(({ text, tooltip, icon }, index) => {
+      {buttons.map(({ text, tooltip, icon, disabled, onClick }, index) => {
         let position: ButtonGroupStyledType['position'] = 'middle';
         if (index === 0) {
           position = 'start';
@@ -71,12 +86,16 @@ export const ButtonGroup = ({ buttons }: { buttons: ButtonGroupProps }) => {
 
         return (
           <Tooltip message={tooltip} direction="top" key={index}>
-            <ButtonGroupStyled position={position}>
+            <ButtonGroupStyled
+              position={position}
+              disabled={disabled}
+              onClick={onClick}
+            >
               {icon && (
                 <Icon
                   icon={icon}
                   size="icon-x-small"
-                  className={text ? 'mr-1' : ''}
+                  className={`transition-none ${text ? 'mr-1' : ''}`}
                 />
               )}
               {text}

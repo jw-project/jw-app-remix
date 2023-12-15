@@ -1,16 +1,44 @@
+import { createContext, useContext, type Context } from 'react';
+
 import {
-  flexRender,
   getCoreRowModel,
   useReactTable,
   type ColumnDef,
+  type Table as ReactTableType,
 } from '@tanstack/react-table';
 
-export function Table<Data extends object>({
+import type { ButtonGroupProps } from '../button-group';
+import { EmptyState } from '../empty-state';
+import { TableButtonGroup } from './table-button-group';
+import { TableComponent } from './table-component';
+
+type ClearedButtonGroupProps = Omit<ButtonGroupProps, 'disabled' | 'onClick'>;
+
+type ExtraButtonGroupProps<Data extends object> = {
+  enabledWhen?: EnabledWhen;
+  shouldUnselect?: boolean;
+  onClick?: (data: Array<Data>) => void;
+};
+
+type TableContextProps<Data extends object> = {
+  table: ReactTableType<Data>;
+  buttons?: Array<ClearedButtonGroupProps & ExtraButtonGroupProps<Data>>;
+};
+
+export const TableContext = createContext<TableContextProps<object>>({
+  table: {} as ReactTableType<object>,
+});
+
+type EnabledWhen = 'onlyOneSelected' | 'leastOneSelected' | 'always';
+
+function TableProvider<Data extends object>({
   columns,
   data,
+  buttons,
 }: {
   columns: ColumnDef<Data, any>[];
   data: Data[];
+  buttons?: Array<ClearedButtonGroupProps & ExtraButtonGroupProps<Data>>;
 }) {
   const table = useReactTable<Data>({
     data,
@@ -19,53 +47,23 @@ export function Table<Data extends object>({
   });
 
   return (
-    <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-      <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-        {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <th key={header.id} className="px-6 py-3">
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext(),
-                    )}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody>
-        {table.getRowModel().rows.map((row) => (
-          <tr
-            key={row.id}
-            className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-          >
-            {row.getVisibleCells().map((cell) => (
-              <td key={cell.id} className="px-6 py-4">
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-      <tfoot>
-        {table.getFooterGroups().map((footerGroup) => (
-          <tr key={footerGroup.id}>
-            {footerGroup.headers.map((header) => (
-              <th key={header.id}>
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.footer,
-                      header.getContext(),
-                    )}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </tfoot>
-    </table>
+    <TableContext.Provider
+      value={{ table, buttons } as unknown as TableContextProps<object>}
+    >
+      {!Boolean(data.length) && <EmptyState />}
+      {Boolean(data.length) && (
+        <div className="shadow-md rounded-md pb-2">
+          <TableButtonGroup />
+          <TableComponent />
+        </div>
+      )}
+    </TableContext.Provider>
   );
 }
+
+export const useTableContext = <Data extends object>() =>
+  useContext<TableContextProps<Data>>(
+    TableContext as unknown as Context<TableContextProps<Data>>,
+  );
+
+export const Table = TableProvider;

@@ -20,24 +20,23 @@ export { loader } from './event-id.server';
 export default function EventEdit() {
   const { event, eventId } = useLoaderData<EventEditLoaderReturn>();
   const { permissions } = useUser();
-  const { translate } = useTranslation('routes.congregation.events');
+  const { translate } = useTranslation('routes.congregation.events.form');
   const { canWrite } = useValidatePermissions(permissions, 'events');
   const { revalidate, navigate } = useRevalidator();
   const { openDrawer } = useDrawer();
 
   const onSuccess = (response: EventActionSaveResponse) => {
-    // if (eventId === 'new') {
-    //   navigate(`../${response.event.id}`);
-    // } else if (response.needRevalidate) {
-    //   revalidate();
-    // }
+    if (eventId === 'new') {
+      navigate(`../${response.event.id}`);
+    } else if (response.needRevalidate) {
+      revalidate();
+    }
   };
 
   useEffect(() => {
     openDrawer({
       onClose: () => {
         navigate('../');
-        // revalidate();
       },
     });
   }, []);

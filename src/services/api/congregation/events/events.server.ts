@@ -77,3 +77,18 @@ export async function saveEvent({
 
   return colection.doc(eventId).set(event);
 }
+
+export async function deleteEvent({
+  eventId,
+  congregationId,
+}: {
+  eventId: string;
+  congregationId: string;
+}) {
+  return firestore()
+    .collection('congregation')
+    .doc(congregationId)
+    .collection('events')
+    .doc(eventId)
+    .delete();
+}

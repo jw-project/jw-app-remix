@@ -1,14 +1,16 @@
-import { Link, Outlet, useLoaderData } from '@remix-run/react';
+import { Link, Outlet, useLoaderData, useNavigate } from '@remix-run/react';
 import { type CoreOptions } from '@tanstack/react-table';
 
 import { Drawer } from '~/components/commons/drawer';
 import { TextDescriptionCell } from '~/components/commons/table/cells';
+import { Table } from '~/components/commons/table/table';
 import { selectorForTable } from '~/components/commons/table/utils';
-import { WrapperTable } from '~/components/commons/table/wrapper-table';
 import type { EventEntity } from '~/entities/event';
 import { useLanguage } from '~/global-context/language';
+import { useRevalidator } from '~/hooks/revalidate';
 import { useTranslation } from '~/i18n/i18n';
 
+import { deleteEvents } from './events.client';
 import type { EventsLoaderReturn } from './events.server';
 
 export { loader, shouldRevalidate } from './events.server';
@@ -17,6 +19,8 @@ export default function Events() {
   const { events } = useLoaderData<EventsLoaderReturn>();
   const { translate } = useTranslation();
   const { defaultLanguage } = useLanguage();
+  const navigate = useNavigate();
+  const { revalidate } = useRevalidator();
 
   const columns: CoreOptions<EventEntity>['columns'] = [
     ...selectorForTable<EventEntity>(),
@@ -72,13 +76,37 @@ export default function Events() {
 
   return (
     <>
-      <WrapperTable
+      <Table
         columns={columns}
         data={events}
         buttons={[
-          { text: 'Profile', icon: 'delete' },
-          { icon: 'demography', tooltip: 'Demography' },
-          { text: 'Downloads' },
+          {
+            tooltip: String(translate('common.new')),
+            icon: 'add_circle',
+            enabledWhen: 'always',
+            shouldUnselect: true,
+            onClick: () => {
+              navigate('./new');
+            },
+          },
+          {
+            tooltip: String(translate('common.edit')),
+            icon: 'edit',
+            enabledWhen: 'onlyOneSelected',
+            onClick: (data) => {
+              navigate(data[0].id);
+            },
+          },
+          {
+            tooltip: String(translate('common.edit')),
+            icon: 'delete',
+            enabledWhen: 'leastOneSelected',
+            shouldUnselect: true,
+            onClick: async (data) => {
+              await deleteEvents(data);
+              revalidate();
+            },
+          },
         ]}
       />
       <Drawer size="large">

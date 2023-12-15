@@ -3,6 +3,7 @@ import { useEffect, useRef, type HTMLProps } from 'react';
 import { w } from 'windstitch';
 
 const CheckboxStyled = w.input(`
+  relative
   w-4
   h-4
   text-blue-600
@@ -11,6 +12,13 @@ const CheckboxStyled = w.input(`
   rounded
   dark:bg-gray-700
   dark:border-gray-600
+  after:content-['']
+  after:absolute
+  after:-top-4
+  after:-left-5
+  after:-bottom-4
+  after:-right-5
+
 `);
 
 export function IndeterminateCheckbox({

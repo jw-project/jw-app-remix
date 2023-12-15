@@ -3,6 +3,7 @@ import type { PropsWithChildren } from 'react';
 import { useDrawer } from '~/hooks/drawer';
 import { useIsMobile } from '~/hooks/is-mobile';
 
+import { Icon } from '../icon';
 import {
   DrawerCloseButton,
   DrawerWrapper,
@@ -18,7 +19,9 @@ export const Drawer = ({
 
   return (
     <DrawerWrapper open={drawerIsOpen} size={isMobile ? 'full' : size}>
-      <DrawerCloseButton onClick={closeDrawer}>&times;</DrawerCloseButton>
+      <DrawerCloseButton onClick={closeDrawer}>
+        <Icon icon="close" className="transition-none" />
+      </DrawerCloseButton>
       {children}
     </DrawerWrapper>
   );

@@ -8,6 +8,7 @@ export const DrawerWrapper = w.div(
     z-50
     h-screen
     p-4
+    pt-12
     overflow-y-auto
     transition-transform
     bg-white
