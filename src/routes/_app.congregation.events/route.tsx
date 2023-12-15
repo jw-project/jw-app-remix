@@ -1,6 +1,7 @@
 import { Link, Outlet, useLoaderData, useNavigate } from '@remix-run/react';
 import { type CoreOptions } from '@tanstack/react-table';
 
+import { AlignRight } from '~/components/commons/align';
 import { Drawer } from '~/components/commons/drawer';
 import { TextDescriptionCell } from '~/components/commons/table/cells';
 import { Table } from '~/components/commons/table/table';
@@ -61,16 +62,20 @@ export default function Events() {
     },
     {
       id: 'edit',
-      header: () => translate('routes.congregation.events.table.edit'),
-      cell: ({ row }) => {
-        const { id } = row.original;
-
-        return (
-          <div className="flex justify-end">
-            <Link to={id}>edit</Link>
-          </div>
-        );
-      },
+      header: () => (
+        <AlignRight>
+          {translate('routes.congregation.events.table.actions')}
+        </AlignRight>
+      ),
+      cell: ({
+        row: {
+          original: { id },
+        },
+      }) => (
+        <AlignRight>
+          <Link to={id}>{translate('common.edit')}</Link>
+        </AlignRight>
+      ),
     },
   ];
 
@@ -79,6 +84,7 @@ export default function Events() {
       <Table
         columns={columns}
         data={events}
+        onLineAction={({ original }) => navigate(original.id)}
         buttons={[
           {
             tooltip: String(translate('common.new')),
@@ -98,7 +104,7 @@ export default function Events() {
             },
           },
           {
-            tooltip: String(translate('common.edit')),
+            tooltip: String(translate('common.delete')),
             icon: 'delete',
             enabledWhen: 'leastOneSelected',
             shouldUnselect: true,

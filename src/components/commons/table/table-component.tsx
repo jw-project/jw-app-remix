@@ -30,7 +30,7 @@ const TableRowStyled = w.tr(`
 `);
 
 export function TableComponent<Data extends object>() {
-  const { table } = useTableContext<Data>();
+  const { table, onLineAction } = useTableContext<Data>();
 
   return (
     <TableStyled>
@@ -52,7 +52,7 @@ export function TableComponent<Data extends object>() {
       </TableHeadStyled>
       <tbody>
         {table.getRowModel().rows.map((row) => (
-          <TableRowStyled key={row.id}>
+          <TableRowStyled key={row.id} onDoubleClick={() => onLineAction(row)}>
             {row.getVisibleCells().map((cell) => (
               <td key={cell.id} className="px-6 py-4">
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}

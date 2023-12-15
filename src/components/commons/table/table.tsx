@@ -5,6 +5,7 @@ import {
   useReactTable,
   type ColumnDef,
   type Table as ReactTableType,
+  type Row,
 } from '@tanstack/react-table';
 
 import type { ButtonGroupProps } from '../button-group';
@@ -22,11 +23,13 @@ type ExtraButtonGroupProps<Data extends object> = {
 
 type TableContextProps<Data extends object> = {
   table: ReactTableType<Data>;
+  onLineAction: (data: Row<Data>) => void;
   buttons?: Array<ClearedButtonGroupProps & ExtraButtonGroupProps<Data>>;
 };
 
 export const TableContext = createContext<TableContextProps<object>>({
   table: {} as ReactTableType<object>,
+  onLineAction: () => {},
 });
 
 type EnabledWhen = 'onlyOneSelected' | 'leastOneSelected' | 'always';
@@ -35,10 +38,12 @@ function TableProvider<Data extends object>({
   columns,
   data,
   buttons,
+  onLineAction,
 }: {
   columns: ColumnDef<Data, any>[];
   data: Data[];
   buttons?: Array<ClearedButtonGroupProps & ExtraButtonGroupProps<Data>>;
+  onLineAction?: (data: Row<Data>) => void;
 }) {
   const table = useReactTable<Data>({
     data,
@@ -48,7 +53,9 @@ function TableProvider<Data extends object>({
 
   return (
     <TableContext.Provider
-      value={{ table, buttons } as unknown as TableContextProps<object>}
+      value={
+        { table, buttons, onLineAction } as unknown as TableContextProps<object>
+      }
     >
       {!Boolean(data.length) && <EmptyState />}
       {Boolean(data.length) && (
