@@ -1,37 +1,20 @@
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 
-import { useLoaderData } from '@remix-run/react';
+import { Await, useLoaderData } from '@remix-run/react';
 
-import { Form } from '~/components/commons/form/form';
-import { setVoidOptionWhenNew } from '~/components/commons/form/utils';
-import { eventOptions } from '~/entities/event';
 import { useDrawer } from '~/hooks/drawer';
 import { useRevalidator } from '~/hooks/revalidate';
-import { useValidatePermissions } from '~/hooks/use-validate-permissions';
-import { useTranslation } from '~/i18n/i18n';
-import { useUser } from '~/matches/use-user';
-import { eventFormSchema } from '~/services/api/congregation/events/validations';
 
-import type { EventActionSaveResponse } from '../api.congregation.events.$eventId.save/route';
-import type { EventEditLoaderReturn } from './event-id.server';
+import { EventForm } from './components/form';
+import type { loader } from './event-id.server';
 
 export { loader } from './event-id.server';
 
 export default function EventEdit() {
-  const { event, eventId } = useLoaderData<EventEditLoaderReturn>();
-  const { permissions } = useUser();
-  const { translate } = useTranslation('routes.congregation.events.form');
-  const { canWrite } = useValidatePermissions(permissions, 'events');
-  const { revalidate, navigate } = useRevalidator();
-  const { openDrawer } = useDrawer();
+  const { event, eventId } = useLoaderData<typeof loader>();
 
-  const onSuccess = (response: EventActionSaveResponse) => {
-    if (eventId === 'new') {
-      navigate(`../${response.event.id}`);
-    } else if (response.needRevalidate) {
-      revalidate();
-    }
-  };
+  const { navigate } = useRevalidator();
+  const { openDrawer } = useDrawer();
 
   useEffect(() => {
     openDrawer({
@@ -42,59 +25,10 @@ export default function EventEdit() {
   }, []);
 
   return (
-    <Form
-      key={eventId}
-      schema={eventFormSchema}
-      defaultValues={event}
-      api={`api/congregation/events/${eventId}/save`}
-      onFormApiSuccess={onSuccess}
-      builder={{
-        disabled: !canWrite,
-        cols: 1,
-        fields: [
-          {
-            name: 'type',
-            label: translate('type'),
-            type: 'select',
-            options: setVoidOptionWhenNew(eventOptions(), eventId),
-          },
-          {
-            name: 'name',
-            label: translate('name'),
-            type: 'text',
-          },
-          {
-            name: 'description',
-            label: translate('description'),
-            type: 'textarea',
-          },
-          {
-            name: 'link',
-            label: translate('link'),
-            type: 'text',
-          },
-          {
-            name: 'startDate',
-            label: translate('start_date'),
-            type: 'date',
-          },
-          {
-            name: 'startTime',
-            label: translate('start_time'),
-            type: 'time',
-          },
-          {
-            name: 'endDate',
-            label: translate('end_date'),
-            type: 'date',
-          },
-          {
-            name: 'endTime',
-            label: translate('end_time'),
-            type: 'time',
-          },
-        ],
-      }}
-    />
+    <Suspense fallback={<EventForm eventId="loading" disabled />}>
+      <Await resolve={event}>
+        {(event) => <EventForm event={event} eventId={eventId} />}
+      </Await>
+    </Suspense>
   );
 }

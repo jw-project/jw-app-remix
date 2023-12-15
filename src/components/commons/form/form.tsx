@@ -27,6 +27,7 @@ export function Form<
   api,
   mode = 'onChange',
   builder,
+  disabled,
   onFormStatusChange,
   onFormApiSuccess,
   onFormApiErrors,
@@ -36,6 +37,7 @@ export function Form<
   api: string;
   mode?: 'onChange' | 'onSubmit';
   builder?: FormBuilderProps;
+  disabled?: boolean;
   onFormStatusChange?: (formState: FormState<TFieldValues>) => void;
   onFormApiSuccess?: (success: any) => void;
   onFormApiErrors?: (errors: ErrorsApiListType) => void;
@@ -116,7 +118,7 @@ export function Form<
   return (
     <FormProvider {...methods}>
       <form id="form-context" onSubmit={submitForm}>
-        {builder && <FormBuilder {...builder} />}
+        {builder && <FormBuilder {...builder} disabled={disabled} />}
         {children}
       </form>
     </FormProvider>

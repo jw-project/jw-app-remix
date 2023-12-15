@@ -4,7 +4,7 @@ export const setVoidOptionWhenNew = (
   options: SelectOptionsType[],
   id: string,
 ): SelectOptionsType[] => {
-  if (id === 'new') {
+  if (['new', 'loading'].includes(id)) {
     return [
       { label: '', value: '', disabled: true, selected: true },
       ...options,

@@ -1,4 +1,7 @@
-import type { TypedResponse } from '@remix-run/server-runtime';
+import type {
+  TypedDeferredData,
+  TypedResponse,
+} from '@remix-run/server-runtime';
 
 import type { InputError } from './throws-errors';
 
@@ -11,4 +14,8 @@ export type ActionResponse<T> = Promise<
         }
     >
   | T
+>;
+
+export type LoaderDeferredResponse<T extends Record<string, unknown>> = Promise<
+  TypedDeferredData<T>
 >;
