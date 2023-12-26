@@ -6,7 +6,7 @@ import {
   type EntryContext,
 } from '@remix-run/node';
 import { RemixServer } from '@remix-run/react';
-import isbot from 'isbot';
+import { isbot } from 'isbot';
 import { renderToPipeableStream } from 'react-dom/server';
 
 import { firebaseAdminConnection } from './services/firebase-connection.server';
@@ -21,7 +21,7 @@ export default function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext,
 ) {
-  const callbackName = isbot(request.headers.get('user-agent'))
+  const callbackName = isbot(String(request.headers.get('user-agent')))
     ? 'onAllReady'
     : 'onShellReady';
 
