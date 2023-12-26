@@ -100,7 +100,7 @@ export default function Events() {
             icon: 'edit',
             enabledWhen: 'onlyOneSelected',
             onClick: (data) => {
-              navigate(data[0].id);
+              navigate(data[0]?.id || '');
             },
           },
           {

@@ -35,7 +35,7 @@ export function DrawerFooter<
     );
     const previousId =
       currentIndex !== -1 && currentIndex !== 0
-        ? navigatorData[currentIndex - 1].id
+        ? navigatorData[currentIndex - 1]?.id
         : null;
 
     if (previousId) {
@@ -51,7 +51,7 @@ export function DrawerFooter<
     );
     const nextId =
       currentIndex !== -1 && currentIndex !== navigatorData.length - 1
-        ? navigatorData[currentIndex + 1].id
+        ? navigatorData[currentIndex + 1]?.id
         : null;
 
     if (nextId) {
@@ -60,11 +60,11 @@ export function DrawerFooter<
   }, [navigatorData, params]);
 
   const isFirst = useMemo(() => {
-    return navigatorData[0].id === params[paramKey];
+    return navigatorData[0]?.id === params[paramKey];
   }, [navigatorData, params]);
 
   const isLast = useMemo(() => {
-    return navigatorData[navigatorData.length - 1].id === params[paramKey];
+    return navigatorData[navigatorData.length - 1]?.id === params[paramKey];
   }, [navigatorData, params]);
 
   return (

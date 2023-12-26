@@ -18,6 +18,7 @@
     ],
     "isolatedModules": true,
     "esModuleInterop": true,
+    "noUncheckedIndexedAccess": true,
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "resolveJsonModule": true,
