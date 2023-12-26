@@ -1,15 +1,14 @@
 import { w, type W } from 'windstitch';
 
-export const DrawerWrapper = w.div(
+export const DrawerWrapperStyled = w.div(
   `
     fixed
+    flex
+    flex-col
     top-0
     right-0
     z-50
     h-screen
-    p-4
-    pt-12
-    overflow-y-auto
     transition-transform
     bg-white
     dark:bg-gray-800
@@ -30,9 +29,21 @@ export const DrawerWrapper = w.div(
   },
 );
 
-export type DrawerWrapperStyledType = W.Infer<typeof DrawerWrapper>;
+export type DrawerWrapperStyledType = W.Infer<typeof DrawerWrapperStyled>;
 
-export const DrawerCloseButton = w.button(`
+export const DrawerHeaderStyled = w.div(`
+    flex
+    items-center
+    justify-between
+    px-4
+    py-2
+    max-h-[53px]
+    min-h-[53px]
+    border-b
+    dark:border-gray-700
+`);
+
+export const DrawerCloseButtonStyled = w.button(`
     text-gray-400
     bg-transparent
     hover:bg-gray-200
@@ -49,4 +60,20 @@ export const DrawerCloseButton = w.button(`
     justify-center
     dark:hover:bg-gray-600
     dark:hover:text-white
+`);
+
+export const DrawerContentStyled = w.div(`
+    h-fit
+    overflow-y-auto
+    p-4
+`);
+
+export const DrawerFooterStyled = w.div(`
+    flex
+    items-center
+    justify-between
+    px-4
+    py-2
+    border-t
+    dark:border-gray-700
 `);

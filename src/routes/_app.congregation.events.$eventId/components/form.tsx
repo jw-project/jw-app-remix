@@ -1,4 +1,5 @@
 import { Form } from '~/components/commons/form/form';
+import type { EntityForm } from '~/components/commons/form/form-suspense-await';
 import { setVoidOptionWhenNew } from '~/components/commons/form/utils';
 import { eventOptions, type EventEntity } from '~/entities/event';
 import { useRevalidator } from '~/hooks/revalidate';
@@ -8,22 +9,14 @@ import { useUser } from '~/matches/use-user';
 import type { EventActionSaveResponse } from '~/routes/api.congregation.events.$eventId.save/route';
 import { eventFormSchema } from '~/services/api/congregation/events/validations';
 
-export const EventForm = ({
-  eventId,
-  event,
-  disabled,
-}: {
-  eventId: string;
-  event?: EventEntity;
-  disabled?: boolean;
-}) => {
+export const EventForm = ({ id, data, disabled }: EntityForm<EventEntity>) => {
   const { permissions } = useUser();
   const { translate } = useTranslation('routes.congregation.events.form');
   const { canWrite } = useValidatePermissions(permissions, 'events');
   const { revalidate, navigate } = useRevalidator();
 
   const onSuccess = (response: EventActionSaveResponse) => {
-    if (eventId === 'new') {
+    if (id === 'new') {
       navigate(`../${response.event.id}`);
     } else if (response.needRevalidate) {
       revalidate();
@@ -32,10 +25,10 @@ export const EventForm = ({
 
   return (
     <Form
-      key={eventId}
+      key={id}
       schema={eventFormSchema}
-      defaultValues={event}
-      api={`api/congregation/events/${eventId}/save`}
+      defaultValues={data}
+      api={`api/congregation/events/${id}/save`}
       disabled={disabled}
       onFormApiSuccess={onSuccess}
       builder={{
@@ -46,7 +39,7 @@ export const EventForm = ({
             name: 'type',
             label: translate('type'),
             type: 'select',
-            options: setVoidOptionWhenNew(eventOptions(), eventId),
+            options: setVoidOptionWhenNew(eventOptions(), id),
           },
           {
             name: 'name',

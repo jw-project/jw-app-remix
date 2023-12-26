@@ -3,26 +3,42 @@ import type { PropsWithChildren } from 'react';
 import { useDrawer } from '~/hooks/drawer';
 import { useIsMobile } from '~/hooks/is-mobile';
 
-import { Icon } from '../icon';
 import {
-  DrawerCloseButton,
-  DrawerWrapper,
+  DrawerFooter,
+  type DrawerFooterGenericExtends,
+  type DrawerFooterProps,
+} from './drawer-footer';
+import { DrawerHeader } from './drawer-header';
+import {
+  DrawerContentStyled,
+  DrawerWrapperStyled,
   type DrawerWrapperStyledType,
 } from './styled';
 
-export const Drawer = ({
+export function Drawer<T extends DrawerFooterGenericExtends = Array<any>>({
   children,
   size,
-}: PropsWithChildren<{ size?: DrawerWrapperStyledType['size'] }>) => {
-  const { drawerIsOpen, closeDrawer } = useDrawer();
+  internalNavigator,
+}: PropsWithChildren<
+  {
+    size?: DrawerWrapperStyledType['size'];
+  } & {
+    internalNavigator?: DrawerFooterProps<T>;
+  }
+>) {
+  const { drawerIsOpen } = useDrawer();
   const isMobile = useIsMobile();
 
   return (
-    <DrawerWrapper open={drawerIsOpen} size={isMobile ? 'full' : size}>
-      <DrawerCloseButton onClick={closeDrawer}>
-        <Icon icon="close" className="transition-none" />
-      </DrawerCloseButton>
-      {children}
-    </DrawerWrapper>
+    <DrawerWrapperStyled open={drawerIsOpen} size={isMobile ? 'full' : size}>
+      <DrawerHeader />
+      <DrawerContentStyled>{children}</DrawerContentStyled>
+      {internalNavigator && (
+        <DrawerFooter
+          navigatorData={internalNavigator.navigatorData}
+          paramKey={internalNavigator.paramKey}
+        />
+      )}
+    </DrawerWrapperStyled>
   );
-};
+}

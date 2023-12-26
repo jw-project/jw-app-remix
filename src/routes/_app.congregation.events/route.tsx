@@ -115,7 +115,10 @@ export default function Events() {
           },
         ]}
       />
-      <Drawer size="large">
+      <Drawer
+        size="large"
+        internalNavigator={{ paramKey: 'eventId', navigatorData: events }}
+      >
         <Outlet />
       </Drawer>
     </>

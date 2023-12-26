@@ -1,7 +1,8 @@
-import { Suspense, useEffect } from 'react';
+import { useEffect } from 'react';
 
-import { Await, useLoaderData } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 
+import { FormSuspenseAwait } from '~/components/commons/form/form-suspense-await';
 import { useDrawer } from '~/hooks/drawer';
 import { useRevalidator } from '~/hooks/revalidate';
 
@@ -11,7 +12,7 @@ import type { loader } from './event-id.server';
 export { loader } from './event-id.server';
 
 export default function EventEdit() {
-  const { event, eventId } = useLoaderData<typeof loader>();
+  const { event: promiseEvent, eventId } = useLoaderData<typeof loader>();
 
   const { navigate } = useRevalidator();
   const { openDrawer } = useDrawer();
@@ -25,10 +26,6 @@ export default function EventEdit() {
   }, []);
 
   return (
-    <Suspense fallback={<EventForm eventId="loading" disabled />}>
-      <Await resolve={event}>
-        {(event) => <EventForm event={event} eventId={eventId} />}
-      </Await>
-    </Suspense>
+    <FormSuspenseAwait resolve={promiseEvent} form={EventForm} id={eventId} />
   );
 }
