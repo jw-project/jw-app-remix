@@ -56,10 +56,12 @@ function translateHigh(translations: Translation | string) {
 }
 
 export function useTranslation(prefixKey?: string) {
-  const [{ data }] = useMatches() as UIMatch<RootLoaderReturn>[];
+  const [firstMatch] = useMatches() as UIMatch<RootLoaderReturn>[];
 
   const translations: Translation =
-    data.locale.translations[data.locale.defaultLanguage];
+    firstMatch?.data.locale.translations[
+      firstMatch.data.locale.defaultLanguage
+    ] || {};
 
   const filtredTranslations = prefixKey
     ? get(translations, prefixKey || '')

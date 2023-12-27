@@ -9,11 +9,7 @@ import { MenuBody } from './menu-body';
 import { Aside, MenuHeader } from './menu-styled';
 
 export function Menu() {
-  const [
-    {
-      data: { menu },
-    },
-  ] = useMatches() as UIMatch<RootLoaderReturn>[];
+  const [firstMatch] = useMatches() as UIMatch<RootLoaderReturn>[];
   const { permissions } = useUser();
   const { showMenu, closeMenu } = useMenu();
 
@@ -24,7 +20,10 @@ export function Menu() {
           Admin
           <b className="font-black">One</b>
         </MenuHeader>
-        <MenuBody menu={menu} permissions={permissions} />
+        <MenuBody
+          menu={firstMatch?.data.menu || []}
+          permissions={permissions}
+        />
       </Aside>
       <Backdrop onClick={closeMenu} visible={!showMenu} />
     </>

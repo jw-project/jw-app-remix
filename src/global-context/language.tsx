@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import { createContext, useContext, type PropsWithChildren } from 'react';
 
 import type { TranslationConfig } from '~/i18n/i18n';
 
@@ -11,7 +11,7 @@ export const LanguageProvider = ({
   children,
   translations,
   defaultLanguage,
-}: React.PropsWithChildren<TranslationConfig>) => {
+}: PropsWithChildren<TranslationConfig>) => {
   return (
     <LanguageContext.Provider value={{ translations, defaultLanguage }}>
       {children}

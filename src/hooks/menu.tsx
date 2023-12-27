@@ -1,4 +1,9 @@
-import { createContext, useContext, useState } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  type PropsWithChildren,
+} from 'react';
 
 type MenuContextType = {
   showMenu: boolean;
@@ -8,7 +13,7 @@ type MenuContextType = {
 
 const MenuContext = createContext({} as MenuContextType);
 
-export const MenuProvider = ({ children }: React.PropsWithChildren) => {
+export const MenuProvider = ({ children }: PropsWithChildren) => {
   const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = () => {

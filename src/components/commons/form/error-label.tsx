@@ -1,4 +1,4 @@
-import React from 'react';
+import { type PropsWithChildren } from 'react';
 
 import { w } from 'windstitch';
 
@@ -10,7 +10,7 @@ const ErrorLabelStyled = w.p(`
   italic
 `);
 
-export function ErrorLabel({ children }: React.PropsWithChildren) {
+export function ErrorLabel({ children }: PropsWithChildren) {
   const { translate } = useTranslation();
 
   if (typeof children === 'string') {

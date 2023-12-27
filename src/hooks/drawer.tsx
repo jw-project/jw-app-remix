@@ -1,4 +1,10 @@
-import { createContext, useCallback, useContext, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useState,
+  type PropsWithChildren,
+} from 'react';
 
 type DrawerContextType = {
   drawerIsOpen: boolean;
@@ -12,7 +18,7 @@ const DrawerContext = createContext<DrawerContextType>({
   closeDrawer: () => {},
 });
 
-export const DrawerProvider = ({ children }: React.PropsWithChildren) => {
+export const DrawerProvider = ({ children }: PropsWithChildren) => {
   const [isOpen, setIsOpen] = useState(false);
   const [onClose, setOnClose] = useState<() => void | undefined>();
 

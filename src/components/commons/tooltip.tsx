@@ -1,4 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import {
+  useMemo,
+  useState,
+  type CSSProperties,
+  type MouseEvent,
+  type PropsWithChildren,
+} from 'react';
 
 import { w } from 'windstitch';
 
@@ -13,7 +19,7 @@ function defineDirection(
     targetWidth: number;
     targetHeight: number;
   },
-): React.CSSProperties {
+): CSSProperties {
   const tooltipHeight = 36;
   const margin = 10;
 
@@ -71,7 +77,7 @@ export function Tooltip({
   message,
   direction = 'down',
   children,
-}: React.PropsWithChildren<{
+}: PropsWithChildren<{
   message?: string;
   direction?: Diretion;
 }>) {
@@ -82,7 +88,7 @@ export function Tooltip({
 
   const mouseOver = ({
     currentTarget: { clientWidth, clientHeight },
-  }: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  }: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
     setTargetSize({ targetWidth: clientWidth, targetHeight: clientHeight });
   };
 

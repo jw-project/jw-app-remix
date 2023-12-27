@@ -1,4 +1,4 @@
-import React from 'react';
+import { type DetailedHTMLProps, type TextareaHTMLAttributes } from 'react';
 
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -14,8 +14,8 @@ export function TextArea({
   name,
   label,
   ...props
-}: React.DetailedHTMLProps<
-  React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+}: DetailedHTMLProps<
+  TextareaHTMLAttributes<HTMLTextAreaElement>,
   HTMLTextAreaElement
 > &
   InputType): JSX.Element {

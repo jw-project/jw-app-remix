@@ -14,7 +14,7 @@ function remoteConfigToI18nResources(
     const language = lng.replace('_', '-');
     resources[language] = JSON.parse(
       (
-        parameters[lng].defaultValue as RemoteConfigParameterValue & {
+        parameters[lng]?.defaultValue as RemoteConfigParameterValue & {
           value: string;
         }
       )?.value,
@@ -26,10 +26,8 @@ function remoteConfigToI18nResources(
 
 export async function getTranslateResources() {
   const {
-    parameterGroups: {
-      localization: { parameters },
-    },
+    parameterGroups: { localization },
   } = await remoteConfig().getTemplate();
 
-  return remoteConfigToI18nResources(parameters);
+  return remoteConfigToI18nResources(localization?.parameters || {});
 }

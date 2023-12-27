@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import { Fragment, type PropsWithChildren, type ReactNode } from 'react';
 
 import { Menu, Transition } from '@headlessui/react';
 import { w } from 'windstitch';
@@ -23,8 +23,8 @@ const MenuItems = w(Menu.Items, {
 export function Dropdown({
   button,
   children,
-}: React.PropsWithChildren<{
-  button: React.ReactNode;
+}: PropsWithChildren<{
+  button: ReactNode;
 }>) {
   return (
     <div className="fixed">

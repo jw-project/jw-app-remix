@@ -1,4 +1,4 @@
-import React from 'react';
+import { type PropsWithChildren } from 'react';
 
 import { w } from 'windstitch';
 
@@ -17,7 +17,7 @@ const NotificationBadgeStyled = w.div(`
   rounded-full
 `);
 
-export function NotificationBadge({ children }: React.PropsWithChildren) {
+export function NotificationBadge({ children }: PropsWithChildren) {
   if (!children) {
     return null;
   }

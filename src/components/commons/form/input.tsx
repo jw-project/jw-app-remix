@@ -1,4 +1,8 @@
-import React from 'react';
+import {
+  type DetailedHTMLProps,
+  type HTMLInputTypeAttribute,
+  type InputHTMLAttributes,
+} from 'react';
 
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -14,7 +18,7 @@ const InputStyled = inputBaseFactory(
   '[&::-webkit-calendar-picker-indicator]:opacity-0',
 );
 
-const inputTypes: Partial<Record<React.HTMLInputTypeAttribute, IconProps>> = {
+const inputTypes: Partial<Record<HTMLInputTypeAttribute, IconProps>> = {
   time: {
     icon: 'watch_later',
     size: 'icon-x-small',
@@ -31,10 +35,7 @@ export function Input({
   type,
   disabled,
   ...props
-}: React.DetailedHTMLProps<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  HTMLInputElement
-> &
+}: DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> &
   InputType): JSX.Element {
   const {
     formState: { errors },

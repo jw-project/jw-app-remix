@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 export type IconOpts =
   | '10k'
@@ -4680,7 +4680,7 @@ export type IconProps = {
   onClick?: () => void;
 };
 
-export const Icon = React.forwardRef<HTMLSpanElement, IconProps>(
+export const Icon = forwardRef<HTMLSpanElement, IconProps>(
   ({ icon, className, size, onClick }, forwardedRef) => {
     return (
       <span

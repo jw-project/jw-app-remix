@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type PropsWithChildren,
+} from 'react';
 
 import { useNavigation } from '@remix-run/react';
 
@@ -12,7 +18,7 @@ const TransitionContext = createContext<{
   toggleTransition: () => {},
 });
 
-export const TransitionProvider = ({ children }: React.PropsWithChildren) => {
+export const TransitionProvider = ({ children }: PropsWithChildren) => {
   const [show, setShow] = useState(true);
   const { state } = useNavigation();
 

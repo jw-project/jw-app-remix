@@ -1,4 +1,4 @@
-import React from 'react';
+import { type DetailedHTMLProps, type SelectHTMLAttributes } from 'react';
 
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -24,8 +24,8 @@ export function Select({
   options,
   disabled,
   ...props
-}: React.DetailedHTMLProps<
-  React.SelectHTMLAttributes<HTMLSelectElement>,
+}: DetailedHTMLProps<
+  SelectHTMLAttributes<HTMLSelectElement>,
   HTMLSelectElement
 > &
   InputType & { options: SelectOptionsType[] }): JSX.Element {

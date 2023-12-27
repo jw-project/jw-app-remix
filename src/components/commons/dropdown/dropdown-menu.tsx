@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactNode } from 'react';
 
 import { Menu } from '@headlessui/react';
 import { v4 as uuid } from 'uuid';
@@ -41,7 +41,7 @@ export function DropdownMenu({
   options,
   button,
 }: {
-  button: React.ReactNode;
+  button: ReactNode;
   options: Array<DropdownMenuType | 'divider'>;
 }) {
   return (

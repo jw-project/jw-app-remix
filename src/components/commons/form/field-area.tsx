@@ -1,4 +1,4 @@
-import React from 'react';
+import { type PropsWithChildren } from 'react';
 
 import type { convertHtmlToReact } from '@hedgedoc/html-to-react';
 import { useFormContext } from 'react-hook-form';
@@ -16,7 +16,7 @@ export const FieldArea = ({
   label,
   error,
   name,
-}: React.PropsWithChildren<{
+}: PropsWithChildren<{
   name: string;
   label: ReturnType<typeof convertHtmlToReact>;
   error?: string;

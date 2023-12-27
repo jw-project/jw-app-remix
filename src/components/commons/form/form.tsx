@@ -1,4 +1,9 @@
-import { useEffect, useMemo } from 'react';
+import {
+  useEffect,
+  useMemo,
+  type FormEvent,
+  type PropsWithChildren,
+} from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -31,7 +36,7 @@ export function Form<
   onFormStatusChange,
   onFormApiSuccess,
   onFormApiErrors,
-}: React.PropsWithChildren<{
+}: PropsWithChildren<{
   schema: ZodType<TOutputField, TDef, TFieldValues>;
   defaultValues?: DefaultValues<TFieldValues>;
   api: string;
@@ -108,7 +113,7 @@ export function Form<
     return () => subscription.unsubscribe();
   }, [methods]);
 
-  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (mode === 'onSubmit') {
       methods.handleSubmit(onSubmit)();

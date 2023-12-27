@@ -9,7 +9,7 @@ export const getMenu = async (): Promise<MenuType[]> => {
   } = await remoteConfig().getTemplate();
 
   return JSON.parse(
-    (menu.defaultValue as RemoteConfigParameterValue & { value: string })
-      ?.value,
+    (menu?.defaultValue as RemoteConfigParameterValue & { value: string })
+      .value,
   );
 };
