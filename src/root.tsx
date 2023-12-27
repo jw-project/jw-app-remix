@@ -3,6 +3,7 @@ import { useLoaderData } from '@remix-run/react';
 import { Body } from './components/commons/body/body';
 import { LanguageProvider } from './global-context/language';
 import { ThemeProvider } from './global-context/theme';
+import { TransitionProvider } from './global-context/transition';
 import { DrawerProvider } from './hooks/drawer';
 import { MenuProvider } from './hooks/menu';
 import { SavingProvider } from './hooks/saving';
@@ -16,13 +17,15 @@ export default function App() {
   return (
     <LanguageProvider {...locale}>
       <ThemeProvider defaultTheme={themeMode}>
-        <DrawerProvider>
-          <SavingProvider>
-            <MenuProvider>
-              <Body />
-            </MenuProvider>
-          </SavingProvider>
-        </DrawerProvider>
+        <TransitionProvider>
+          <DrawerProvider>
+            <SavingProvider>
+              <MenuProvider>
+                <Body />
+              </MenuProvider>
+            </SavingProvider>
+          </DrawerProvider>
+        </TransitionProvider>
       </ThemeProvider>
     </LanguageProvider>
   );

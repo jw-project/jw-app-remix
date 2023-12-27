@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import type { PropsWithChildren } from 'react';
 
 import { Transition } from '@headlessui/react';
-import { Outlet, useNavigation } from '@remix-run/react';
+import { Outlet } from '@remix-run/react';
 
 import { BodyMargin } from '~/components/commons/body/body-margin';
 import { ErrorScreen } from '~/components/error-screen';
 import { Menu } from '~/components/menu/menu';
 import { Navbar } from '~/components/navbar/navbar';
+import { useTransition } from '~/global-context/transition';
 
-function BaseLayout({
-  show,
-  children,
-}: React.PropsWithChildren<{ show: boolean }>) {
+function BaseLayout({ children }: PropsWithChildren) {
+  const { show } = useTransition();
+
   return (
     <>
       <Navbar />
@@ -33,18 +33,8 @@ function BaseLayout({
 }
 
 export default function Layout() {
-  const [show, setShow] = useState(true);
-  const { state, location } = useNavigation();
-
-  useEffect(() => {
-    // only happens effect when the routes are base routes
-    if ((location?.pathname || '').split('/').length < 4) {
-      setShow(state === 'idle');
-    }
-  }, [state]);
-
   return (
-    <BaseLayout show={show}>
+    <BaseLayout>
       <Outlet />
     </BaseLayout>
   );
@@ -52,7 +42,7 @@ export default function Layout() {
 
 export function ErrorBoundary() {
   return (
-    <BaseLayout show>
+    <BaseLayout>
       <ErrorScreen />
     </BaseLayout>
   );
