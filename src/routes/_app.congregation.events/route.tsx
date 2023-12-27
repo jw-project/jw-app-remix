@@ -8,6 +8,7 @@ import { Table } from '~/components/commons/table/table';
 import { selectorForTable } from '~/components/commons/table/utils';
 import type { EventEntity } from '~/entities/event';
 import { useLanguage } from '~/global-context/language';
+import { useDrawer } from '~/hooks/drawer';
 import { useRevalidator } from '~/hooks/revalidate';
 import { useTranslation } from '~/i18n/i18n';
 
@@ -17,6 +18,7 @@ import type { EventsLoaderReturn } from './events.server';
 export { loader, shouldRevalidate } from './events.server';
 
 export default function Events() {
+  const { openDrawer } = useDrawer();
   const { events } = useLoaderData<EventsLoaderReturn>();
   const { translate } = useTranslation();
   const { defaultLanguage } = useLanguage();
@@ -73,7 +75,12 @@ export default function Events() {
         },
       }) => (
         <AlignRight>
-          <Link to={id}>{translate('common.edit')}</Link>
+          <Link
+            to={id}
+            onClick={() => openDrawer({ onClose: () => navigate('') })}
+          >
+            {translate('common.edit')}
+          </Link>
         </AlignRight>
       ),
     },
@@ -93,6 +100,7 @@ export default function Events() {
             shouldUnselect: true,
             onClick: () => {
               navigate('./new');
+              openDrawer({ onClose: () => navigate('') });
             },
           },
           {
@@ -101,6 +109,7 @@ export default function Events() {
             enabledWhen: 'onlyOneSelected',
             onClick: (data) => {
               navigate(data[0]?.id || '');
+              openDrawer({ onClose: () => navigate('') });
             },
           },
           {

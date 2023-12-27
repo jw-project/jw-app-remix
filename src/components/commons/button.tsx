@@ -1,9 +1,6 @@
 import type { ComponentProps, PropsWithChildren } from 'react';
 
-import { useNavigate } from '@remix-run/react';
 import { w, type W } from 'windstitch';
-
-import { useTranslation } from '~/i18n/i18n';
 
 import { Icon, type IconOpts } from './icon';
 
@@ -96,42 +93,3 @@ export const Button = ({
     </ButtonStyled>
   );
 };
-
-export function NewButton({
-  button = 'common.empty-state.button',
-  icon = 'add',
-}: {
-  button?: string;
-  icon?: IconOpts;
-}) {
-  const { translate } = useTranslation();
-  const navigate = useNavigate();
-
-  const goTo = () => {
-    navigate('./new');
-  };
-
-  return (
-    <Button onClick={goTo} icon={icon}>
-      {translate(button)}
-    </Button>
-  );
-}
-
-export function DeleteButton({
-  button = 'common.delete',
-  icon = 'delete',
-  onClick,
-}: {
-  button?: string;
-  icon?: IconOpts;
-  onClick: () => void;
-}) {
-  const { translate } = useTranslation();
-
-  return (
-    <Button buttonstyle="danger" onClick={onClick} icon={icon}>
-      {translate(button)}
-    </Button>
-  );
-}

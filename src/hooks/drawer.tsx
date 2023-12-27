@@ -1,14 +1,17 @@
 import {
   createContext,
-  useCallback,
   useContext,
   useState,
   type PropsWithChildren,
 } from 'react';
 
+type CustomCloseType = {
+  onClose?: () => void;
+};
+
 type DrawerContextType = {
   drawerIsOpen: boolean;
-  openDrawer: (props?: { onClose?: () => void }) => void;
+  openDrawer: (props?: CustomCloseType) => void;
   closeDrawer: () => void;
 };
 
@@ -22,17 +25,17 @@ export const DrawerProvider = ({ children }: PropsWithChildren) => {
   const [isOpen, setIsOpen] = useState(false);
   const [onClose, setOnClose] = useState<() => void | undefined>();
 
-  const openDrawer = (props?: { onClose?: () => void }) => {
+  function openDrawer(props?: CustomCloseType) {
     if (props?.onClose) {
       setOnClose(() => props.onClose);
     }
     setIsOpen(true);
-  };
+  }
 
-  const closeDrawer = useCallback(() => {
+  function closeDrawer() {
     onClose?.();
     setIsOpen(false);
-  }, [onClose]);
+  }
 
   return (
     <DrawerContext.Provider

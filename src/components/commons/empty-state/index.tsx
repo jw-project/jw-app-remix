@@ -1,8 +1,9 @@
 import { w } from 'windstitch';
 
-import { NewButton } from '~/components/commons/button';
 import { Icon, type IconOpts } from '~/components/commons/icon';
 import { useTranslation } from '~/i18n/i18n';
+
+import { NewButton } from './buttons';
 
 const EmptyStateContainer = w.div(`
   container
@@ -47,7 +48,7 @@ export function EmptyState({
       />
       <EmptyStateTitle>{translate(title)}</EmptyStateTitle>
       <EmptyStateParagraph>{translate(paragraph)}</EmptyStateParagraph>
-      <NewButton button={button} icon={icon} />
+      <NewButton button={button} icon={icon} mustOpenDrawer />
     </EmptyStateContainer>
   );
 }

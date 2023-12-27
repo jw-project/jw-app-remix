@@ -63,6 +63,7 @@ export const DrawerCloseButtonStyled = w.button(`
 `);
 
 export const DrawerContentStyled = w.div(`
+    flex-1
     h-fit
     overflow-y-auto
     p-4

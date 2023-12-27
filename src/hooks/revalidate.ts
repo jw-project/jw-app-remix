@@ -6,11 +6,15 @@ import {
 export function useRevalidator() {
   const { revalidate } = useRevalidatorRemix();
   const navigate = useNavigate();
-  const navigateAndRevalidate = (url: string) => {
+  const navigateAndRevalidate = (
+    url: string,
+    options?: { mustRevalidate?: boolean },
+  ) => {
     navigate(url, {
       replace: false,
       preventScrollReset: true,
     });
+    options?.mustRevalidate && revalidate();
   };
 
   return { revalidate, navigate: navigateAndRevalidate };

@@ -15,9 +15,11 @@ export const EventForm = ({ id, data, disabled }: EntityForm<EventEntity>) => {
   const { canWrite } = useValidatePermissions(permissions, 'events');
   const { revalidate, navigate } = useRevalidator();
 
+  const isNew = id === 'new';
+
   const onSuccess = (response: EventActionSaveResponse) => {
-    if (id === 'new') {
-      navigate(`../${response.event.id}`);
+    if (isNew) {
+      navigate(`../${response.event.id}`, { mustRevalidate: true });
     } else if (response.needRevalidate) {
       revalidate();
     }
@@ -31,6 +33,7 @@ export const EventForm = ({ id, data, disabled }: EntityForm<EventEntity>) => {
       api={`api/congregation/events/${id}/save`}
       disabled={disabled}
       onFormApiSuccess={onSuccess}
+      mode={isNew ? 'onSubmit' : 'onChange'}
       builder={{
         disabled: !canWrite,
         cols: 1,

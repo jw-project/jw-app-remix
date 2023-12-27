@@ -1,7 +1,8 @@
 import { startTransition, useCallback, useMemo } from 'react';
 
-import { useNavigate, useParams } from '@remix-run/react';
+import { useNavigate, useNavigation, useParams } from '@remix-run/react';
 
+import { useSave } from '~/hooks/saving';
 import { useTranslation } from '~/i18n/i18n';
 
 import { Button } from '../button';
@@ -23,7 +24,11 @@ export function DrawerFooter<
 >({ navigatorData, paramKey }: DrawerFooterProps<T>) {
   const navigate = useNavigate();
   const params = useParams();
+  const { isSaving } = useSave();
   const { translate } = useTranslation('common');
+  const { state } = useNavigation();
+
+  const isNew = params[paramKey] === 'new';
 
   if (!navigatorData) {
     return null;
@@ -69,12 +74,24 @@ export function DrawerFooter<
 
   return (
     <DrawerFooterStyled>
-      <Button onClick={backClick} disabled={isFirst}>
-        {translate('navegation-back-button')}
-      </Button>
-      <Button onClick={nextClick} disabled={isLast}>
-        {translate('navegation-next-button')}
-      </Button>
+      {isNew ? (
+        <Button
+          type="submit"
+          form="form-context"
+          disabled={isSaving || state === 'loading'}
+        >
+          {translate('save')}
+        </Button>
+      ) : (
+        <>
+          <Button onClick={backClick} disabled={isFirst}>
+            {translate('navegation-back-button')}
+          </Button>
+          <Button onClick={nextClick} disabled={isLast}>
+            {translate('navegation-next-button')}
+          </Button>
+        </>
+      )}
     </DrawerFooterStyled>
   );
 }

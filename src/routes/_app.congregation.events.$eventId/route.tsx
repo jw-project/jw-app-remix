@@ -13,16 +13,17 @@ export { loader } from './event-id.server';
 
 export default function EventEdit() {
   const { event: promiseEvent, eventId } = useLoaderData<typeof loader>();
-
   const { navigate } = useRevalidator();
-  const { openDrawer } = useDrawer();
+  const { drawerIsOpen, openDrawer } = useDrawer();
 
   useEffect(() => {
-    openDrawer({
-      onClose: () => {
-        navigate('../');
-      },
-    });
+    if (!drawerIsOpen) {
+      openDrawer({
+        onClose: () => {
+          navigate('../');
+        },
+      });
+    }
   }, []);
 
   return (
