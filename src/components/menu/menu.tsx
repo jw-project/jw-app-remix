@@ -25,7 +25,7 @@ export function Menu() {
           permissions={permissions}
         />
       </Aside>
-      <Backdrop onClick={closeMenu} visible={!showMenu} />
+      <Backdrop onClick={closeMenu} visible={!showMenu} zIndex={20} />
     </>
   );
 }

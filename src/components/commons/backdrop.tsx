@@ -1,21 +1,41 @@
 import { Fragment } from 'react';
 
 import { Transition } from '@headlessui/react';
-import { w } from 'windstitch';
+import { w, type W } from 'windstitch';
 
-const BackdropStyled = w.div(`
+const BackdropStyled = w.div(
+  `
   fixed
   inset-0
   bg-black/60
   dark:bg-white/20
-  z-40
-`);
+`,
+  {
+    variants: {
+      zIndex: {
+        0: 'z-0',
+        10: 'z-10',
+        20: 'z-20',
+        30: 'z-30',
+        40: 'z-40',
+        50: 'z-50',
+      },
+    },
+    defaultVariants: {
+      zIndex: 40,
+    },
+  },
+);
+
+type ZIndex = W.Infer<typeof BackdropStyled>['zIndex'];
 
 export function Backdrop({
-  onClick,
   visible,
+  zIndex,
+  onClick,
 }: {
   visible: boolean;
+  zIndex?: ZIndex;
   onClick: () => void;
 }) {
   return (
@@ -29,7 +49,7 @@ export function Backdrop({
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
     >
-      <BackdropStyled onClick={onClick} />
+      <BackdropStyled onClick={onClick} zIndex={zIndex} />
     </Transition>
   );
 }
