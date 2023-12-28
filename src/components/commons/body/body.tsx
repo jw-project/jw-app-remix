@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import {
   Links,
   LiveReload,
@@ -9,6 +7,7 @@ import {
   ScrollRestoration,
 } from '@remix-run/react';
 
+import { useBeforeUnload } from '~/hooks/use-before-unload';
 import { useDrawer } from '~/hooks/use-drawer';
 import { useLanguage } from '~/hooks/use-language';
 import { useSave } from '~/hooks/use-save';
@@ -23,23 +22,10 @@ export const Body = () => {
   const { isSaving } = useSave();
   const { drawerIsOpen, closeDrawer } = useDrawer();
 
-  useEffect(() => {
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [isSaving]);
-
-  const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-    if (isSaving) {
-      event.preventDefault();
-      event.returnValue = '';
-    }
-  };
+  useBeforeUnload(isSaving);
 
   return (
-    <html lang={defaultLanguage} dir={defaultLanguage} className={theme}>
+    <html lang={defaultLanguage} className={theme}>
       <head>
         <Meta />
         <Links />
