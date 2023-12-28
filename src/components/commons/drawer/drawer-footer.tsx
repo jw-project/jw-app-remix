@@ -3,7 +3,7 @@ import { startTransition, useCallback, useMemo } from 'react';
 import { useNavigate, useNavigation, useParams } from '@remix-run/react';
 
 import { useSave } from '~/hooks/use-save';
-import { useTranslation } from '~/i18n/i18n';
+import { useTranslation } from '~/hooks/use-translation';
 
 import { Button } from '../button';
 import { DrawerFooterStyled } from './styled';

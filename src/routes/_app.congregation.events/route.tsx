@@ -10,7 +10,7 @@ import type { EventEntity } from '~/entities/event';
 import { useDrawer } from '~/hooks/use-drawer';
 import { useLanguage } from '~/hooks/use-language';
 import { useRevalidator } from '~/hooks/use-revalidate';
-import { useTranslation } from '~/i18n/i18n';
+import { useTranslation } from '~/hooks/use-translation';
 
 import { deleteEvents } from './events.client';
 import type { EventsLoaderReturn } from './events.server';

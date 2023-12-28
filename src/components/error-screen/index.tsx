@@ -5,7 +5,7 @@ import {
 } from '@remix-run/react';
 import { w } from 'windstitch';
 
-import { useTranslation } from '~/i18n/i18n';
+import { useTranslation } from '~/hooks/use-translation';
 
 import { Button } from '../commons/button';
 import deny from './deny.jpg';

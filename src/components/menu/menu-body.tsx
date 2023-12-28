@@ -5,7 +5,7 @@ import { useMatches } from '@remix-run/react';
 import { PermissionsEnum, type Permissions } from '~/entities/permissions';
 import { useMenu } from '~/hooks/use-menu';
 import { useTransition } from '~/hooks/use-transition';
-import { useTranslation } from '~/i18n/i18n';
+import { useTranslation } from '~/hooks/use-translation';
 
 import { Icon } from '../commons/icon';
 import {

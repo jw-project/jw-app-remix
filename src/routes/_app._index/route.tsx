@@ -3,8 +3,8 @@ import { useNavigate } from '@remix-run/react';
 import { Button } from '~/components/commons/button';
 import { Col, Grid } from '~/components/commons/grid';
 import { Paragraph, Title } from '~/components/commons/typography';
-import { useTranslation } from '~/i18n/i18n';
-import { useUser } from '~/matches/use-user';
+import { useTranslation } from '~/hooks/use-translation';
+import { useUser } from '~/hooks/use-user';
 
 import { ContainerIndex, HeaderIndex } from './components';
 

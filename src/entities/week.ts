@@ -1,5 +1,5 @@
 import type { SelectOptionsType } from '~/components/commons/form/select';
-import { useTranslation as translation } from '~/i18n/i18n';
+import { useTranslation as translation } from '~/hooks/use-translation';
 
 export enum Week {
   MONDAY = 'MONDAY',

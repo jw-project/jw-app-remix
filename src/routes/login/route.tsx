@@ -11,7 +11,7 @@ import {
 } from 'firebase/auth';
 
 import { Spinner } from '~/components/commons/spinner';
-import { useTranslation } from '~/i18n/i18n';
+import { useTranslation } from '~/hooks/use-translation';
 import { firebaseClientConnection } from '~/services/firebase-connection.client';
 
 import { LoadingSubtitle, LoadingTitle, Overlay } from './components';

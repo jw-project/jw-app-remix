@@ -4,7 +4,7 @@ import type {
   RemoteConfigParameterValue,
 } from 'firebase-admin/lib/remote-config/remote-config-api';
 
-import type { Translations } from './i18n';
+import type { Translations } from '../hooks/use-translation';
 
 function remoteConfigToI18nResources(
   parameters: Record<string, RemoteConfigParameter>,

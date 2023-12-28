@@ -1,7 +1,7 @@
 import { w } from 'windstitch';
 
 import { Icon, type IconOpts } from '~/components/commons/icon';
-import { useTranslation } from '~/i18n/i18n';
+import { useTranslation } from '~/hooks/use-translation';
 
 import { NewButton } from './buttons';
 

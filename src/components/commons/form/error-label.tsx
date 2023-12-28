@@ -2,7 +2,7 @@ import { type PropsWithChildren } from 'react';
 
 import { w } from 'windstitch';
 
-import { useTranslation } from '~/i18n/i18n';
+import { useTranslation } from '~/hooks/use-translation';
 
 const ErrorLabelStyled = w.p(`
   text-red-500

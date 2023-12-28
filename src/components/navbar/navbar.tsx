@@ -1,4 +1,4 @@
-import { useUser } from '~/matches/use-user';
+import { useUser } from '~/hooks/use-user';
 
 import { Avatar } from './avatar';
 import { ChangeTheme } from './change-theme';

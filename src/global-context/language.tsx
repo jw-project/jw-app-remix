@@ -1,6 +1,6 @@
 import { createContext, type PropsWithChildren } from 'react';
 
-import type { TranslationConfig } from '~/i18n/i18n';
+import type { TranslationConfig } from '~/hooks/use-translation';
 
 export const LanguageContext = createContext<TranslationConfig>({
   translations: {},

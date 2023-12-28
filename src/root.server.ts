@@ -9,8 +9,7 @@ import {
   type TypedResponse,
 } from '@remix-run/server-runtime';
 
-import type { TranslationConfig, Translations } from '~/i18n/i18n';
-import { getTranslateResources } from '~/i18n/i18next.server';
+import type { TranslationConfig, Translations } from '~/hooks/use-translation';
 import { getAuthenticatedUser } from '~/services/firebase-connection.server';
 import styles from '~/styles/global.css';
 import { cacheConfigs } from '~/utils/cache.server';
@@ -20,6 +19,7 @@ import type { PublisherEntity } from './entities/publisher';
 import type { Theme } from './global-context/theme';
 import { getMenu } from './services/api/menu.server';
 import { getPath } from './utils/get-path.server';
+import { getTranslateResources } from './utils/i18n.server';
 
 export const meta: MetaFunction = () => {
   return [

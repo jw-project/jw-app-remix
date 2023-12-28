@@ -5,9 +5,9 @@ import { Form } from '~/components/commons/form/form';
 import { weekOptions } from '~/entities/week';
 import { useRevalidator } from '~/hooks/use-revalidate';
 import { useSave } from '~/hooks/use-save';
+import { useTranslation } from '~/hooks/use-translation';
+import { useUser } from '~/hooks/use-user';
 import { useValidatePermissions } from '~/hooks/use-validate-permissions';
-import { useTranslation } from '~/i18n/i18n';
-import { useUser } from '~/matches/use-user';
 import { congregationFormSchema } from '~/services/api/congregation/validations';
 
 import type { CongregationActionSaveResponse } from '../api.congregation.save/route';

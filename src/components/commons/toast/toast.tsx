@@ -1,6 +1,6 @@
 import { ToastBar, Toaster, type ToastType } from 'react-hot-toast';
 
-import { useTranslation } from '~/i18n/i18n';
+import { useTranslation } from '~/hooks/use-translation';
 
 import { Icon, type IconProps } from '../icon';
 
