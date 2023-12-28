@@ -1,7 +1,10 @@
 import { createContext, useState, type PropsWithChildren } from 'react';
 
-type CustomCloseType = {
+import { useSave } from '~/hooks/use-save';
+
+export type CustomCloseType = {
   onClose?: () => void;
+  mustRevalidate?: boolean;
 };
 
 type DrawerContextType = {
@@ -19,10 +22,14 @@ export const DrawerContext = createContext<DrawerContextType>({
 export const DrawerProvider = ({ children }: PropsWithChildren) => {
   const [isOpen, setIsOpen] = useState(false);
   const [onClose, setOnClose] = useState<() => void | undefined>();
+  const { forceRevalidate } = useSave();
 
   function openDrawer(props?: CustomCloseType) {
     if (props?.onClose) {
       setOnClose(() => props.onClose);
+    }
+    if (props?.mustRevalidate) {
+      forceRevalidate();
     }
     setIsOpen(true);
   }

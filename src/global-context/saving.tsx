@@ -4,6 +4,7 @@ import { createContext, useState, type PropsWithChildren } from 'react';
 import axios, { type AxiosError } from 'axios';
 import { toast } from 'react-hot-toast';
 
+import { useRevalidator } from '~/hooks/use-revalidate';
 import type { HttpError, InputError } from '~/services/api/throws-errors';
 
 type SavingDataType = {
@@ -34,6 +35,8 @@ type SavingContextType = {
   // errors control
   errorsList: Array<ErrorsApiListType>;
   removeErrorsApi: (id: string) => void;
+  // force revalidate
+  forceRevalidate: () => void;
 };
 
 //
@@ -44,7 +47,11 @@ export const SavingProvider = ({ children }: PropsWithChildren) => {
   const [savingData, setSavingData] = useState<Array<SavingDataTypeInternal>>(
     [],
   );
+  const [mustRevalidate, setMustRevalidate] = useState(false);
+  const { revalidate } = useRevalidator();
   const isSaving = Boolean(savingData.length);
+
+  const forceRevalidate = () => setMustRevalidate(true);
 
   function instanceOfInputError(object: any): object is InputError {
     return 'message' in object && 'field' in object;
@@ -107,9 +114,15 @@ export const SavingProvider = ({ children }: PropsWithChildren) => {
   };
 
   const removeSavingData = (removeData: SavingDataType) => {
-    setSavingData((current) =>
-      current.filter(({ id }) => id !== removeData.id),
-    );
+    setSavingData((current) => {
+      const newSavingData = current.filter(({ id }) => id !== removeData.id);
+      if (newSavingData.length === 0 && mustRevalidate) {
+        revalidate();
+        setMustRevalidate(false);
+      }
+
+      return newSavingData;
+    });
   };
 
   //
@@ -148,6 +161,8 @@ export const SavingProvider = ({ children }: PropsWithChildren) => {
         //
         errorsList,
         removeErrorsApi,
+        //
+        forceRevalidate,
       }}
     >
       {children}

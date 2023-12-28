@@ -18,13 +18,13 @@ export default function App() {
     <LanguageProvider {...locale}>
       <ThemeProvider defaultTheme={themeMode}>
         <TransitionProvider>
-          <DrawerProvider>
-            <SavingProvider>
+          <SavingProvider>
+            <DrawerProvider>
               <MenuProvider>
                 <Body />
               </MenuProvider>
-            </SavingProvider>
-          </DrawerProvider>
+            </DrawerProvider>
+          </SavingProvider>
         </TransitionProvider>
       </ThemeProvider>
     </LanguageProvider>

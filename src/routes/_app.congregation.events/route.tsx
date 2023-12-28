@@ -7,6 +7,7 @@ import { TextDescriptionCell } from '~/components/commons/table/cells';
 import { Table } from '~/components/commons/table/table';
 import { selectorForTable } from '~/components/commons/table/utils';
 import type { EventEntity } from '~/entities/event';
+import type { CustomCloseType } from '~/global-context/drawer';
 import { useDrawer } from '~/hooks/use-drawer';
 import { useLanguage } from '~/hooks/use-language';
 import { useRevalidator } from '~/hooks/use-revalidate';
@@ -24,6 +25,11 @@ export default function Events() {
   const { defaultLanguage } = useLanguage();
   const navigate = useNavigate();
   const { revalidate } = useRevalidator();
+
+  const openDrawerProps: CustomCloseType = {
+    onClose: () => navigate(''),
+    mustRevalidate: true,
+  };
 
   const columns: CoreOptions<EventEntity>['columns'] = [
     ...selectorForTable<EventEntity>(),
@@ -75,10 +81,7 @@ export default function Events() {
         },
       }) => (
         <AlignRight>
-          <Link
-            to={id}
-            onClick={() => openDrawer({ onClose: () => navigate('') })}
-          >
+          <Link to={id} onClick={() => openDrawer(openDrawerProps)}>
             {translate('common.edit')}
           </Link>
         </AlignRight>
@@ -91,7 +94,10 @@ export default function Events() {
       <Table
         columns={columns}
         data={events}
-        onLineAction={({ original }) => navigate(original.id)}
+        onLineAction={({ original }) => {
+          navigate(original.id);
+          openDrawer(openDrawerProps);
+        }}
         buttons={[
           {
             tooltip: String(translate('common.new')),
@@ -100,7 +106,7 @@ export default function Events() {
             shouldUnselect: true,
             onClick: () => {
               navigate('./new');
-              openDrawer({ onClose: () => navigate('') });
+              openDrawer(openDrawerProps);
             },
           },
           {
@@ -109,7 +115,7 @@ export default function Events() {
             enabledWhen: 'onlyOneSelected',
             onClick: (data) => {
               navigate(data[0]?.id || '');
-              openDrawer({ onClose: () => navigate('') });
+              openDrawer(openDrawerProps);
             },
           },
           {
