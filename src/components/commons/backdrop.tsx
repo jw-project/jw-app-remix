@@ -12,7 +12,7 @@ const BackdropStyled = w.div(
 `,
   {
     variants: {
-      zIndex: {
+      zindex: {
         0: 'z-0',
         10: 'z-10',
         20: 'z-20',
@@ -22,12 +22,13 @@ const BackdropStyled = w.div(
       },
     },
     defaultVariants: {
-      zIndex: 40,
+      zindex: 40,
     },
+    transient: ['zindex'],
   },
 );
 
-type ZIndex = W.Infer<typeof BackdropStyled>['zIndex'];
+type ZIndex = W.Infer<typeof BackdropStyled>['zindex'];
 
 export function Backdrop({
   visible,
@@ -49,7 +50,7 @@ export function Backdrop({
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
     >
-      <BackdropStyled onClick={onClick} zIndex={zIndex} />
+      <BackdropStyled onClick={onClick} zindex={zIndex} />
     </Transition>
   );
 }
