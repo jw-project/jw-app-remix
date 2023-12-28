@@ -1,6 +1,6 @@
 import { type PropsWithChildren } from 'react';
 
-import { useHorizontalScroll } from '~/hooks/horizontal-scroll';
+import { useHorizontalScroll } from '~/hooks/use-horizontal-scroll';
 
 import {
   TabIconStyled,

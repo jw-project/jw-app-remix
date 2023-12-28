@@ -1,13 +1,8 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  type PropsWithChildren,
-} from 'react';
+import { createContext, useState, type PropsWithChildren } from 'react';
 
 export type Theme = 'light' | 'dark';
 
-const ThemeContext = createContext<{
+export const ThemeContext = createContext<{
   theme: Theme;
   toggleTheme: () => Theme;
 }>({
@@ -38,5 +33,3 @@ export const ThemeProvider = ({
     </ThemeContext.Provider>
   );
 };
-
-export const useTheme = () => useContext(ThemeContext);

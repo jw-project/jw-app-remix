@@ -1,9 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  type PropsWithChildren,
-} from 'react';
+import { createContext, useState, type PropsWithChildren } from 'react';
 
 type MenuContextType = {
   showMenu: boolean;
@@ -11,7 +6,7 @@ type MenuContextType = {
   closeMenu: () => void;
 };
 
-const MenuContext = createContext({} as MenuContextType);
+export const MenuContext = createContext({} as MenuContextType);
 
 export const MenuProvider = ({ children }: PropsWithChildren) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -30,5 +25,3 @@ export const MenuProvider = ({ children }: PropsWithChildren) => {
     </MenuContext.Provider>
   );
 };
-
-export const useMenu = () => useContext(MenuContext);

@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react';
 
-import { useDrawer } from '~/hooks/drawer';
-import { useIsMobile } from '~/hooks/is-mobile';
+import { useDrawer } from '~/hooks/use-drawer';
+import { useIsMobile } from '~/hooks/use-is-mobile';
 
 import {
   DrawerFooter,

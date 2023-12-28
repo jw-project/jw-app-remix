@@ -1,8 +1,8 @@
-import { createContext, useContext, type PropsWithChildren } from 'react';
+import { createContext, type PropsWithChildren } from 'react';
 
 import type { TranslationConfig } from '~/i18n/i18n';
 
-const LanguageContext = createContext<TranslationConfig>({
+export const LanguageContext = createContext<TranslationConfig>({
   translations: {},
   defaultLanguage: 'en',
 });
@@ -18,5 +18,3 @@ export const LanguageProvider = ({
     </LanguageContext.Provider>
   );
 };
-
-export const useLanguage = () => useContext(LanguageContext);

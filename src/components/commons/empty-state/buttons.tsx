@@ -1,6 +1,6 @@
 import { useNavigate } from '@remix-run/react';
 
-import { useDrawer } from '~/hooks/drawer';
+import { useDrawer } from '~/hooks/use-drawer';
 import { useTranslation } from '~/i18n/i18n';
 
 import { Button } from '../button';

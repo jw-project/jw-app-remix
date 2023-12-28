@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { useTheme } from '~/global-context/theme';
+import { useTheme } from '~/hooks/use-theme';
 
 import { Icon } from '../commons/icon';
 import { Tooltip } from '../commons/tooltip';

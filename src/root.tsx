@@ -1,12 +1,12 @@
 import { useLoaderData } from '@remix-run/react';
 
 import { Body } from './components/commons/body/body';
+import { DrawerProvider } from './global-context/drawer';
 import { LanguageProvider } from './global-context/language';
+import { MenuProvider } from './global-context/menu';
+import { SavingProvider } from './global-context/saving';
 import { ThemeProvider } from './global-context/theme';
 import { TransitionProvider } from './global-context/transition';
-import { DrawerProvider } from './hooks/drawer';
-import { MenuProvider } from './hooks/menu';
-import { SavingProvider } from './hooks/saving';
 import type { RootLoaderReturn } from './root.server';
 
 export { loader, links, meta } from './root.server';

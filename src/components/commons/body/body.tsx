@@ -9,10 +9,10 @@ import {
   ScrollRestoration,
 } from '@remix-run/react';
 
-import { useLanguage } from '~/global-context/language';
-import { useTheme } from '~/global-context/theme';
-import { useDrawer } from '~/hooks/drawer';
-import { useSave } from '~/hooks/saving';
+import { useDrawer } from '~/hooks/use-drawer';
+import { useLanguage } from '~/hooks/use-language';
+import { useSave } from '~/hooks/use-save';
+import { useTheme } from '~/hooks/use-theme';
 
 import { Backdrop } from '../backdrop';
 import { Toast } from '../toast/toast';

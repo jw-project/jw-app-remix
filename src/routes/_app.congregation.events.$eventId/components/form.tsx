@@ -2,7 +2,7 @@ import { Form } from '~/components/commons/form/form';
 import type { EntityForm } from '~/components/commons/form/form-suspense-await';
 import { setVoidOptionWhenNew } from '~/components/commons/form/utils';
 import { eventOptions, type EventEntity } from '~/entities/event';
-import { useRevalidator } from '~/hooks/revalidate';
+import { useRevalidator } from '~/hooks/use-revalidate';
 import { useValidatePermissions } from '~/hooks/use-validate-permissions';
 import { useTranslation } from '~/i18n/i18n';
 import { useUser } from '~/matches/use-user';

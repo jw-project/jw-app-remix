@@ -1,6 +1,5 @@
 import {
   createContext,
-  useContext,
   useEffect,
   useState,
   type PropsWithChildren,
@@ -10,7 +9,7 @@ import { useNavigation } from '@remix-run/react';
 
 export type Theme = 'light' | 'dark';
 
-const TransitionContext = createContext<{
+export const TransitionContext = createContext<{
   show: boolean;
   toggleTransition: () => void;
 }>({
@@ -39,5 +38,3 @@ export const TransitionProvider = ({ children }: PropsWithChildren) => {
     </TransitionContext.Provider>
   );
 };
-
-export const useTransition = () => useContext(TransitionContext);

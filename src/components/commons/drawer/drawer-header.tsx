@@ -1,4 +1,4 @@
-import { useDrawer } from '~/hooks/drawer';
+import { useDrawer } from '~/hooks/use-drawer';
 
 import { Icon } from '../icon';
 import { DrawerCloseButtonStyled, DrawerHeaderStyled } from './styled';

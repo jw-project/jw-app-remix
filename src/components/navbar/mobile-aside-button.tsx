@@ -1,6 +1,6 @@
 import { w } from 'windstitch';
 
-import { useMenu } from '~/hooks/menu';
+import { useMenu } from '~/hooks/use-menu';
 
 import { Icon } from '../commons/icon';
 

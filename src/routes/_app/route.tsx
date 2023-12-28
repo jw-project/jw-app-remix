@@ -7,7 +7,7 @@ import { BodyMargin } from '~/components/commons/body/body-margin';
 import { ErrorScreen } from '~/components/error-screen';
 import { Menu } from '~/components/menu/menu';
 import { Navbar } from '~/components/navbar/navbar';
-import { useTransition } from '~/global-context/transition';
+import { useTransition } from '~/hooks/use-transition';
 
 function BaseLayout({ children }: PropsWithChildren) {
   const { show } = useTransition();

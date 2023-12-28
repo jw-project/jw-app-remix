@@ -2,7 +2,7 @@ import { type DetailedHTMLProps, type TextareaHTMLAttributes } from 'react';
 
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { useTheme } from '~/global-context/theme';
+import { useTheme } from '~/hooks/use-theme';
 
 import { FieldArea } from './field-area';
 import { inputBaseFactory } from './style-base';

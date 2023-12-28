@@ -3,8 +3,8 @@ import { Fragment } from 'react';
 import { useMatches } from '@remix-run/react';
 
 import { PermissionsEnum, type Permissions } from '~/entities/permissions';
-import { useTransition } from '~/global-context/transition';
-import { useMenu } from '~/hooks/menu';
+import { useMenu } from '~/hooks/use-menu';
+import { useTransition } from '~/hooks/use-transition';
 import { useTranslation } from '~/i18n/i18n';
 
 import { Icon } from '../commons/icon';

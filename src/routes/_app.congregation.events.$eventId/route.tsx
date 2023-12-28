@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import { useLoaderData } from '@remix-run/react';
 
 import { FormSuspenseAwait } from '~/components/commons/form/form-suspense-await';
-import { useDrawer } from '~/hooks/drawer';
-import { useRevalidator } from '~/hooks/revalidate';
+import { useDrawer } from '~/hooks/use-drawer';
+import { useRevalidator } from '~/hooks/use-revalidate';
 
 import { EventForm } from './components/form';
 import type { loader } from './event-id.server';

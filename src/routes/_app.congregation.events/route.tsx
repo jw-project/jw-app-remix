@@ -7,9 +7,9 @@ import { TextDescriptionCell } from '~/components/commons/table/cells';
 import { Table } from '~/components/commons/table/table';
 import { selectorForTable } from '~/components/commons/table/utils';
 import type { EventEntity } from '~/entities/event';
-import { useLanguage } from '~/global-context/language';
-import { useDrawer } from '~/hooks/drawer';
-import { useRevalidator } from '~/hooks/revalidate';
+import { useDrawer } from '~/hooks/use-drawer';
+import { useLanguage } from '~/hooks/use-language';
+import { useRevalidator } from '~/hooks/use-revalidate';
 import { useTranslation } from '~/i18n/i18n';
 
 import { deleteEvents } from './events.client';

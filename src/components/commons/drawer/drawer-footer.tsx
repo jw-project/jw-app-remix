@@ -2,7 +2,7 @@ import { startTransition, useCallback, useMemo } from 'react';
 
 import { useNavigate, useNavigation, useParams } from '@remix-run/react';
 
-import { useSave } from '~/hooks/saving';
+import { useSave } from '~/hooks/use-save';
 import { useTranslation } from '~/i18n/i18n';
 
 import { Button } from '../button';

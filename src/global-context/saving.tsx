@@ -1,10 +1,5 @@
 import { error } from 'console';
-import {
-  createContext,
-  useContext,
-  useState,
-  type PropsWithChildren,
-} from 'react';
+import { createContext, useState, type PropsWithChildren } from 'react';
 
 import axios, { type AxiosError } from 'axios';
 import { toast } from 'react-hot-toast';
@@ -43,7 +38,7 @@ type SavingContextType = {
 
 //
 
-const SavingContext = createContext({} as SavingContextType);
+export const SavingContext = createContext({} as SavingContextType);
 
 export const SavingProvider = ({ children }: PropsWithChildren) => {
   const [savingData, setSavingData] = useState<Array<SavingDataTypeInternal>>(
@@ -159,5 +154,3 @@ export const SavingProvider = ({ children }: PropsWithChildren) => {
     </SavingContext.Provider>
   );
 };
-
-export const useSave = () => useContext(SavingContext);

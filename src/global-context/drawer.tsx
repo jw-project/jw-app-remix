@@ -1,9 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  type PropsWithChildren,
-} from 'react';
+import { createContext, useState, type PropsWithChildren } from 'react';
 
 type CustomCloseType = {
   onClose?: () => void;
@@ -15,7 +10,7 @@ type DrawerContextType = {
   closeDrawer: () => void;
 };
 
-const DrawerContext = createContext<DrawerContextType>({
+export const DrawerContext = createContext<DrawerContextType>({
   drawerIsOpen: false,
   openDrawer: () => {},
   closeDrawer: () => {},
@@ -45,5 +40,3 @@ export const DrawerProvider = ({ children }: PropsWithChildren) => {
     </DrawerContext.Provider>
   );
 };
-
-export const useDrawer = () => useContext(DrawerContext);

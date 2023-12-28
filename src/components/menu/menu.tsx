@@ -1,6 +1,6 @@
 import { useMatches, type UIMatch } from '@remix-run/react';
 
-import { useMenu } from '~/hooks/menu';
+import { useMenu } from '~/hooks/use-menu';
 import { useUser } from '~/matches/use-user';
 import type { RootLoaderReturn } from '~/root.server';
 
