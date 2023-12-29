@@ -3,13 +3,15 @@ import { type CoreOptions } from '@tanstack/react-table';
 
 import { AlignRight } from '~/components/commons/align';
 import { Drawer } from '~/components/commons/drawer';
+import { AlertModal } from '~/components/commons/modal';
 import { TextDescriptionCell } from '~/components/commons/table/cells';
 import { Table } from '~/components/commons/table/table';
 import { selectorForTable } from '~/components/commons/table/utils';
 import type { EventEntity } from '~/entities/event';
-import type { CustomCloseType } from '~/global-context/drawer';
+import type { OpenDrawerProps } from '~/global-context/drawer';
 import { useDrawer } from '~/hooks/use-drawer';
 import { useLanguage } from '~/hooks/use-language';
+import { useModal } from '~/hooks/use-modal';
 import { useRevalidator } from '~/hooks/use-revalidate';
 import { useTranslation } from '~/hooks/use-translation';
 
@@ -24,9 +26,10 @@ export default function Events() {
   const { translate } = useTranslation();
   const { defaultLanguage } = useLanguage();
   const navigate = useNavigate();
+  const { openModal } = useModal();
   const { revalidate } = useRevalidator();
 
-  const openDrawerProps: CustomCloseType = {
+  const openDrawerProps: OpenDrawerProps = {
     onClose: () => navigate(''),
     mustRevalidate: true,
   };
@@ -122,10 +125,19 @@ export default function Events() {
             tooltip: String(translate('common.delete')),
             icon: 'delete',
             enabledWhen: 'leastOneSelected',
-            shouldUnselect: true,
-            onClick: async (data) => {
-              await deleteEvents(data);
-              revalidate();
+            onClick: async (data, { resetRowSelection }) => {
+              openModal({
+                text: String(
+                  translate('routes.congregation.events.delete-modal', {
+                    length: data.length,
+                  }),
+                ),
+                onConfirm: async () => {
+                  await deleteEvents(data);
+                  revalidate();
+                  resetRowSelection();
+                },
+              });
             },
           },
         ]}
@@ -136,6 +148,7 @@ export default function Events() {
       >
         <Outlet />
       </Drawer>
+      <AlertModal severity="question-warning" />
     </>
   );
 }

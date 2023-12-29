@@ -18,7 +18,10 @@ type ClearedButtonGroupProps = Omit<ButtonGroupProps, 'disabled' | 'onClick'>;
 type ExtraButtonGroupProps<Data extends object> = {
   enabledWhen?: EnabledWhen;
   shouldUnselect?: boolean;
-  onClick?: (data: Array<Data>) => void;
+  onClick?: (
+    data: Array<Data>,
+    options: { resetRowSelection: () => void },
+  ) => void;
 };
 
 type TableContextProps<Data extends object> = {
