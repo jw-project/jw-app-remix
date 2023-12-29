@@ -1,4 +1,13 @@
-import { createContext, useContext, type Context } from 'react';
+import {
+  createContext,
+  forwardRef,
+  useContext,
+  useImperativeHandle,
+  type Context,
+  type ReactElement,
+  type Ref,
+  type RefObject,
+} from 'react';
 
 import {
   getCoreRowModel,
@@ -18,10 +27,7 @@ type ClearedButtonGroupProps = Omit<ButtonGroupProps, 'disabled' | 'onClick'>;
 type ExtraButtonGroupProps<Data extends object> = {
   enabledWhen?: EnabledWhen;
   shouldUnselect?: boolean;
-  onClick?: (
-    data: Array<Data>,
-    options: { resetRowSelection: () => void },
-  ) => void;
+  onClick?: (data: Array<Data>) => void;
 };
 
 type TableContextProps<Data extends object> = {
@@ -37,43 +43,59 @@ export const TableContext = createContext<TableContextProps<object>>({
 
 type EnabledWhen = 'onlyOneSelected' | 'leastOneSelected' | 'always';
 
-function TableProvider<Data extends object>({
-  columns,
-  data,
-  buttons,
-  onLineAction,
-}: {
+export type TableRefProps = {
+  resetRowSelection: () => void;
+};
+
+type TableProps<Data extends object> = {
   columns: ColumnDef<Data, any>[];
   data: Data[];
   buttons?: Array<ClearedButtonGroupProps & ExtraButtonGroupProps<Data>>;
   onLineAction?: (data: Row<Data>) => void;
-}) {
-  const table = useReactTable<Data>({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
+};
 
-  return (
-    <TableContext.Provider
-      value={
-        { table, buttons, onLineAction } as unknown as TableContextProps<object>
-      }
-    >
-      {!Boolean(data.length) && <EmptyState />}
-      {Boolean(data.length) && (
-        <div className="shadow-md rounded-md pb-2">
-          <TableButtonGroup />
-          <TableComponent />
-        </div>
-      )}
-    </TableContext.Provider>
-  );
-}
+const TableProvider = forwardRef(
+  <Data extends object>(
+    { columns, data, buttons, onLineAction }: TableProps<Data>,
+    ref: Ref<TableRefProps>,
+  ) => {
+    const table = useReactTable<Data>({
+      data,
+      columns,
+      getCoreRowModel: getCoreRowModel(),
+    });
+
+    useImperativeHandle(ref, () => ({
+      resetRowSelection: table.resetRowSelection,
+    }));
+
+    return (
+      <TableContext.Provider
+        value={
+          {
+            table,
+            buttons,
+            onLineAction,
+          } as unknown as TableContextProps<object>
+        }
+      >
+        {!Boolean(data.length) && <EmptyState />}
+        {Boolean(data.length) && (
+          <div className="shadow-md rounded-md pb-2">
+            <TableButtonGroup />
+            <TableComponent />
+          </div>
+        )}
+      </TableContext.Provider>
+    );
+  },
+);
 
 export const useTableContext = <Data extends object>() =>
   useContext<TableContextProps<Data>>(
     TableContext as unknown as Context<TableContextProps<Data>>,
   );
 
-export const Table = TableProvider;
+export const Table = TableProvider as <Data extends object>(
+  p: TableProps<Data> & { ref?: RefObject<TableRefProps> },
+) => ReactElement;

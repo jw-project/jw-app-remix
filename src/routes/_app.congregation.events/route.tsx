@@ -1,11 +1,13 @@
+import { useRef } from 'react';
+
 import { Link, Outlet, useLoaderData, useNavigate } from '@remix-run/react';
 import { type CoreOptions } from '@tanstack/react-table';
 
 import { AlignRight } from '~/components/commons/align';
 import { Drawer } from '~/components/commons/drawer';
-import { AlertModal } from '~/components/commons/modal';
+import { AlertModal, Modal } from '~/components/commons/modal';
 import { TextDescriptionCell } from '~/components/commons/table/cells';
-import { Table } from '~/components/commons/table/table';
+import { Table, type TableRefProps } from '~/components/commons/table/table';
 import { selectorForTable } from '~/components/commons/table/utils';
 import type { EventEntity } from '~/entities/event';
 import type { OpenDrawerProps } from '~/global-context/drawer';
@@ -28,6 +30,7 @@ export default function Events() {
   const navigate = useNavigate();
   const { openModal } = useModal();
   const { revalidate } = useRevalidator();
+  const tableRef = useRef<TableRefProps>(null);
 
   const openDrawerProps: OpenDrawerProps = {
     onClose: () => navigate(''),
@@ -95,6 +98,7 @@ export default function Events() {
   return (
     <>
       <Table
+        ref={tableRef}
         columns={columns}
         data={events}
         onLineAction={({ original }) => {
@@ -125,7 +129,7 @@ export default function Events() {
             tooltip: String(translate('common.delete')),
             icon: 'delete',
             enabledWhen: 'leastOneSelected',
-            onClick: async (data, { resetRowSelection }) => {
+            onClick: async (data) => {
               openModal({
                 text: String(
                   translate('routes.congregation.events.delete-modal', {
@@ -135,7 +139,7 @@ export default function Events() {
                 onConfirm: async () => {
                   await deleteEvents(data);
                   revalidate();
-                  resetRowSelection();
+                  tableRef.current?.resetRowSelection();
                 },
               });
             },
@@ -149,6 +153,7 @@ export default function Events() {
         <Outlet />
       </Drawer>
       <AlertModal severity="question-warning" />
+      <Modal />
     </>
   );
 }

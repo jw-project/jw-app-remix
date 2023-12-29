@@ -23,7 +23,6 @@ export const TableButtonGroup = () => {
           internalOnClick = () => {
             onClick(
               table.getSelectedRowModel().rows.map((row) => row.original),
-              { resetRowSelection: table.resetRowSelection },
             );
             shouldUnselect && table.resetRowSelection();
           };
