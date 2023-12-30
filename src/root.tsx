@@ -4,7 +4,6 @@ import { Body } from './components/commons/body/body';
 import { DrawerProvider } from './global-context/drawer';
 import { LanguageProvider } from './global-context/language';
 import { MenuProvider } from './global-context/menu';
-import { ModalProvider } from './global-context/modal';
 import { SavingProvider } from './global-context/saving';
 import { ThemeProvider } from './global-context/theme';
 import { TransitionProvider } from './global-context/transition';
@@ -21,11 +20,9 @@ export default function App() {
         <TransitionProvider>
           <SavingProvider>
             <DrawerProvider>
-              <ModalProvider>
-                <MenuProvider>
-                  <Body />
-                </MenuProvider>
-              </ModalProvider>
+              <MenuProvider>
+                <Body />
+              </MenuProvider>
             </DrawerProvider>
           </SavingProvider>
         </TransitionProvider>

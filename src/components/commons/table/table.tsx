@@ -12,52 +12,23 @@ import {
 import {
   getCoreRowModel,
   useReactTable,
-  type ColumnDef,
   type Table as ReactTableType,
-  type Row,
 } from '@tanstack/react-table';
 
-import type { ButtonGroupProps } from '../button-group';
 import { EmptyState } from '../empty-state';
 import { TableButtonGroup } from './table-button-group';
 import { TableComponent } from './table-component';
+import type { TableContextProps, TableProps, TableRefProps } from './types';
 
-type ClearedButtonGroupProps = Omit<ButtonGroupProps, 'disabled' | 'onClick'>;
-
-type ExtraButtonGroupProps<Data extends object> = {
-  enabledWhen?: EnabledWhen;
-  shouldUnselect?: boolean;
-  onClick?: (data: Array<Data>) => void;
-};
-
-type TableContextProps<Data extends object> = {
-  table: ReactTableType<Data>;
-  onLineAction: (data: Row<Data>) => void;
-  buttons?: Array<ClearedButtonGroupProps & ExtraButtonGroupProps<Data>>;
-};
-
-export const TableContext = createContext<TableContextProps<object>>({
+const TableContext = createContext<TableContextProps<object>>({
   table: {} as ReactTableType<object>,
   onLineAction: () => {},
 });
 
-type EnabledWhen = 'onlyOneSelected' | 'leastOneSelected' | 'always';
-
-export type TableRefProps = {
-  resetRowSelection: () => void;
-};
-
-type TableProps<Data extends object> = {
-  columns: ColumnDef<Data, any>[];
-  data: Data[];
-  buttons?: Array<ClearedButtonGroupProps & ExtraButtonGroupProps<Data>>;
-  onLineAction?: (data: Row<Data>) => void;
-};
-
 const TableProvider = forwardRef(
   <Data extends object>(
     { columns, data, buttons, onLineAction }: TableProps<Data>,
-    ref: Ref<TableRefProps>,
+    ref: Ref<TableRefProps<Data>>,
   ) => {
     const table = useReactTable<Data>({
       data,
@@ -67,6 +38,7 @@ const TableProvider = forwardRef(
 
     useImperativeHandle(ref, () => ({
       resetRowSelection: table.resetRowSelection,
+      selectedData: table.getSelectedRowModel().rows.map((row) => row.original),
     }));
 
     return (
@@ -97,5 +69,5 @@ export const useTableContext = <Data extends object>() =>
   );
 
 export const Table = TableProvider as <Data extends object>(
-  p: TableProps<Data> & { ref?: RefObject<TableRefProps> },
+  p: TableProps<Data> & { ref?: RefObject<TableRefProps<Data>> },
 ) => ReactElement;

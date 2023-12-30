@@ -5,17 +5,19 @@ import { type CoreOptions } from '@tanstack/react-table';
 
 import { AlignRight } from '~/components/commons/align';
 import { Drawer } from '~/components/commons/drawer';
-import { AlertModal, Modal } from '~/components/commons/modal';
+import { Modal } from '~/components/commons/modal';
+import type { ModalRefProps } from '~/components/commons/modal/types';
 import { TextDescriptionCell } from '~/components/commons/table/cells';
-import { Table, type TableRefProps } from '~/components/commons/table/table';
+import { Table } from '~/components/commons/table/table';
+import type { TableRefProps } from '~/components/commons/table/types';
 import { selectorForTable } from '~/components/commons/table/utils';
 import type { EventEntity } from '~/entities/event';
 import type { OpenDrawerProps } from '~/global-context/drawer';
 import { useDrawer } from '~/hooks/use-drawer';
 import { useLanguage } from '~/hooks/use-language';
-import { useModal } from '~/hooks/use-modal';
 import { useRevalidator } from '~/hooks/use-revalidate';
 import { useTranslation } from '~/hooks/use-translation';
+import { refGuard } from '~/utils/ref-guard';
 
 import { deleteEvents } from './events.client';
 import type { EventsLoaderReturn } from './events.server';
@@ -28,9 +30,9 @@ export default function Events() {
   const { translate } = useTranslation();
   const { defaultLanguage } = useLanguage();
   const navigate = useNavigate();
-  const { openModal } = useModal();
   const { revalidate } = useRevalidator();
-  const tableRef = useRef<TableRefProps>(null);
+  const tableRef = useRef<TableRefProps<EventEntity>>(null);
+  const deleteModalRef = useRef<ModalRefProps>(null);
 
   const openDrawerProps: OpenDrawerProps = {
     onClose: () => navigate(''),
@@ -129,19 +131,8 @@ export default function Events() {
             tooltip: String(translate('common.delete')),
             icon: 'delete',
             enabledWhen: 'leastOneSelected',
-            onClick: async (data) => {
-              openModal({
-                text: String(
-                  translate('routes.congregation.events.delete-modal', {
-                    length: data.length,
-                  }),
-                ),
-                onConfirm: async () => {
-                  await deleteEvents(data);
-                  revalidate();
-                  tableRef.current?.resetRowSelection();
-                },
-              });
+            onClick: () => {
+              refGuard(deleteModalRef).openModal();
             },
           },
         ]}
@@ -152,7 +143,20 @@ export default function Events() {
       >
         <Outlet />
       </Drawer>
-      <AlertModal severity="question-warning" />
+      <Modal
+        ref={deleteModalRef}
+        severity="question-warning"
+        text={String(
+          translate('routes.congregation.events.delete-modal', {
+            length: Number(tableRef.current?.selectedData.length),
+          }),
+        )}
+        onConfirm={async () => {
+          await deleteEvents(refGuard(tableRef).selectedData);
+          revalidate();
+          refGuard(tableRef).resetRowSelection();
+        }}
+      />
       <Modal />
     </>
   );

@@ -1,84 +1,81 @@
-import { useIsMobile } from '~/hooks/use-is-mobile';
-import { useModal } from '~/hooks/use-modal';
-import { useTranslation } from '~/hooks/use-translation';
-
-import { Button } from '../button';
-import { Icon, type IconProps } from '../icon';
 import {
-  ModalAlertCloseButtonStyled,
-  ModalAlertTextStyled,
-  ModalAlertWrapperButtonStyled,
+  createContext,
+  forwardRef,
+  useContext,
+  useImperativeHandle,
+  useRef,
+  useState,
+  type Ref,
+} from 'react';
+
+import { useIsMobile } from '~/hooks/use-is-mobile';
+import { useOutsideClick } from '~/hooks/use-outside-click';
+import { useTheme } from '~/hooks/use-theme';
+
+import { ModalContent } from './modal';
+import {
   ModalBodyWrapperStyled,
-  ModalContentStyled,
   ModalFullWrapperStyled,
   ModalStyled,
 } from './style';
+import type {
+  AlertModalProps,
+  ModalContextProps,
+  ModalProps,
+  ModalRefProps,
+} from './types';
 
-type Severity =
-  | 'success'
-  | 'info'
-  | 'warning'
-  | 'error'
-  | 'question'
-  | 'question-warning';
+const ModalContext = createContext<ModalContextProps>({
+  children: null,
+  openModal: () => {},
+  closeModal: () => {},
+  onConfirm: () => {},
+  onCancel: () => {},
+});
 
-export const AlertModal = ({ severity }: { severity: Severity }) => {
-  const { text, modalIsOpen, confirmModal, cancelModal } = useModal();
-  const isMobile = useIsMobile();
-  const { translate } = useTranslation('common');
-
-  const modalSeverityConfigs: Record<Severity, IconProps> = {
-    success: {
-      icon: 'check_circle',
-      className: 'text-green-500',
-    },
-    info: {
-      icon: 'info',
-      className: 'text-blue-500',
-    },
-    warning: {
-      icon: 'warning',
-      className: 'text-yellow-500',
-    },
-    error: {
-      icon: 'error',
-      className: 'text-red-500',
-    },
-    question: {
-      icon: 'help',
-      className: 'text-blue-500',
-    },
-    'question-warning': {
-      icon: 'help',
-      className: 'text-yellow-500',
-    },
-  };
-
-  return (
-    <ModalFullWrapperStyled leftmargin={!isMobile}>
-      <ModalBodyWrapperStyled visible={modalIsOpen}>
-        <ModalStyled>
-          <ModalAlertCloseButtonStyled
-            type="button"
-            data-modal-hide="popup-modal"
-            onClick={cancelModal}
-          >
-            <Icon icon="close" className="transition-none" />
-          </ModalAlertCloseButtonStyled>
-          <ModalContentStyled>
-            <Icon size="icon-xxx-large" {...modalSeverityConfigs[severity]} />
-            <ModalAlertTextStyled>{text}</ModalAlertTextStyled>
-            <ModalAlertWrapperButtonStyled>
-              <Button buttonstyle="danger" onClick={confirmModal}>
-                {translate('yes')}
-              </Button>
-              <Button buttonstyle="secondary" onClick={cancelModal}>
-                {translate('no')}
-              </Button>
-            </ModalAlertWrapperButtonStyled>
-          </ModalContentStyled>
-        </ModalStyled>
-      </ModalBodyWrapperStyled>
-    </ModalFullWrapperStyled>
-  );
+export const useModal = () => {
+  return useContext(ModalContext);
 };
+
+export const Modal = forwardRef(
+  (props: ModalProps | AlertModalProps, ref: Ref<ModalRefProps>) => {
+    const modalRef = useRef<HTMLDivElement>(null);
+
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const isMobile = useIsMobile();
+    const { showBackdrop, hideBackdrop } = useTheme();
+
+    const openModal = () => {
+      showBackdrop();
+      setModalIsOpen(true);
+    };
+
+    const closeModal = () => {
+      hideBackdrop();
+      setModalIsOpen(false);
+    };
+
+    useImperativeHandle(ref, () => ({
+      isOpen: modalIsOpen,
+      openModal,
+    }));
+
+    useOutsideClick(modalRef, closeModal);
+
+    if (!modalIsOpen) {
+      return null;
+    }
+
+    return (
+      <ModalContext.Provider value={{ ...props, openModal, closeModal }}>
+        <ModalFullWrapperStyled ref={modalRef} leftmargin={!isMobile}>
+          <ModalBodyWrapperStyled visible={modalIsOpen}>
+            <ModalStyled>
+              <ModalContent />
+            </ModalStyled>
+          </ModalBodyWrapperStyled>
+        </ModalFullWrapperStyled>
+      </ModalContext.Provider>
+    );
+  },
+);
