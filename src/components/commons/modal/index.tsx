@@ -2,6 +2,7 @@ import {
   createContext,
   forwardRef,
   useContext,
+  useEffect,
   useImperativeHandle,
   useRef,
   useState,
@@ -43,7 +44,7 @@ export const Modal = forwardRef(
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const isMobile = useIsMobile();
-    const { showBackdrop, hideBackdrop } = useTheme();
+    const { backdropIsShow, showBackdrop, hideBackdrop } = useTheme();
 
     const openModal = () => {
       showBackdrop();
@@ -61,6 +62,12 @@ export const Modal = forwardRef(
     }));
 
     useOutsideClick(modalRef, closeModal);
+
+    useEffect(() => {
+      if (modalIsOpen) {
+        showBackdrop();
+      }
+    }, [backdropIsShow]);
 
     if (!modalIsOpen) {
       return null;
