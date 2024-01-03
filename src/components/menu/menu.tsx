@@ -2,6 +2,7 @@ import { useRef } from 'react';
 
 import { useMatches, type UIMatch } from '@remix-run/react';
 
+import { useIsMobile } from '~/hooks/use-is-mobile';
 import { useMenu } from '~/hooks/use-menu';
 import { useOutsideClick } from '~/hooks/use-outside-click';
 import { useUser } from '~/hooks/use-user';
@@ -12,10 +13,19 @@ import { Aside, MenuHeader } from './menu-styled';
 
 export function Menu() {
   const [firstMatch] = useMatches() as UIMatch<RootLoaderReturn>[];
+  const isMobile = useIsMobile();
   const { permissions } = useUser();
   const { showMenu, closeMenu } = useMenu();
   const menuRef = useRef<HTMLElement>(null);
-  useOutsideClick(menuRef, closeMenu);
+  useOutsideClick(
+    menuRef,
+    () => {
+      if (isMobile && showMenu) {
+        closeMenu();
+      }
+    },
+    [showMenu],
+  );
 
   return (
     <>

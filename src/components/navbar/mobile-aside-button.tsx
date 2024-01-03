@@ -12,10 +12,10 @@ const MobileAsideButtonStyled = w.div(`
 `);
 
 export function MobileAsideButton() {
-  const { toggleMenu } = useMenu();
+  const { openMenu } = useMenu();
 
   return (
-    <MobileAsideButtonStyled onClick={toggleMenu}>
+    <MobileAsideButtonStyled onClick={openMenu}>
       <Icon icon="menu_open" />
     </MobileAsideButtonStyled>
   );

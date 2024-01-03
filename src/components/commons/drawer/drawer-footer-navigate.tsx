@@ -6,7 +6,6 @@ import { useSave } from '~/hooks/use-save';
 import { useTranslation } from '~/hooks/use-translation';
 
 import { Button } from '../button';
-import { DrawerFooterStyled } from './styled';
 
 export type DrawerFooterGenericExtends = Array<
   {
@@ -19,7 +18,7 @@ export type DrawerFooterProps<T extends DrawerFooterGenericExtends> = {
   paramKey: string;
 };
 
-export function DrawerFooter<
+export function DrawerFooterNavigate<
   T extends DrawerFooterGenericExtends = Array<any>,
 >({ navigatorData, paramKey }: DrawerFooterProps<T>) {
   const navigate = useNavigate();
@@ -73,7 +72,7 @@ export function DrawerFooter<
   }, [navigatorData, params]);
 
   return (
-    <DrawerFooterStyled>
+    <>
       {isNew ? (
         <Button
           type="submit"
@@ -92,6 +91,6 @@ export function DrawerFooter<
           </Button>
         </>
       )}
-    </DrawerFooterStyled>
+    </>
   );
 }

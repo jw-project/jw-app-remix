@@ -1,7 +1,6 @@
 import { useLoaderData } from '@remix-run/react';
 
 import { Body } from './components/commons/body/body';
-import { DrawerProvider } from './global-context/drawer';
 import { LanguageProvider } from './global-context/language';
 import { MenuProvider } from './global-context/menu';
 import { SavingProvider } from './global-context/saving';
@@ -19,11 +18,9 @@ export default function App() {
       <ThemeProvider defaultTheme={themeMode}>
         <TransitionProvider>
           <SavingProvider>
-            <DrawerProvider>
-              <MenuProvider>
-                <Body />
-              </MenuProvider>
-            </DrawerProvider>
+            <MenuProvider>
+              <Body />
+            </MenuProvider>
           </SavingProvider>
         </TransitionProvider>
       </ThemeProvider>

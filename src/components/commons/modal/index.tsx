@@ -41,7 +41,6 @@ export const useModal = () => {
 export const Modal = forwardRef(
   (props: ModalProps | AlertModalProps, ref: Ref<ModalRefProps>) => {
     const modalRef = useRef<HTMLDivElement>(null);
-
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const isMobile = useIsMobile();
     const { backdropIsShow, showBackdrop, hideBackdrop } = useTheme();
@@ -61,7 +60,7 @@ export const Modal = forwardRef(
       openModal,
     }));
 
-    useOutsideClick(modalRef, closeModal);
+    useOutsideClick(modalRef, closeModal, [modalIsOpen]);
 
     useEffect(() => {
       if (modalIsOpen) {
@@ -86,3 +85,5 @@ export const Modal = forwardRef(
     );
   },
 );
+
+Modal.displayName = 'Modal';

@@ -1,5 +1,8 @@
 import type { CoreOptions } from '@tanstack/react-table';
 
+import { useLanguage } from '~/hooks/use-language';
+import { useTranslation } from '~/hooks/use-translation';
+
 import { IndeterminateCheckbox } from './checkbox';
 
 export function selectorForTable<Data>(): CoreOptions<Data>['columns'] {
@@ -27,4 +30,27 @@ export function selectorForTable<Data>(): CoreOptions<Data>['columns'] {
       ),
     },
   ];
+}
+
+export function DateCell({
+  startDate,
+  endDate,
+}: {
+  startDate?: string;
+  endDate?: string;
+}) {
+  const { translate } = useTranslation();
+  const { defaultLanguage } = useLanguage();
+
+  if (!startDate) {
+    return translate('common.no-date');
+  }
+
+  if (endDate) {
+    return `${new Date(startDate).toLocaleDateString(
+      defaultLanguage,
+    )} - ${new Date(endDate).toLocaleDateString(defaultLanguage)}`;
+  }
+
+  return new Date(startDate).toLocaleDateString(defaultLanguage);
 }

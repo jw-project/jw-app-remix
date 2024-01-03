@@ -1,6 +1,5 @@
-import { useDrawer } from '~/hooks/use-drawer';
-
 import { Icon } from '../icon';
+import { useDrawer } from './';
 import { DrawerCloseButtonStyled, DrawerHeaderStyled } from './styled';
 
 export const DrawerHeader = () => {

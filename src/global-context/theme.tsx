@@ -36,6 +36,7 @@ export const ThemeProvider = ({
     setBackdrop(true);
     setZIndex(options?.zIndex || 40);
   };
+
   const hideBackdrop = () => {
     setBackdrop(false);
   };

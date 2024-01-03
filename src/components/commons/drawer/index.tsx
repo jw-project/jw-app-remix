@@ -1,44 +1,97 @@
-import type { PropsWithChildren } from 'react';
-
-import { useDrawer } from '~/hooks/use-drawer';
-import { useIsMobile } from '~/hooks/use-is-mobile';
-
 import {
-  DrawerFooter,
-  type DrawerFooterGenericExtends,
-  type DrawerFooterProps,
-} from './drawer-footer';
+  createContext,
+  forwardRef,
+  useCallback,
+  useContext,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+  type Ref,
+} from 'react';
+
+import { useIsMobile } from '~/hooks/use-is-mobile';
+import { useOutsideClick } from '~/hooks/use-outside-click';
+import { useTheme } from '~/hooks/use-theme';
+
 import { DrawerHeader } from './drawer-header';
 import {
   DrawerContentStyled,
+  DrawerFooterStyled,
   DrawerWrapperStyled,
-  type DrawerWrapperStyledType,
 } from './styled';
+import type { DrawerContextProps, DrawerProps, DrawerRefProps } from './types';
 
-export function Drawer<T extends DrawerFooterGenericExtends = Array<any>>({
-  children,
-  size,
-  internalNavigator,
-}: PropsWithChildren<
-  {
-    size?: DrawerWrapperStyledType['size'];
-  } & {
-    internalNavigator?: DrawerFooterProps<T>;
-  }
->) {
-  const { drawerIsOpen } = useDrawer();
-  const isMobile = useIsMobile();
+const DrawerContext = createContext<DrawerContextProps>({
+  children: null,
+  openDrawer: () => {},
+  closeDrawer: () => {},
+});
 
-  return (
-    <DrawerWrapperStyled open={drawerIsOpen} size={isMobile ? 'full' : size}>
-      <DrawerHeader />
-      <DrawerContentStyled>{children}</DrawerContentStyled>
-      {internalNavigator && (
-        <DrawerFooter
-          navigatorData={internalNavigator.navigatorData}
-          paramKey={internalNavigator.paramKey}
-        />
-      )}
-    </DrawerWrapperStyled>
-  );
-}
+export const useDrawer = () => {
+  return useContext(DrawerContext);
+};
+
+export const Drawer = forwardRef(
+  (
+    { children, size, footer: Footer, onClose }: DrawerProps,
+    ref: Ref<DrawerRefProps>,
+  ) => {
+    const [drawerIsOpen, setDrawerIsOpen] = useState(false);
+    const drawerRef = useRef<HTMLDivElement>(null);
+    const isMobile = useIsMobile();
+    const { backdropIsShow, showBackdrop, hideBackdrop } = useTheme();
+
+    useImperativeHandle(ref, () => ({
+      isOpen: drawerIsOpen,
+      openDrawer,
+    }));
+
+    const openDrawer = () => {
+      setDrawerIsOpen(true);
+      showBackdrop();
+    };
+
+    const closeDrawer = () => {
+      onClose();
+      setDrawerIsOpen(false);
+      hideBackdrop();
+    };
+
+    const callb = useCallback(() => {
+      if (drawerIsOpen) {
+        closeDrawer();
+      }
+    }, [drawerIsOpen]);
+
+    useOutsideClick(drawerRef, callb, [drawerIsOpen]);
+
+    useEffect(() => {
+      if (drawerIsOpen) {
+        showBackdrop();
+      }
+    }, [drawerIsOpen, backdropIsShow]);
+
+    return (
+      <DrawerContext.Provider
+        value={{ children, size, openDrawer, closeDrawer }}
+      >
+        <DrawerWrapperStyled
+          open={drawerIsOpen}
+          size={isMobile ? 'full' : size}
+          ref={drawerRef}
+        >
+          <DrawerHeader />
+          <DrawerContentStyled>{children}</DrawerContentStyled>
+          {Footer && (
+            <DrawerFooterStyled>
+              <Footer />
+            </DrawerFooterStyled>
+          )}
+        </DrawerWrapperStyled>
+      </DrawerContext.Provider>
+    );
+  },
+);
+
+Drawer.displayName = 'Drawer';

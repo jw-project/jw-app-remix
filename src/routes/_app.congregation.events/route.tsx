@@ -1,20 +1,19 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Link, Outlet, useLoaderData, useNavigate } from '@remix-run/react';
 import { type CoreOptions } from '@tanstack/react-table';
 
 import { AlignRight } from '~/components/commons/align';
 import { Drawer } from '~/components/commons/drawer';
+import { DrawerFooterNavigate } from '~/components/commons/drawer/drawer-footer-navigate';
+import type { DrawerRefProps } from '~/components/commons/drawer/types';
 import { Modal } from '~/components/commons/modal';
 import type { ModalRefProps } from '~/components/commons/modal/types';
 import { TextDescriptionCell } from '~/components/commons/table/cells';
 import { Table } from '~/components/commons/table/table';
 import type { TableRefProps } from '~/components/commons/table/types';
-import { selectorForTable } from '~/components/commons/table/utils';
+import { DateCell, selectorForTable } from '~/components/commons/table/utils';
 import type { EventEntity } from '~/entities/event';
-import type { OpenDrawerProps } from '~/global-context/drawer';
-import { useDrawer } from '~/hooks/use-drawer';
-import { useLanguage } from '~/hooks/use-language';
 import { useRevalidator } from '~/hooks/use-revalidate';
 import { useTranslation } from '~/hooks/use-translation';
 import { refGuard } from '~/utils/ref-guard';
@@ -25,19 +24,18 @@ import type { EventsLoaderReturn } from './events.server';
 export { loader, shouldRevalidate } from './events.server';
 
 export default function Events() {
-  const { openDrawer } = useDrawer();
-  const { events } = useLoaderData<EventsLoaderReturn>();
-  const { translate } = useTranslation();
-  const { defaultLanguage } = useLanguage();
-  const navigate = useNavigate();
-  const { revalidate } = useRevalidator();
   const tableRef = useRef<TableRefProps<EventEntity>>(null);
   const deleteModalRef = useRef<ModalRefProps>(null);
+  const formDrawerRef = useRef<DrawerRefProps>(null);
+  const { events } = useLoaderData<EventsLoaderReturn>();
+  const [eventsState, setEventsState] = useState<EventEntity[]>(events);
+  const { translate } = useTranslation();
+  const navigate = useNavigate();
+  const { revalidate } = useRevalidator();
 
-  const openDrawerProps: OpenDrawerProps = {
-    onClose: () => navigate(''),
-    mustRevalidate: true,
-  };
+  useEffect(() => {
+    setEventsState(events);
+  }, [events]);
 
   const columns: CoreOptions<EventEntity>['columns'] = [
     ...selectorForTable<EventEntity>(),
@@ -61,19 +59,7 @@ export default function Events() {
       cell: ({ row }) => {
         const { startDate, endDate } = row.original;
 
-        if (!startDate && !endDate) {
-          return translate('common.no-date');
-        }
-
-        if (startDate && endDate) {
-          return (
-            new Date(startDate).toLocaleDateString(defaultLanguage) +
-            ' - ' +
-            new Date(endDate).toLocaleDateString(defaultLanguage)
-          );
-        }
-
-        return new Date(startDate).toLocaleDateString(defaultLanguage);
+        return <DateCell startDate={startDate} endDate={endDate} />;
       },
     },
     {
@@ -89,7 +75,7 @@ export default function Events() {
         },
       }) => (
         <AlignRight>
-          <Link to={id} onClick={() => openDrawer(openDrawerProps)}>
+          <Link to={id} onClick={() => refGuard(formDrawerRef).openDrawer()}>
             {translate('common.edit')}
           </Link>
         </AlignRight>
@@ -102,10 +88,10 @@ export default function Events() {
       <Table
         ref={tableRef}
         columns={columns}
-        data={events}
+        data={eventsState}
         onLineAction={({ original }) => {
           navigate(original.id);
-          openDrawer(openDrawerProps);
+          refGuard(formDrawerRef).openDrawer();
         }}
         buttons={[
           {
@@ -115,7 +101,7 @@ export default function Events() {
             shouldUnselect: true,
             onClick: () => {
               navigate('./new');
-              openDrawer(openDrawerProps);
+              refGuard(formDrawerRef).openDrawer();
             },
           },
           {
@@ -124,7 +110,7 @@ export default function Events() {
             enabledWhen: 'onlyOneSelected',
             onClick: (data) => {
               navigate(data[0]?.id || '');
-              openDrawer(openDrawerProps);
+              refGuard(formDrawerRef).openDrawer();
             },
           },
           {
@@ -138,10 +124,19 @@ export default function Events() {
         ]}
       />
       <Drawer
+        ref={formDrawerRef}
+        onClose={() => {
+          navigate('');
+        }}
         size="large"
-        internalNavigator={{ paramKey: 'eventId', navigatorData: events }}
+        footer={() => (
+          <DrawerFooterNavigate
+            navigatorData={eventsState}
+            paramKey="eventId"
+          />
+        )}
       >
-        <Outlet />
+        <Outlet context={{ formDrawerRef }} />
       </Drawer>
       <Modal
         ref={deleteModalRef}
@@ -152,12 +147,17 @@ export default function Events() {
           }),
         )}
         onConfirm={async () => {
+          setEventsState((currentEvents) =>
+            currentEvents.filter(
+              ({ id }) =>
+                !refGuard(tableRef).selectedData.find((e) => e.id === id),
+            ),
+          );
+          refGuard(tableRef).resetRowSelection();
           await deleteEvents(refGuard(tableRef).selectedData);
           revalidate();
-          refGuard(tableRef).resetRowSelection();
         }}
       />
-      <Modal />
     </>
   );
 }

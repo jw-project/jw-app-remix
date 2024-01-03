@@ -9,6 +9,7 @@ function assertIsNode(e: EventTarget | null): asserts e is Node {
 export function useOutsideClick(
   ref: RefObject<HTMLElement>,
   callback: () => void,
+  deps: Array<any>,
 ) {
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -22,5 +23,5 @@ export function useOutsideClick(
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [ref]);
+  }, [ref, ...deps]);
 }

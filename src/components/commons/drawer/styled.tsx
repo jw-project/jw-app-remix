@@ -1,4 +1,4 @@
-import { w, type W } from 'windstitch';
+import { w } from 'windstitch';
 
 export const DrawerWrapperStyled = w.div(
   `
@@ -28,8 +28,6 @@ export const DrawerWrapperStyled = w.div(
     },
   },
 );
-
-export type DrawerWrapperStyledType = W.Infer<typeof DrawerWrapperStyled>;
 
 export const DrawerHeaderStyled = w.div(`
     flex

@@ -22,6 +22,7 @@ module.exports = {
     'consistent-return': 'error',
     'no-unused-vars': 'off',
     'no-unneeded-ternary': 'error',
+    'prefer-template': 'error',
     'no-implicit-coercion': 'error',
     'lines-between-class-members': ['error', 'always'],
     'padding-line-between-statements': [
@@ -65,6 +66,7 @@ module.exports = {
     'react/self-closing-comp': 'error',
     //etc rules
     'etc/no-commented-out-code': 'error',
+    'react/display-name': 'error',
   },
   plugins: [
     'eslint-plugin-prettier',

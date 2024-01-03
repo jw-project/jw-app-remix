@@ -10,7 +10,7 @@ import { useTheme } from '~/hooks/use-theme';
 
 type MenuContextType = {
   showMenu: boolean;
-  toggleMenu: () => void;
+  openMenu: () => void;
   closeMenu: () => void;
 };
 
@@ -27,18 +27,18 @@ export const MenuProvider = ({ children }: PropsWithChildren) => {
     }
   }, [isMobile]);
 
-  const toggleMenu = () => {
+  const openMenu = () => {
+    setShowMenu(true);
     showBackdrop({ zIndex: 20 });
-    setShowMenu((current) => !current);
   };
 
   const closeMenu = () => {
-    hideBackdrop();
     setShowMenu(false);
+    hideBackdrop();
   };
 
   return (
-    <MenuContext.Provider value={{ showMenu, toggleMenu, closeMenu }}>
+    <MenuContext.Provider value={{ showMenu, openMenu, closeMenu }}>
       {children}
     </MenuContext.Provider>
   );
