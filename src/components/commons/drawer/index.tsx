@@ -1,7 +1,6 @@
 import {
   createContext,
   forwardRef,
-  useCallback,
   useContext,
   useEffect,
   useImperativeHandle,
@@ -58,13 +57,15 @@ export const Drawer = forwardRef(
       hideBackdrop();
     };
 
-    const callb = useCallback(() => {
-      if (drawerIsOpen) {
-        closeDrawer();
-      }
-    }, [drawerIsOpen]);
-
-    useOutsideClick(drawerRef, callb, [drawerIsOpen]);
+    useOutsideClick(
+      drawerRef,
+      () => {
+        if (drawerIsOpen) {
+          closeDrawer();
+        }
+      },
+      [drawerIsOpen],
+    );
 
     useEffect(() => {
       if (drawerIsOpen) {
